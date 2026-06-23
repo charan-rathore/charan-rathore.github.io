@@ -618,10 +618,134 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+        /* ===== GLOBAL SCROLL PROGRESS BAR ===== */
+        .scroll-progress {
+            position: fixed;
+            top: 0; right: 0;
+            width: 4px; height: 100vh;
+            z-index: 200;
+            background: rgba(30,30,40,0.4);
+        }
+        .scroll-progress-fill {
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(180deg, var(--accent), var(--accent-alt), var(--accent-pink));
+            border-radius: 0 0 2px 2px;
+            transition: height 0.05s linear;
+            box-shadow: 0 0 8px rgba(129,140,248,0.4);
+        }
+
+        /* ===== JOURNEY STATION DOTS (horizontal) ===== */
+        .journey-dots {
+            position: sticky;
+            bottom: 0;
+            left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.2rem 0;
+            background: linear-gradient(0deg, var(--bg) 60%, transparent);
+            pointer-events: none;
+        }
+        .journey-dot-indicator {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            border: 2px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            pointer-events: auto;
+            cursor: pointer;
+            position: relative;
+        }
+        .journey-dot-indicator.reached {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(129,140,248,0.5);
+        }
+        .journey-dot-indicator.current {
+            background: var(--accent);
+            border-color: var(--accent-bright);
+            transform: scale(1.4);
+            box-shadow: 0 0 12px rgba(129,140,248,0.6), 0 0 24px rgba(129,140,248,0.2);
+        }
+        .journey-dot-indicator .dot-tooltip {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%) translateY(6px);
+            white-space: nowrap;
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--text);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.3rem 0.7rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s;
+        }
+        .journey-dot-indicator:hover .dot-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== JOURNEY BANNER ===== */
+        .journey-banner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+        .banner-block {
+            padding: 0.7rem 1.6rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .banner-block:hover {
+            transform: translateY(-3px);
+        }
+        .banner-block:nth-child(1) {
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(129,140,248,0.3);
+        }
+        .banner-block:nth-child(2) {
+            background: linear-gradient(135deg, var(--accent-alt), #6ee7b7);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(52,211,153,0.3);
+        }
+        .banner-block:nth-child(3) {
+            background: linear-gradient(135deg, var(--accent-warm), #fbbf24);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(251,146,60,0.3);
+        }
+        .banner-icon {
+            width: 52px; height: 52px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Global scroll progress bar -->
+    <div class="scroll-progress">
+        <div class="scroll-progress-fill" id="scrollProgress"></div>
+    </div>
 
     <nav id="navbar">
         <div class="nav-inner">
@@ -1193,6 +1317,42 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 <div class="journey-endpoint reveal">
                     <div class="endpoint-label">&#x1f680; The best is yet to come</div>
                 </div>
+
+                <!-- Horizontal station dot indicators -->
+                <div class="journey-dots" id="journeyDots">
+                    <div class="journey-dot-indicator" data-station="0">
+                        <span class="dot-tooltip">2021 &middot; BITS Pilani</span>
+                    </div>
+                    <div class="journey-dot-indicator" data-station="1">
+                        <span class="dot-tooltip">2023 &middot; First ML Project</span>
+                    </div>
+                    <div class="journey-dot-indicator" data-station="2">
+                        <span class="dot-tooltip">2024 &middot; Computer Vision</span>
+                    </div>
+                    <div class="journey-dot-indicator" data-station="3">
+                        <span class="dot-tooltip">2024 &middot; AI &amp; LLMs</span>
+                    </div>
+                    <div class="journey-dot-indicator" data-station="4">
+                        <span class="dot-tooltip">2024 &middot; Full-Stack</span>
+                    </div>
+                    <div class="journey-dot-indicator" data-station="5">
+                        <span class="dot-tooltip">2025 &middot; Flipkart</span>
+                    </div>
+                    <div class="journey-dot-indicator" data-station="6">
+                        <span class="dot-tooltip">2025 &middot; IntelliRAG</span>
+                    </div>
+                    <div class="journey-dot-indicator" data-station="7">
+                        <span class="dot-tooltip">2026 &middot; What's Next</span>
+                    </div>
+                </div>
+
+                <!-- Journey banner -->
+                <div class="journey-banner reveal">
+                    <span class="banner-block">Journey</span>
+                    <span class="banner-block">To</span>
+                    <span class="banner-block">Excellence</span>
+                    <span class="banner-icon">&#x1f3af;</span>
+                </div>
             </div>
         </div>
     </section>
@@ -1261,6 +1421,17 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // Global scroll progress bar
+        const scrollProgressFill = document.getElementById('scrollProgress');
+        function updateScrollProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            scrollProgressFill.style.height = progress + '%';
+        }
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
+        updateScrollProgress();
+
         // Journey train animation
         const journeyWrapper = document.getElementById('journeyWrapper');
         const journeyTrack = document.getElementById('journeyTrack');
@@ -1282,19 +1453,41 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
             journeyTrack.style.setProperty('--track-fill', (progress * 100) + '%');
             journeyTrain.style.setProperty('--train-top', (progress * 100) + '%');
 
-            stations.forEach(station => {
+            const dotIndicators = document.querySelectorAll('.journey-dot-indicator');
+            let currentIdx = -1;
+
+            stations.forEach((station, i) => {
                 const stationRect = station.getBoundingClientRect();
                 const stationCenter = stationRect.top + stationRect.height / 2;
                 if (stationCenter < viewportCenter + 80) {
                     station.classList.add('visible', 'active');
+                    currentIdx = i;
                 } else {
                     station.classList.remove('active');
+                }
+            });
+
+            dotIndicators.forEach((dot, i) => {
+                dot.classList.remove('reached', 'current');
+                if (i < currentIdx) {
+                    dot.classList.add('reached');
+                } else if (i === currentIdx) {
+                    dot.classList.add('current');
                 }
             });
         }
 
         window.addEventListener('scroll', updateJourney, { passive: true });
         updateJourney();
+
+        // Dot click to scroll to station
+        document.querySelectorAll('.journey-dot-indicator').forEach(dot => {
+            dot.addEventListener('click', function() {
+                const idx = parseInt(this.dataset.station);
+                const target = stations[idx];
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
