@@ -345,13 +345,207 @@
         .project-visual .highlight-line { color: var(--accent-alt); }
         .project-visual .dim { color: var(--text-muted); opacity: 0.5; }
 
-        /* ===== EDUCATION ===== */
-        .edu-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 2.5rem;
-            max-width: 700px;
+        /* ===== JOURNEY TIMELINE ===== */
+        .journey-wrapper { position: relative; padding: 3rem 0 4rem; }
+
+        .journey-track {
+            position: absolute;
+            left: 50%; top: 0; bottom: 0;
+            width: 4px;
+            transform: translateX(-50%);
+            background: var(--border);
+            border-radius: 2px;
+            overflow: visible;
         }
-        .edu-card .exp-role { font-size: 1.2rem; }
+        .journey-track::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; width: 100%;
+            height: var(--track-fill, 0%);
+            background: linear-gradient(180deg, var(--accent), var(--accent-alt), var(--accent-pink));
+            border-radius: 2px;
+            transition: height 0.1s linear;
+        }
+
+        /* Train */
+        .journey-train {
+            position: absolute;
+            left: 50%;
+            top: var(--train-top, 0%);
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            transition: top 0.1s linear;
+            filter: drop-shadow(0 0 12px rgba(129,140,248,0.5));
+        }
+        .train-body {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 0 20px rgba(129,140,248,0.4), 0 0 40px rgba(129,140,248,0.15);
+            animation: trainPulse 2s ease-in-out infinite;
+            position: relative;
+        }
+        .train-body::after {
+            content: '';
+            position: absolute;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(129,140,248,0.2);
+            animation: trainRing 2s ease-in-out infinite;
+        }
+        @keyframes trainPulse {
+            0%,100% { box-shadow: 0 0 20px rgba(129,140,248,0.4), 0 0 40px rgba(129,140,248,0.15); }
+            50% { box-shadow: 0 0 30px rgba(129,140,248,0.6), 0 0 60px rgba(129,140,248,0.25); }
+        }
+        @keyframes trainRing {
+            0%,100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.3); opacity: 0; }
+        }
+
+        /* Train smoke particles */
+        .train-smoke {
+            position: absolute;
+            bottom: 100%; left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .smoke-particle {
+            position: absolute;
+            width: 6px; height: 6px;
+            background: rgba(129,140,248,0.3);
+            border-radius: 50%;
+            animation: smokeRise 1.5s ease-out infinite;
+        }
+        .smoke-particle:nth-child(2) { animation-delay: 0.5s; left: -4px; }
+        .smoke-particle:nth-child(3) { animation-delay: 1s; left: 4px; }
+        @keyframes smokeRise {
+            0% { opacity: 0.5; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-30px) scale(2); }
+        }
+
+        /* Stations */
+        .journey-station {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 80px 1fr;
+            align-items: center;
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4,0,0.2,1);
+        }
+        .journey-station.visible { opacity: 1; transform: translateY(0); }
+        .journey-station:last-child { margin-bottom: 0; }
+
+        .station-dot-col {
+            display: flex; justify-content: center; align-items: center;
+            position: relative; z-index: 5;
+        }
+        .station-dot {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 3px solid var(--border);
+            transition: all 0.4s;
+            position: relative;
+        }
+        .journey-station.active .station-dot {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(129,140,248,0.4);
+        }
+        .journey-station.active .station-dot::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .station-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.8rem 2rem;
+            transition: all 0.4s;
+            position: relative;
+        }
+        .station-content::before {
+            content: '';
+            position: absolute;
+            top: 50%; width: 20px; height: 2px;
+            background: var(--border);
+            transition: background 0.4s;
+        }
+        .journey-station:nth-child(odd) .station-content { grid-column: 1; }
+        .journey-station:nth-child(odd) .station-dot-col { grid-column: 2; }
+        .journey-station:nth-child(odd) .station-spacer { grid-column: 3; }
+        .journey-station:nth-child(odd) .station-content::before { right: -20px; }
+        
+        .journey-station:nth-child(even) .station-spacer { grid-column: 1; }
+        .journey-station:nth-child(even) .station-dot-col { grid-column: 2; }
+        .journey-station:nth-child(even) .station-content { grid-column: 3; }
+        .journey-station:nth-child(even) .station-content::before { left: -20px; }
+
+        .journey-station.active .station-content {
+            border-color: rgba(129,140,248,0.3);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .journey-station.active .station-content::before { background: var(--accent); }
+
+        .station-date {
+            font-family: var(--mono); font-size: 0.75rem;
+            color: var(--accent); letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .station-date .station-type {
+            font-size: 0.65rem; padding: 0.15rem 0.5rem;
+            border-radius: 4px; letter-spacing: 0.5px;
+        }
+        .type-edu { background: rgba(129,140,248,0.1); color: var(--accent); border: 1px solid rgba(129,140,248,0.15); }
+        .type-work { background: rgba(52,211,153,0.1); color: var(--accent-alt); border: 1px solid rgba(52,211,153,0.15); }
+        .type-project { background: rgba(251,146,60,0.1); color: var(--accent-warm); border: 1px solid rgba(251,146,60,0.15); }
+        .type-milestone { background: rgba(244,114,182,0.1); color: var(--accent-pink); border: 1px solid rgba(244,114,182,0.15); }
+
+        .station-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+        .station-org { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem; }
+        .station-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+        .station-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.8rem; }
+        .station-tags span {
+            font-family: var(--mono); font-size: 0.68rem;
+            padding: 0.2rem 0.5rem; border-radius: 4px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        /* Journey start/end markers */
+        .journey-endpoint {
+            text-align: center; position: relative; z-index: 5;
+            margin-bottom: 3rem;
+        }
+        .journey-endpoint:last-child { margin-top: 3rem; margin-bottom: 0; }
+        .endpoint-label {
+            font-family: var(--mono); font-size: 0.75rem;
+            color: var(--text-muted); letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .journey-station {
+                grid-template-columns: 40px 1fr;
+                gap: 0;
+            }
+            .journey-track { left: 20px; transform: none; }
+            .journey-train { left: 20px; }
+            .station-dot-col { grid-column: 1 !important; grid-row: 1; }
+            .station-content { grid-column: 2 !important; grid-row: 1; }
+            .station-spacer { display: none; }
+            .station-content::before { left: -20px !important; right: auto !important; }
+            .journey-station:nth-child(odd) .station-content { grid-column: 2 !important; }
+            .journey-station:nth-child(odd) .station-dot-col { grid-column: 1 !important; }
+        }
 
         /* ===== CONTACT ===== */
         #contact { text-align: center; padding-bottom: 4rem; }
@@ -437,6 +631,7 @@
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#toolkit">Toolkit</a></li>
+                <li><a href="#journey">Journey</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -803,25 +998,201 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
 
     <hr class="section-divider">
 
-    <!-- ===== EDUCATION ===== -->
-    <section id="education">
+    <!-- ===== JOURNEY TIMELINE ===== -->
+    <section id="journey">
         <div class="container">
-            <span class="section-tag reveal">Background</span>
-            <h2 class="section-heading reveal">Education</h2>
-            
-            <div class="edu-card reveal">
-                <div class="exp-header">
-                    <div>
-                        <div class="exp-role">BITS Pilani, Pilani Campus</div>
-                        <div class="exp-company">MSc Chemistry + BE Mechanical Engineering (Dual Degree)</div>
+            <span class="section-tag reveal">Journey</span>
+            <h2 class="section-heading reveal">The Road So Far</h2>
+            <p class="section-sub reveal">Every station shaped how I think about systems, data, and building things that matter.</p>
+
+            <div class="journey-wrapper" id="journeyWrapper">
+                <div class="journey-track" id="journeyTrack"></div>
+                <div class="journey-train" id="journeyTrain">
+                    <div class="train-smoke">
+                        <div class="smoke-particle"></div>
+                        <div class="smoke-particle"></div>
+                        <div class="smoke-particle"></div>
                     </div>
-                    <span class="exp-date">2021 &mdash; 2026</span>
+                    <div class="train-body">&#x1f682;</div>
                 </div>
-                <p class="exp-desc">
-                    Pursuing a dual degree combining fundamental science with engineering. 
-                    Self-taught ML engineering and systems design through project-based learning 
-                    spanning computer vision, NLP, distributed systems, and production AI infrastructure.
-                </p>
+
+                <div class="journey-endpoint reveal">
+                    <div class="endpoint-label">&#x1f6a9; Where it began</div>
+                </div>
+
+                <!-- Station 1: BITS Pilani -->
+                <div class="journey-station" data-year="2021">
+                    <div class="station-content">
+                        <div class="station-date">
+                            2021
+                            <span class="station-type type-edu">Education</span>
+                        </div>
+                        <div class="station-title">Joined BITS Pilani</div>
+                        <div class="station-org">MSc Chemistry + BE Mechanical Engineering</div>
+                        <div class="station-desc">
+                            Started a dual degree at one of India's top engineering institutes. 
+                            Mechanical engineering by curriculum, but curiosity about data patterns 
+                            was already pulling me in a different direction.
+                        </div>
+                    </div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-spacer"></div>
+                </div>
+
+                <!-- Station 2: First ML Project -->
+                <div class="journey-station" data-year="2023">
+                    <div class="station-spacer"></div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-content">
+                        <div class="station-date">
+                            2023
+                            <span class="station-type type-project">Project</span>
+                        </div>
+                        <div class="station-title">First ML Deep Dive</div>
+                        <div class="station-org">3D Bolt Dataset Automation</div>
+                        <div class="station-desc">
+                            Automated generation of 1,000+ labeled 3D datasets using Fusion 360 API 
+                            for ML-based CAD classification. First taste of building data pipelines 
+                            from scratch &mdash; and I was hooked.
+                        </div>
+                        <div class="station-tags">
+                            <span>Python</span><span>Fusion 360 API</span><span>Deep Learning</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Station 3: Computer Vision -->
+                <div class="journey-station" data-year="2024-a">
+                    <div class="station-content">
+                        <div class="station-date">
+                            Early 2024
+                            <span class="station-type type-project">Project</span>
+                        </div>
+                        <div class="station-title">Computer Vision for Conservation</div>
+                        <div class="station-org">Drone Wildlife Detection (YOLOv8)</div>
+                        <div class="station-desc">
+                            Built a YOLOv8-based detection system for identifying blackbuck from 
+                            drone footage. Learned that ML isn't just about models &mdash; it's about 
+                            the messy reality of real-world data.
+                        </div>
+                        <div class="station-tags">
+                            <span>YOLOv8</span><span>PyTorch</span><span>Computer Vision</span>
+                        </div>
+                    </div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-spacer"></div>
+                </div>
+
+                <!-- Station 4: AI & LLMs -->
+                <div class="journey-station" data-year="2024-b">
+                    <div class="station-spacer"></div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-content">
+                        <div class="station-date">
+                            Mid 2024
+                            <span class="station-type type-milestone">Pivot</span>
+                        </div>
+                        <div class="station-title">Deep into AI & LLMs</div>
+                        <div class="station-org">Multi-Agent Systems & Prompt Research</div>
+                        <div class="station-desc">
+                            Built an agentic finance advisor using LangChain, ran systematic 
+                            experiments on LLM prompting strategies, and realized I wanted to 
+                            understand AI infrastructure &mdash; not just use APIs.
+                        </div>
+                        <div class="station-tags">
+                            <span>LangChain</span><span>Multi-Agent</span><span>Prompt Engineering</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Station 5: Full-Stack -->
+                <div class="journey-station" data-year="2024-c">
+                    <div class="station-content">
+                        <div class="station-date">
+                            Late 2024
+                            <span class="station-type type-project">Project</span>
+                        </div>
+                        <div class="station-title">Full-Stack Engineering</div>
+                        <div class="station-org">Project Management Tool (Live on Vercel)</div>
+                        <div class="station-desc">
+                            Shipped a production app end-to-end: TypeScript, React, Next.js, 
+                            Tailwind. Proved I could build the whole stack, not just ML models.
+                        </div>
+                        <div class="station-tags">
+                            <span>TypeScript</span><span>React</span><span>Next.js</span><span>Vercel</span>
+                        </div>
+                    </div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-spacer"></div>
+                </div>
+
+                <!-- Station 6: Flipkart -->
+                <div class="journey-station" data-year="2025">
+                    <div class="station-spacer"></div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-content">
+                        <div class="station-date">
+                            2025
+                            <span class="station-type type-work">Work</span>
+                        </div>
+                        <div class="station-title">Product Analyst Intern</div>
+                        <div class="station-org">Flipkart</div>
+                        <div class="station-desc">
+                            Joined Flipkart's search personalization team. Driving seller funnel 
+                            analytics, building dashboards that translate user behavior into product 
+                            decisions impacting millions of daily searches.
+                        </div>
+                        <div class="station-tags">
+                            <span>Product Analytics</span><span>SQL</span><span>Search</span><span>Funnel Optimization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Station 7: IntelliRAG -->
+                <div class="journey-station" data-year="2025-b">
+                    <div class="station-content">
+                        <div class="station-date">
+                            2025 &mdash; Present
+                            <span class="station-type type-milestone">Flagship</span>
+                        </div>
+                        <div class="station-title">IntelliRAG &mdash; Building from Scratch</div>
+                        <div class="station-org">Production-Grade RAG Platform</div>
+                        <div class="station-desc">
+                            The culmination of everything: building an enterprise RAG system from 
+                            first principles. Async pipelines, benchmark-driven chunking, evaluation 
+                            frameworks, Celery workers, PostgreSQL lifecycle management. 
+                            No shortcuts, no hand-waving.
+                        </div>
+                        <div class="station-tags">
+                            <span>FastAPI</span><span>Celery</span><span>PostgreSQL</span><span>ChromaDB</span><span>RAGAS</span>
+                        </div>
+                    </div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-spacer"></div>
+                </div>
+
+                <!-- Station 8: What's Next -->
+                <div class="journey-station" data-year="2026">
+                    <div class="station-spacer"></div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-content">
+                        <div class="station-date">
+                            2026
+                            <span class="station-type type-milestone">Next</span>
+                        </div>
+                        <div class="station-title">Graduating &amp; What's Next</div>
+                        <div class="station-org">BITS Pilani '26</div>
+                        <div class="station-desc">
+                            Graduating with a dual degree and a portfolio of production-grade systems. 
+                            Looking for roles where I can combine product thinking with 
+                            deep technical execution in AI/ML and data systems.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="journey-endpoint reveal">
+                    <div class="endpoint-label">&#x1f680; The best is yet to come</div>
+                </div>
             </div>
         </div>
     </section>
@@ -889,6 +1260,41 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
             });
         }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Journey train animation
+        const journeyWrapper = document.getElementById('journeyWrapper');
+        const journeyTrack = document.getElementById('journeyTrack');
+        const journeyTrain = document.getElementById('journeyTrain');
+        const stations = document.querySelectorAll('.journey-station');
+
+        function updateJourney() {
+            if (!journeyWrapper || !journeyTrack || !journeyTrain) return;
+
+            const wrapperRect = journeyWrapper.getBoundingClientRect();
+            const wrapperTop = wrapperRect.top;
+            const wrapperHeight = wrapperRect.height;
+            const viewportCenter = window.innerHeight * 0.5;
+
+            const progress = Math.max(0, Math.min(1,
+                (viewportCenter - wrapperTop) / wrapperHeight
+            ));
+
+            journeyTrack.style.setProperty('--track-fill', (progress * 100) + '%');
+            journeyTrain.style.setProperty('--train-top', (progress * 100) + '%');
+
+            stations.forEach(station => {
+                const stationRect = station.getBoundingClientRect();
+                const stationCenter = stationRect.top + stationRect.height / 2;
+                if (stationCenter < viewportCenter + 80) {
+                    station.classList.add('visible', 'active');
+                } else {
+                    station.classList.remove('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateJourney, { passive: true });
+        updateJourney();
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
