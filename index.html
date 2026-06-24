@@ -636,6 +636,156 @@
             box-shadow: 0 0 8px rgba(129,140,248,0.4);
         }
 
+        /* ===== MOONWALK FIGURE ===== */
+        .moonwalker {
+            position: fixed;
+            right: -6px;
+            top: 0%;
+            z-index: 201;
+            transform: translateY(-50%);
+            transition: top 0.05s linear;
+            pointer-events: none;
+            filter: drop-shadow(0 0 6px rgba(129,140,248,0.5));
+        }
+        .moonwalker svg {
+            width: 32px; height: 32px;
+        }
+        .moonwalker-legs {
+            animation: moonwalkLegs 0.4s steps(2) infinite;
+        }
+        @keyframes moonwalkLegs {
+            0% { transform: scaleX(1); }
+            50% { transform: scaleX(-1); }
+        }
+        .moonwalker-glide {
+            animation: moonwalkGlide 0.6s ease-in-out infinite alternate;
+        }
+        @keyframes moonwalkGlide {
+            0% { transform: translateY(-50%) translateX(0px); }
+            100% { transform: translateY(-50%) translateX(-2px); }
+        }
+
+        /* ===== MUSIC PLAYER ===== */
+        .music-fab {
+            position: fixed;
+            bottom: 2rem; left: 2rem;
+            z-index: 300;
+            display: flex; flex-direction: column;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+        .music-toggle {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1DB954, #1ed760);
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 20px rgba(29,185,84,0.3);
+            transition: all 0.3s;
+            position: relative;
+        }
+        .music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(29,185,84,0.4);
+        }
+        .music-toggle .pulse-ring {
+            position: absolute;
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            border: 2px solid rgba(29,185,84,0.4);
+            animation: musicPulse 2s ease-out infinite;
+        }
+        .music-toggle.playing .pulse-ring { animation: musicPulse 1.5s ease-out infinite; }
+        @keyframes musicPulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        .music-tooltip {
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%; transform: translateY(-50%);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem 0.9rem;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+            font-family: var(--mono);
+        }
+        .music-toggle:hover .music-tooltip { opacity: 1; }
+
+        .music-player-embed {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+            transform: translateY(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            max-width: 320px;
+        }
+        .music-player-embed.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .music-player-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .music-player-header span {
+            font-family: var(--mono); font-size: 0.72rem;
+            color: var(--text-muted); letter-spacing: 1px;
+        }
+        .music-player-close {
+            background: none; border: none;
+            color: var(--text-muted); cursor: pointer;
+            font-size: 1.1rem; padding: 0;
+            transition: color 0.2s;
+        }
+        .music-player-close:hover { color: var(--text); }
+        .music-now-playing {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.8rem 1rem;
+            font-size: 0.82rem; color: var(--text-secondary);
+        }
+        .music-now-playing .eq-bars {
+            display: flex; align-items: flex-end; gap: 2px; height: 14px;
+        }
+        .eq-bars span {
+            width: 3px; border-radius: 1px;
+            background: #1DB954;
+        }
+        .eq-bars.playing span { animation: eqBounce 0.6s ease-in-out infinite alternate; }
+        .eq-bars.playing span:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .eq-bars.playing span:nth-child(2) { height: 10px; animation-delay: 0.15s; }
+        .eq-bars.playing span:nth-child(3) { height: 4px; animation-delay: 0.3s; }
+        .eq-bars.playing span:nth-child(4) { height: 12px; animation-delay: 0.1s; }
+        .eq-bars span:nth-child(1) { height: 4px; }
+        .eq-bars span:nth-child(2) { height: 4px; }
+        .eq-bars span:nth-child(3) { height: 4px; }
+        .eq-bars span:nth-child(4) { height: 4px; }
+        @keyframes eqBounce {
+            0% { height: 3px; }
+            100% { height: 14px; }
+        }
+
+        @media (max-width: 768px) {
+            .music-fab { bottom: 1rem; left: 1rem; }
+            .music-toggle { width: 42px; height: 42px; font-size: 1.1rem; }
+            .moonwalker svg { width: 24px; height: 24px; }
+        }
+
         /* ===== JOURNEY STATION DOTS (horizontal) ===== */
         .journey-dots {
             position: sticky;
@@ -745,6 +895,67 @@
     <!-- Global scroll progress bar -->
     <div class="scroll-progress">
         <div class="scroll-progress-fill" id="scrollProgress"></div>
+    </div>
+
+    <!-- Moonwalker on scroll bar -->
+    <div class="moonwalker moonwalker-glide" id="moonwalker">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Hat -->
+            <ellipse cx="32" cy="10" rx="12" ry="4" fill="#a78bfa"/>
+            <rect x="26" y="4" width="12" height="7" rx="2" fill="#a78bfa"/>
+            <!-- Head -->
+            <circle cx="32" cy="17" r="6" fill="#c4b5fd"/>
+            <!-- Body -->
+            <rect x="29" y="23" width="6" height="14" rx="2" fill="#a78bfa"/>
+            <!-- Left arm (out) -->
+            <line x1="29" y1="26" x2="19" y2="22" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Right arm (bent) -->
+            <line x1="35" y1="26" x2="42" y2="20" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="42" y1="20" x2="44" y2="14" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Left leg (forward, toe-tip) -->
+            <line x1="30" y1="37" x2="24" y2="50" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round" class="moonwalker-legs"/>
+            <line x1="24" y1="50" x2="20" y2="50" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+            <!-- Right leg (back, sliding) -->
+            <line x1="34" y1="37" x2="40" y2="50" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round" class="moonwalker-legs"/>
+            <line x1="40" y1="50" x2="44" y2="50" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+            <!-- Sparkles -->
+            <circle cx="18" cy="18" r="1.5" fill="#818cf8" opacity="0.6">
+                <animate attributeName="opacity" values="0.6;0;0.6" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="46" cy="12" r="1" fill="#f472b6" opacity="0.4">
+                <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/>
+            </circle>
+        </svg>
+    </div>
+
+    <!-- Music Player FAB -->
+    <div class="music-fab" id="musicFab">
+        <div class="music-player-embed" id="musicPlayer">
+            <div class="music-player-header">
+                <span>NOW PLAYING</span>
+                <button class="music-player-close" id="musicClose" aria-label="Close">&times;</button>
+            </div>
+            <iframe 
+                id="spotifyEmbed"
+                style="border-radius:0; border:none;" 
+                src="" 
+                width="320" 
+                height="152" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy">
+            </iframe>
+            <div class="music-now-playing">
+                <div class="eq-bars" id="eqBars">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+                <span>Billie Jean &mdash; Michael Jackson</span>
+            </div>
+        </div>
+        <button class="music-toggle" id="musicToggle" aria-label="Play music">
+            <span class="pulse-ring"></span>
+            <span id="musicIcon">&#x1f3b5;</span>
+            <span class="music-tooltip">Billie Jean &mdash; MJ</span>
+        </button>
     </div>
 
     <nav id="navbar">
@@ -1421,16 +1632,49 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Global scroll progress bar
+        // Global scroll progress bar + moonwalker
         const scrollProgressFill = document.getElementById('scrollProgress');
+        const moonwalker = document.getElementById('moonwalker');
         function updateScrollProgress() {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
             scrollProgressFill.style.height = progress + '%';
+            moonwalker.style.top = progress + '%';
         }
         window.addEventListener('scroll', updateScrollProgress, { passive: true });
         updateScrollProgress();
+
+        // Music player
+        const musicToggle = document.getElementById('musicToggle');
+        const musicPlayer = document.getElementById('musicPlayer');
+        const musicClose = document.getElementById('musicClose');
+        const spotifyEmbed = document.getElementById('spotifyEmbed');
+        const eqBars = document.getElementById('eqBars');
+        const musicIcon = document.getElementById('musicIcon');
+        let musicOpen = false;
+
+        const spotifyUrl = 'https://open.spotify.com/embed/track/5ChkMS8OtDnJGx8WNMYkbg?utm_source=generator&theme=0';
+
+        musicToggle.addEventListener('click', () => {
+            musicOpen = !musicOpen;
+            musicPlayer.classList.toggle('open', musicOpen);
+            musicToggle.classList.toggle('playing', musicOpen);
+            if (musicOpen && !spotifyEmbed.src) {
+                spotifyEmbed.src = spotifyUrl;
+            }
+            eqBars.classList.toggle('playing', musicOpen);
+            musicIcon.innerHTML = musicOpen ? '&#x23f8;' : '&#x1f3b5;';
+        });
+
+        musicClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            musicOpen = false;
+            musicPlayer.classList.remove('open');
+            musicToggle.classList.remove('playing');
+            eqBars.classList.remove('playing');
+            musicIcon.innerHTML = '&#x1f3b5;';
+        });
 
         // Journey train animation
         const journeyWrapper = document.getElementById('journeyWrapper');
