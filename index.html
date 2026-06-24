@@ -633,154 +633,45 @@
             box-shadow: 0 0 8px rgba(100,255,218,0.4);
         }
 
-        /* ===== MOONWALKER ===== */
-        .moonwalker {
+        /* ===== SCROLL INDICATOR (glowing dot) ===== */
+        .scroll-indicator {
             position: fixed;
-            right: -2px;
+            right: 1px;
             top: 0%;
             z-index: 201;
             transform: translateY(-50%);
             transition: top 0.08s linear;
             pointer-events: none;
-            opacity: 0.85;
         }
-        .moonwalker-figure {
-            width: 28px;
-            height: 50px;
+        .scroll-indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(100,255,218,0.7), 0 0 20px rgba(100,255,218,0.3);
             position: relative;
         }
-        /* MJ silhouette built with CSS — fedora + lean + one gloved hand */
-        .mj-hat {
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 18px; height: 5px;
-            background: var(--accent);
-            border-radius: 9px 9px 0 0;
-        }
-        .mj-hat::before {
+        .scroll-indicator-dot::before {
             content: '';
             position: absolute;
-            top: -4px; left: 50%;
-            transform: translateX(-50%);
-            width: 12px; height: 6px;
-            background: var(--accent);
-            border-radius: 6px 6px 1px 1px;
-        }
-        .mj-head {
-            position: absolute;
-            top: 6px; left: 50%;
-            transform: translateX(-50%);
-            width: 8px; height: 8px;
-            background: var(--accent);
+            inset: -4px;
             border-radius: 50%;
+            border: 1.5px solid rgba(100,255,218,0.3);
+            animation: scrollRing 2s ease-in-out infinite;
         }
-        .mj-body {
+        @keyframes scrollRing {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.6); opacity: 0; }
+        }
+        .scroll-indicator-trail {
             position: absolute;
-            top: 14px; left: 50%;
-            transform: translateX(-50%);
-            width: 4px; height: 14px;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-        /* Left arm — extended out (signature pose) */
-        .mj-arm-l {
-            position: absolute;
-            top: 16px; left: 2px;
-            width: 10px; height: 2px;
-            background: var(--accent);
-            border-radius: 1px;
-            transform: rotate(-30deg);
-            transform-origin: right center;
-        }
-        /* Right arm — bent up holding hat */
-        .mj-arm-r {
-            position: absolute;
-            top: 15px; right: 4px;
-            width: 8px; height: 2px;
-            background: var(--accent);
-            border-radius: 1px;
-            transform: rotate(-60deg);
-            transform-origin: left center;
-        }
-        /* Legs with moonwalk animation */
-        .mj-leg-l {
-            position: absolute;
-            top: 28px; left: 8px;
-            width: 2.5px; height: 14px;
-            background: var(--accent);
-            border-radius: 1px;
-            transform-origin: top center;
-            animation: moonwalkL 0.8s ease-in-out infinite;
-        }
-        .mj-leg-r {
-            position: absolute;
-            top: 28px; right: 8px;
-            width: 2.5px; height: 14px;
-            background: var(--accent);
-            border-radius: 1px;
-            transform-origin: top center;
-            animation: moonwalkR 0.8s ease-in-out infinite;
-        }
-        /* Feet */
-        .mj-foot-l {
-            position: absolute;
-            bottom: -1px; left: -3px;
-            width: 6px; height: 2px;
-            background: var(--accent);
-            border-radius: 1px;
-        }
-        .mj-foot-r {
-            position: absolute;
-            bottom: -1px; right: -3px;
-            width: 6px; height: 2px;
-            background: var(--accent);
-            border-radius: 1px;
-        }
-        /* Moonwalk leg keyframes — alternating slide */
-        @keyframes moonwalkL {
-            0%, 100% { transform: rotate(12deg); }
-            50% { transform: rotate(-12deg); }
-        }
-        @keyframes moonwalkR {
-            0%, 100% { transform: rotate(-12deg); }
-            50% { transform: rotate(12deg); }
-        }
-        /* Subtle body sway */
-        .moonwalker-figure {
-            animation: mjSway 0.8s ease-in-out infinite alternate;
-        }
-        @keyframes mjSway {
-            0% { transform: translateX(-1px); }
-            100% { transform: translateX(1px); }
-        }
-        /* Sparkle trail behind moonwalker */
-        .mj-sparkle {
-            position: absolute;
-            bottom: 2px;
+            bottom: 100%;
             left: 50%;
             transform: translateX(-50%);
-            width: 3px; height: 3px;
-            border-radius: 50%;
-            background: var(--accent);
-            opacity: 0;
-            animation: sparkleTrail 1.2s ease-out infinite;
-        }
-        .mj-sparkle:nth-child(2) { animation-delay: 0.4s; left: 30%; }
-        .mj-sparkle:nth-child(3) { animation-delay: 0.8s; left: 70%; }
-        @keyframes sparkleTrail {
-            0% { opacity: 0.6; transform: translateX(-50%) translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.3); }
-        }
-        /* Glow effect behind figure */
-        .mj-glow {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 30px; height: 30px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(100,255,218,0.15) 0%, transparent 70%);
-            pointer-events: none;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to top, rgba(100,255,218,0.4), transparent);
+            border-radius: 1px;
         }
 
         /* ===== MUSIC PLAYER ===== */
@@ -901,8 +792,7 @@
         @media (max-width: 768px) {
             .music-fab { bottom: 1rem; left: 1rem; }
             .music-toggle { width: 42px; height: 42px; font-size: 1.1rem; }
-            .moonwalker-figure { width: 22px; height: 40px; }
-            .moonwalker { right: -4px; }
+            .scroll-indicator-dot { width: 8px; height: 8px; }
         }
 
         /* ===== JOURNEY STATION DOTS (horizontal) ===== */
@@ -1018,21 +908,10 @@
         <div class="scroll-progress-fill" id="scrollProgress"></div>
     </div>
 
-    <!-- Moonwalker on scroll bar -->
-    <div class="moonwalker" id="moonwalker">
-        <div class="mj-glow"></div>
-        <div class="moonwalker-figure">
-            <div class="mj-hat"></div>
-            <div class="mj-head"></div>
-            <div class="mj-body"></div>
-            <div class="mj-arm-l"></div>
-            <div class="mj-arm-r"></div>
-            <div class="mj-leg-l"><div class="mj-foot-l"></div></div>
-            <div class="mj-leg-r"><div class="mj-foot-r"></div></div>
-        </div>
-        <div class="mj-sparkle"></div>
-        <div class="mj-sparkle"></div>
-        <div class="mj-sparkle"></div>
+    <!-- Scroll position indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <div class="scroll-indicator-trail"></div>
+        <div class="scroll-indicator-dot"></div>
     </div>
 
     <!-- Music Player FAB -->
@@ -1045,7 +924,7 @@
             <iframe 
                 id="spotifyEmbed"
                 style="border:none; border-radius:0;" 
-                src="" 
+                src="https://open.spotify.com/embed/track/5ChkMS8OtDnJGx8WNMYkbg?utm_source=generator&theme=0" 
                 width="320" 
                 height="152" 
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
@@ -1739,37 +1618,31 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Global scroll progress bar + moonwalker
+        // Global scroll progress bar + glowing dot
         const scrollProgressFill = document.getElementById('scrollProgress');
-        const moonwalker = document.getElementById('moonwalker');
+        const scrollIndicator = document.getElementById('scrollIndicator');
         function updateScrollProgress() {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
             scrollProgressFill.style.height = progress + '%';
-            if (moonwalker) moonwalker.style.top = Math.max(2, Math.min(98, progress)) + '%';
+            if (scrollIndicator) scrollIndicator.style.top = Math.max(1, Math.min(99, progress)) + '%';
         }
         window.addEventListener('scroll', updateScrollProgress, { passive: true });
         updateScrollProgress();
 
-        // Music player — Spotify embed
+        // Music player — Spotify embed (pre-loaded)
         const musicToggle = document.getElementById('musicToggle');
         const musicPlayer = document.getElementById('musicPlayer');
         const musicClose = document.getElementById('musicClose');
-        const spotifyEmbed = document.getElementById('spotifyEmbed');
         const eqBars = document.getElementById('eqBars');
         const musicIcon = document.getElementById('musicIcon');
         let musicOpen = false;
-
-        const spotifyTrackUrl = 'https://open.spotify.com/embed/track/5ChkMS8OtDnJGx8WNMYkbg?utm_source=generator&theme=0';
 
         musicToggle.addEventListener('click', () => {
             musicOpen = !musicOpen;
             musicPlayer.classList.toggle('open', musicOpen);
             musicToggle.classList.toggle('playing', musicOpen);
-            if (musicOpen && !spotifyEmbed.src) {
-                spotifyEmbed.src = spotifyTrackUrl;
-            }
             eqBars.classList.toggle('playing', musicOpen);
             musicIcon.innerHTML = musicOpen ? '&#x23F8;' : '&#x25B6;';
         });
@@ -1781,7 +1654,6 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
             musicToggle.classList.remove('playing');
             eqBars.classList.remove('playing');
             musicIcon.innerHTML = '&#x25B6;';
-            spotifyEmbed.src = '';
         });
 
         // Journey train animation
