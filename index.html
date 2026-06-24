@@ -740,7 +740,7 @@
             opacity: 0;
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            max-width: 320px;
+            width: 280px;
         }
         .music-player-embed.open {
             transform: translateY(0);
@@ -763,30 +763,90 @@
             transition: color 0.2s;
         }
         .music-player-close:hover { color: var(--text); }
-        .music-now-playing {
-            display: flex; align-items: center; gap: 0.6rem;
-            padding: 0.8rem 1rem;
-            font-size: 0.82rem; color: var(--text-secondary);
+        .mp-track-info {
+            padding: 0.7rem 1rem 0.4rem;
+            display: flex; align-items: center; gap: 0.7rem;
         }
-        .music-now-playing .eq-bars {
-            display: flex; align-items: flex-end; gap: 2px; height: 14px;
+        .mp-disc {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            position: relative;
         }
-        .eq-bars span {
-            width: 3px; border-radius: 1px;
+        .mp-disc::after {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
             background: var(--accent);
         }
-        .eq-bars.playing span { animation: eqBounce 0.6s ease-in-out infinite alternate; }
-        .eq-bars.playing span:nth-child(1) { height: 6px; animation-delay: 0s; }
-        .eq-bars.playing span:nth-child(2) { height: 10px; animation-delay: 0.15s; }
-        .eq-bars.playing span:nth-child(3) { height: 4px; animation-delay: 0.3s; }
-        .eq-bars.playing span:nth-child(4) { height: 12px; animation-delay: 0.1s; }
-        .eq-bars span:nth-child(1) { height: 4px; }
-        .eq-bars span:nth-child(2) { height: 4px; }
-        .eq-bars span:nth-child(3) { height: 4px; }
-        .eq-bars span:nth-child(4) { height: 4px; }
-        @keyframes eqBounce {
-            0% { height: 3px; }
-            100% { height: 14px; }
+        .mp-disc.spinning {
+            animation: discSpin 2s linear infinite;
+        }
+        @keyframes discSpin {
+            to { transform: rotate(360deg); }
+        }
+        .mp-meta {
+            overflow: hidden;
+        }
+        .mp-title {
+            font-size: 0.82rem; color: var(--text);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .mp-artist {
+            font-size: 0.7rem; color: var(--text-muted);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .mp-progress-wrap {
+            padding: 0 1rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .mp-progress {
+            flex: 1; height: 3px;
+            background: var(--border);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+        .mp-progress-fill {
+            height: 100%; width: 0%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.2s linear;
+        }
+        .mp-time {
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            min-width: 30px;
+            text-align: center;
+        }
+        .mp-controls {
+            display: flex; align-items: center; justify-content: center;
+            gap: 1rem; padding: 0.5rem 1rem 0.7rem;
+        }
+        .mp-btn {
+            background: none; border: none;
+            color: var(--text-secondary);
+            cursor: pointer; font-size: 0.9rem;
+            transition: color 0.2s;
+            padding: 4px;
+        }
+        .mp-btn:hover { color: var(--accent); }
+        .mp-btn-play {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem;
+            border: none; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .mp-btn-play:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(100,255,218,0.4);
         }
 
         @media (max-width: 768px) {
@@ -916,31 +976,36 @@
 
     <!-- Music Player FAB -->
     <div class="music-fab" id="musicFab">
+        <audio id="audioEl" preload="none"></audio>
         <div class="music-player-embed" id="musicPlayer">
             <div class="music-player-header">
                 <span>NOW PLAYING</span>
                 <button class="music-player-close" id="musicClose" aria-label="Close">&times;</button>
             </div>
-            <iframe 
-                id="ytEmbed"
-                style="border:none; border-radius:0;" 
-                src="" 
-                width="320" 
-                height="152" 
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-                loading="lazy">
-            </iframe>
-            <div class="music-now-playing">
-                <div class="eq-bars" id="eqBars">
-                    <span></span><span></span><span></span><span></span>
+            <div class="mp-track-info">
+                <div class="mp-disc" id="mpDisc"></div>
+                <div class="mp-meta">
+                    <div class="mp-title" id="mpTitle">Loading...</div>
+                    <div class="mp-artist" id="mpArtist"></div>
                 </div>
-                <span>Billie Jean &mdash; Michael Jackson</span>
+            </div>
+            <div class="mp-progress-wrap">
+                <span class="mp-time" id="mpCur">0:00</span>
+                <div class="mp-progress" id="mpProgress">
+                    <div class="mp-progress-fill" id="mpFill"></div>
+                </div>
+                <span class="mp-time" id="mpDur">0:00</span>
+            </div>
+            <div class="mp-controls">
+                <button class="mp-btn" id="mpPrev" aria-label="Previous">&#x23EE;</button>
+                <button class="mp-btn-play" id="mpPlay" aria-label="Play">&#x25B6;</button>
+                <button class="mp-btn" id="mpNext" aria-label="Next">&#x23ED;</button>
             </div>
         </div>
         <button class="music-toggle" id="musicToggle" aria-label="Play music">
             <span class="pulse-ring"></span>
             <span id="musicIcon">&#x25B6;</span>
-            <span class="music-tooltip">Billie Jean &middot; MJ</span>
+            <span class="music-tooltip">Lo-fi Vibes</span>
         </button>
     </div>
 
@@ -1631,37 +1696,106 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         window.addEventListener('scroll', updateScrollProgress, { passive: true });
         updateScrollProgress();
 
-        // Music player — YouTube embed (loads on open, clears on close)
+        // Music player — HTML5 Audio with free tracks
+        const audio = document.getElementById('audioEl');
         const musicToggle = document.getElementById('musicToggle');
         const musicPlayer = document.getElementById('musicPlayer');
         const musicClose = document.getElementById('musicClose');
-        const ytEmbed = document.getElementById('ytEmbed');
-        const eqBars = document.getElementById('eqBars');
         const musicIcon = document.getElementById('musicIcon');
+        const mpDisc = document.getElementById('mpDisc');
+        const mpTitle = document.getElementById('mpTitle');
+        const mpArtist = document.getElementById('mpArtist');
+        const mpPlay = document.getElementById('mpPlay');
+        const mpPrev = document.getElementById('mpPrev');
+        const mpNext = document.getElementById('mpNext');
+        const mpFill = document.getElementById('mpFill');
+        const mpProgress = document.getElementById('mpProgress');
+        const mpCur = document.getElementById('mpCur');
+        const mpDur = document.getElementById('mpDur');
         let musicOpen = false;
-        const ytUrl = 'https://www.youtube.com/embed/Zi_XLOBDo_Y?autoplay=1&loop=1&playlist=Zi_XLOBDo_Y';
+        let isPlaying = false;
+
+        const playlist = [
+            { title: 'Snowfall', artist: 'Øneheart × Reidenshi', src: 'https://cdn.pixabay.com/audio/2022/10/25/audio_832c09cc84.mp3' },
+            { title: 'Good Night', artist: 'FASSounds', src: 'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3' },
+            { title: 'Lofi Study', artist: 'FASSounds', src: 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3' },
+            { title: 'Abstract', artist: 'Chill Beats', src: 'https://cdn.pixabay.com/audio/2023/07/07/audio_e61a8b69d0.mp3' },
+            { title: 'Ambient Piano', artist: 'Top-Flow', src: 'https://cdn.pixabay.com/audio/2024/11/04/audio_41a25c21b6.mp3' }
+        ];
+        let trackIdx = 0;
+
+        function loadTrack(idx) {
+            trackIdx = ((idx % playlist.length) + playlist.length) % playlist.length;
+            const t = playlist[trackIdx];
+            mpTitle.textContent = t.title;
+            mpArtist.textContent = t.artist;
+            audio.src = t.src;
+            mpFill.style.width = '0%';
+            mpCur.textContent = '0:00';
+            mpDur.textContent = '0:00';
+        }
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    mpPlay.innerHTML = '&#x23F8;';
+                    mpDisc.classList.add('spinning');
+                    musicToggle.classList.add('playing');
+                    musicIcon.innerHTML = '&#x23F8;';
+                }).catch(() => {});
+            } else {
+                audio.pause();
+                isPlaying = false;
+                mpPlay.innerHTML = '&#x25B6;';
+                mpDisc.classList.remove('spinning');
+                musicToggle.classList.remove('playing');
+                musicIcon.innerHTML = '&#x25B6;';
+            }
+        }
+
+        function fmtTime(s) {
+            if (!s || isNaN(s)) return '0:00';
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60);
+            return m + ':' + (sec < 10 ? '0' : '') + sec;
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                mpFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+                mpCur.textContent = fmtTime(audio.currentTime);
+            }
+        });
+        audio.addEventListener('loadedmetadata', () => {
+            mpDur.textContent = fmtTime(audio.duration);
+        });
+        audio.addEventListener('ended', () => { loadTrack(trackIdx + 1); audio.play().catch(() => {}); });
+
+        mpPlay.addEventListener('click', togglePlay);
+        mpPrev.addEventListener('click', () => { loadTrack(trackIdx - 1); if (isPlaying) audio.play().catch(() => {}); });
+        mpNext.addEventListener('click', () => { loadTrack(trackIdx + 1); if (isPlaying) audio.play().catch(() => {}); });
+
+        mpProgress.addEventListener('click', (e) => {
+            if (audio.duration) {
+                const pct = e.offsetX / mpProgress.offsetWidth;
+                audio.currentTime = pct * audio.duration;
+            }
+        });
 
         musicToggle.addEventListener('click', () => {
             musicOpen = !musicOpen;
             musicPlayer.classList.toggle('open', musicOpen);
-            musicToggle.classList.toggle('playing', musicOpen);
-            eqBars.classList.toggle('playing', musicOpen);
-            musicIcon.innerHTML = musicOpen ? '&#x23F8;' : '&#x25B6;';
-            if (musicOpen) {
-                ytEmbed.src = ytUrl;
-            } else {
-                ytEmbed.src = '';
-            }
+            if (musicOpen && !audio.src.includes('pixabay')) loadTrack(0);
+            if (musicOpen && !isPlaying) togglePlay();
+            else if (!musicOpen && isPlaying) togglePlay();
         });
 
         musicClose.addEventListener('click', (e) => {
             e.stopPropagation();
             musicOpen = false;
             musicPlayer.classList.remove('open');
-            musicToggle.classList.remove('playing');
-            eqBars.classList.remove('playing');
-            musicIcon.innerHTML = '&#x25B6;';
-            ytEmbed.src = '';
+            if (isPlaying) togglePlay();
         });
 
         // Journey train animation
