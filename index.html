@@ -1716,43 +1716,45 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         let isPlaying = false;
 
         const playlist = [
-            { title: 'Snowfall', artist: 'Øneheart × Reidenshi', src: 'https://cdn.pixabay.com/audio/2022/10/25/audio_832c09cc84.mp3' },
-            { title: 'Good Night', artist: 'FASSounds', src: 'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3' },
-            { title: 'Lofi Study', artist: 'FASSounds', src: 'https://cdn.pixabay.com/audio/2022/01/18/audio_d0a13f69d2.mp3' },
-            { title: 'Abstract', artist: 'Chill Beats', src: 'https://cdn.pixabay.com/audio/2023/07/07/audio_e61a8b69d0.mp3' },
-            { title: 'Ambient Piano', artist: 'Top-Flow', src: 'https://cdn.pixabay.com/audio/2024/11/04/audio_41a25c21b6.mp3' }
+            { title: 'Chill Groove', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+            { title: 'Mellow Beats', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+            { title: 'Night Drive', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+            { title: 'Sunset Waves', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
+            { title: 'Deep Focus', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3' }
         ];
         let trackIdx = 0;
+        let trackLoaded = false;
 
-        function loadTrack(idx) {
+        function loadTrack(idx, andPlay) {
             trackIdx = ((idx % playlist.length) + playlist.length) % playlist.length;
             const t = playlist[trackIdx];
             mpTitle.textContent = t.title;
             mpArtist.textContent = t.artist;
-            audio.src = t.src;
             mpFill.style.width = '0%';
             mpCur.textContent = '0:00';
             mpDur.textContent = '0:00';
-        }
-
-        function togglePlay() {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    mpPlay.innerHTML = '&#x23F8;';
-                    mpDisc.classList.add('spinning');
-                    musicToggle.classList.add('playing');
-                    musicIcon.innerHTML = '&#x23F8;';
-                }).catch(() => {});
-            } else {
-                audio.pause();
-                isPlaying = false;
-                mpPlay.innerHTML = '&#x25B6;';
-                mpDisc.classList.remove('spinning');
-                musicToggle.classList.remove('playing');
-                musicIcon.innerHTML = '&#x25B6;';
+            trackLoaded = false;
+            audio.src = t.src;
+            audio.load();
+            if (andPlay) {
+                audio.addEventListener('canplay', function onCanPlay() {
+                    audio.removeEventListener('canplay', onCanPlay);
+                    trackLoaded = true;
+                    audio.play().catch(() => {});
+                });
             }
         }
+
+        function setPlayingUI(playing) {
+            isPlaying = playing;
+            mpPlay.innerHTML = playing ? '&#x23F8;' : '&#x25B6;';
+            musicIcon.innerHTML = playing ? '&#x23F8;' : '&#x25B6;';
+            mpDisc.classList.toggle('spinning', playing);
+            musicToggle.classList.toggle('playing', playing);
+        }
+
+        audio.addEventListener('play', () => setPlayingUI(true));
+        audio.addEventListener('pause', () => setPlayingUI(false));
 
         function fmtTime(s) {
             if (!s || isNaN(s)) return '0:00';
@@ -1769,33 +1771,40 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         });
         audio.addEventListener('loadedmetadata', () => {
             mpDur.textContent = fmtTime(audio.duration);
+            trackLoaded = true;
         });
-        audio.addEventListener('ended', () => { loadTrack(trackIdx + 1); audio.play().catch(() => {}); });
+        audio.addEventListener('ended', () => loadTrack(trackIdx + 1, true));
 
-        mpPlay.addEventListener('click', togglePlay);
-        mpPrev.addEventListener('click', () => { loadTrack(trackIdx - 1); if (isPlaying) audio.play().catch(() => {}); });
-        mpNext.addEventListener('click', () => { loadTrack(trackIdx + 1); if (isPlaying) audio.play().catch(() => {}); });
+        mpPlay.addEventListener('click', () => {
+            if (!trackLoaded) { loadTrack(trackIdx, true); return; }
+            if (audio.paused) audio.play().catch(() => {});
+            else audio.pause();
+        });
+        mpPrev.addEventListener('click', () => loadTrack(trackIdx - 1, true));
+        mpNext.addEventListener('click', () => loadTrack(trackIdx + 1, true));
 
         mpProgress.addEventListener('click', (e) => {
             if (audio.duration) {
-                const pct = e.offsetX / mpProgress.offsetWidth;
-                audio.currentTime = pct * audio.duration;
+                audio.currentTime = (e.offsetX / mpProgress.offsetWidth) * audio.duration;
             }
         });
 
         musicToggle.addEventListener('click', () => {
             musicOpen = !musicOpen;
             musicPlayer.classList.toggle('open', musicOpen);
-            if (musicOpen && !audio.src.includes('pixabay')) loadTrack(0);
-            if (musicOpen && !isPlaying) togglePlay();
-            else if (!musicOpen && isPlaying) togglePlay();
+            if (musicOpen) {
+                if (!trackLoaded && !isPlaying) loadTrack(0, true);
+                else if (!isPlaying) audio.play().catch(() => {});
+            } else {
+                if (isPlaying) audio.pause();
+            }
         });
 
         musicClose.addEventListener('click', (e) => {
             e.stopPropagation();
             musicOpen = false;
             musicPlayer.classList.remove('open');
-            if (isPlaying) togglePlay();
+            if (isPlaying) audio.pause();
         });
 
         // Journey train animation
