@@ -922,9 +922,9 @@
                 <button class="music-player-close" id="musicClose" aria-label="Close">&times;</button>
             </div>
             <iframe 
-                id="spotifyEmbed"
+                id="ytEmbed"
                 style="border:none; border-radius:0;" 
-                src="https://open.spotify.com/embed/track/5ChkMS8OtDnJGx8WNMYkbg?utm_source=generator&theme=0" 
+                src="" 
                 width="320" 
                 height="152" 
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
@@ -1631,13 +1631,15 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         window.addEventListener('scroll', updateScrollProgress, { passive: true });
         updateScrollProgress();
 
-        // Music player — Spotify embed (pre-loaded)
+        // Music player — YouTube embed (loads on open, clears on close)
         const musicToggle = document.getElementById('musicToggle');
         const musicPlayer = document.getElementById('musicPlayer');
         const musicClose = document.getElementById('musicClose');
+        const ytEmbed = document.getElementById('ytEmbed');
         const eqBars = document.getElementById('eqBars');
         const musicIcon = document.getElementById('musicIcon');
         let musicOpen = false;
+        const ytUrl = 'https://www.youtube.com/embed/Zi_XLOBDo_Y?autoplay=1&loop=1&playlist=Zi_XLOBDo_Y';
 
         musicToggle.addEventListener('click', () => {
             musicOpen = !musicOpen;
@@ -1645,6 +1647,11 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
             musicToggle.classList.toggle('playing', musicOpen);
             eqBars.classList.toggle('playing', musicOpen);
             musicIcon.innerHTML = musicOpen ? '&#x23F8;' : '&#x25B6;';
+            if (musicOpen) {
+                ytEmbed.src = ytUrl;
+            } else {
+                ytEmbed.src = '';
+            }
         });
 
         musicClose.addEventListener('click', (e) => {
@@ -1654,6 +1661,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
             musicToggle.classList.remove('playing');
             eqBars.classList.remove('playing');
             musicIcon.innerHTML = '&#x25B6;';
+            ytEmbed.src = '';
         });
 
         // Journey train animation
