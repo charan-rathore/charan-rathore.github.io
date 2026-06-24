@@ -633,45 +633,154 @@
             box-shadow: 0 0 8px rgba(100,255,218,0.4);
         }
 
-        /* ===== SCROLL INDICATOR ===== */
-        .scroll-indicator {
+        /* ===== MOONWALKER ===== */
+        .moonwalker {
             position: fixed;
-            right: 1px;
+            right: -2px;
             top: 0%;
             z-index: 201;
             transform: translateY(-50%);
             transition: top 0.08s linear;
             pointer-events: none;
+            opacity: 0.85;
         }
-        .scroll-indicator-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 10px rgba(100,255,218,0.7), 0 0 20px rgba(100,255,218,0.3);
+        .moonwalker-figure {
+            width: 28px;
+            height: 50px;
             position: relative;
         }
-        .scroll-indicator-dot::before {
+        /* MJ silhouette built with CSS — fedora + lean + one gloved hand */
+        .mj-hat {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 18px; height: 5px;
+            background: var(--accent);
+            border-radius: 9px 9px 0 0;
+        }
+        .mj-hat::before {
             content: '';
             position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(100,255,218,0.3);
-            animation: scrollRing 2s ease-in-out infinite;
+            top: -4px; left: 50%;
+            transform: translateX(-50%);
+            width: 12px; height: 6px;
+            background: var(--accent);
+            border-radius: 6px 6px 1px 1px;
         }
-        @keyframes scrollRing {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.6); opacity: 0; }
-        }
-        .scroll-indicator-trail {
+        .mj-head {
             position: absolute;
-            bottom: 100%;
+            top: 6px; left: 50%;
+            transform: translateX(-50%);
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+        .mj-body {
+            position: absolute;
+            top: 14px; left: 50%;
+            transform: translateX(-50%);
+            width: 4px; height: 14px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        /* Left arm — extended out (signature pose) */
+        .mj-arm-l {
+            position: absolute;
+            top: 16px; left: 2px;
+            width: 10px; height: 2px;
+            background: var(--accent);
+            border-radius: 1px;
+            transform: rotate(-30deg);
+            transform-origin: right center;
+        }
+        /* Right arm — bent up holding hat */
+        .mj-arm-r {
+            position: absolute;
+            top: 15px; right: 4px;
+            width: 8px; height: 2px;
+            background: var(--accent);
+            border-radius: 1px;
+            transform: rotate(-60deg);
+            transform-origin: left center;
+        }
+        /* Legs with moonwalk animation */
+        .mj-leg-l {
+            position: absolute;
+            top: 28px; left: 8px;
+            width: 2.5px; height: 14px;
+            background: var(--accent);
+            border-radius: 1px;
+            transform-origin: top center;
+            animation: moonwalkL 0.8s ease-in-out infinite;
+        }
+        .mj-leg-r {
+            position: absolute;
+            top: 28px; right: 8px;
+            width: 2.5px; height: 14px;
+            background: var(--accent);
+            border-radius: 1px;
+            transform-origin: top center;
+            animation: moonwalkR 0.8s ease-in-out infinite;
+        }
+        /* Feet */
+        .mj-foot-l {
+            position: absolute;
+            bottom: -1px; left: -3px;
+            width: 6px; height: 2px;
+            background: var(--accent);
+            border-radius: 1px;
+        }
+        .mj-foot-r {
+            position: absolute;
+            bottom: -1px; right: -3px;
+            width: 6px; height: 2px;
+            background: var(--accent);
+            border-radius: 1px;
+        }
+        /* Moonwalk leg keyframes — alternating slide */
+        @keyframes moonwalkL {
+            0%, 100% { transform: rotate(12deg); }
+            50% { transform: rotate(-12deg); }
+        }
+        @keyframes moonwalkR {
+            0%, 100% { transform: rotate(-12deg); }
+            50% { transform: rotate(12deg); }
+        }
+        /* Subtle body sway */
+        .moonwalker-figure {
+            animation: mjSway 0.8s ease-in-out infinite alternate;
+        }
+        @keyframes mjSway {
+            0% { transform: translateX(-1px); }
+            100% { transform: translateX(1px); }
+        }
+        /* Sparkle trail behind moonwalker */
+        .mj-sparkle {
+            position: absolute;
+            bottom: 2px;
             left: 50%;
             transform: translateX(-50%);
-            width: 2px;
-            height: 20px;
-            background: linear-gradient(to top, rgba(100,255,218,0.4), transparent);
-            border-radius: 1px;
+            width: 3px; height: 3px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0;
+            animation: sparkleTrail 1.2s ease-out infinite;
+        }
+        .mj-sparkle:nth-child(2) { animation-delay: 0.4s; left: 30%; }
+        .mj-sparkle:nth-child(3) { animation-delay: 0.8s; left: 70%; }
+        @keyframes sparkleTrail {
+            0% { opacity: 0.6; transform: translateX(-50%) translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.3); }
+        }
+        /* Glow effect behind figure */
+        .mj-glow {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(100,255,218,0.15) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         /* ===== MUSIC PLAYER ===== */
@@ -740,7 +849,7 @@
             opacity: 0;
             pointer-events: none;
             transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            width: 300px;
+            max-width: 320px;
         }
         .music-player-embed.open {
             transform: translateY(0);
@@ -763,97 +872,10 @@
             transition: color 0.2s;
         }
         .music-player-close:hover { color: var(--text); }
-        .music-player-body {
-            padding: 1rem;
-        }
-        .music-track-info {
-            display: flex; align-items: center; gap: 0.8rem;
-            margin-bottom: 0.8rem;
-        }
-        .music-album-art {
-            width: 48px; height: 48px;
-            border-radius: 8px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-        .music-album-art img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-        .vinyl-spin {
-            animation: spin 3s linear infinite;
-        }
-        .vinyl-spin.paused {
-            animation-play-state: paused;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .music-track-text {
-            min-width: 0;
-        }
-        .music-track-title {
-            font-size: 0.88rem; font-weight: 600;
-            color: var(--text); white-space: nowrap;
-            overflow: hidden; text-overflow: ellipsis;
-        }
-        .music-track-artist {
-            font-size: 0.75rem; color: var(--text-muted);
-        }
-        .music-progress-bar {
-            width: 100%;
-            height: 3px;
-            background: var(--border);
-            border-radius: 2px;
-            margin-bottom: 0.4rem;
-            cursor: pointer;
-            position: relative;
-        }
-        .music-progress-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-        .music-time-row {
-            display: flex; justify-content: space-between;
-            font-family: var(--mono); font-size: 0.65rem;
-            color: var(--text-muted); margin-bottom: 0.8rem;
-        }
-        .music-controls {
-            display: flex; align-items: center; justify-content: center; gap: 1.2rem;
-        }
-        .music-ctrl-btn {
-            background: none; border: none;
-            color: var(--text-muted); cursor: pointer;
-            font-size: 1rem; padding: 0.3rem;
-            transition: color 0.2s, transform 0.2s;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .music-ctrl-btn:hover { color: var(--text); }
-        .music-ctrl-play {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: var(--bg);
-            font-size: 1.1rem;
-            border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .music-ctrl-play:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 16px rgba(100,255,218,0.5);
-        }
         .music-now-playing {
             display: flex; align-items: center; gap: 0.6rem;
-            padding: 0.5rem 1rem;
-            font-size: 0.78rem; color: var(--text-muted);
-            border-top: 1px solid var(--border);
+            padding: 0.8rem 1rem;
+            font-size: 0.82rem; color: var(--text-secondary);
         }
         .music-now-playing .eq-bars {
             display: flex; align-items: flex-end; gap: 2px; height: 14px;
@@ -875,33 +897,12 @@
             0% { height: 3px; }
             100% { height: 14px; }
         }
-        .music-volume-row {
-            display: flex; align-items: center; gap: 0.5rem;
-            padding: 0 1rem 0.6rem;
-        }
-        .music-volume-icon {
-            font-size: 0.75rem; color: var(--text-muted); cursor: pointer;
-        }
-        .music-volume-slider {
-            flex: 1;
-            -webkit-appearance: none; appearance: none;
-            height: 3px;
-            background: var(--border);
-            border-radius: 2px;
-            outline: none;
-        }
-        .music-volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none;
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: var(--accent);
-            cursor: pointer;
-        }
 
         @media (max-width: 768px) {
             .music-fab { bottom: 1rem; left: 1rem; }
             .music-toggle { width: 42px; height: 42px; font-size: 1.1rem; }
-            .scroll-indicator-dot { width: 8px; height: 8px; }
+            .moonwalker-figure { width: 22px; height: 40px; }
+            .moonwalker { right: -4px; }
         }
 
         /* ===== JOURNEY STATION DOTS (horizontal) ===== */
@@ -1017,10 +1018,21 @@
         <div class="scroll-progress-fill" id="scrollProgress"></div>
     </div>
 
-    <!-- Scroll position indicator -->
-    <div class="scroll-indicator" id="scrollIndicator">
-        <div class="scroll-indicator-trail"></div>
-        <div class="scroll-indicator-dot"></div>
+    <!-- Moonwalker on scroll bar -->
+    <div class="moonwalker" id="moonwalker">
+        <div class="mj-glow"></div>
+        <div class="moonwalker-figure">
+            <div class="mj-hat"></div>
+            <div class="mj-head"></div>
+            <div class="mj-body"></div>
+            <div class="mj-arm-l"></div>
+            <div class="mj-arm-r"></div>
+            <div class="mj-leg-l"><div class="mj-foot-l"></div></div>
+            <div class="mj-leg-r"><div class="mj-foot-r"></div></div>
+        </div>
+        <div class="mj-sparkle"></div>
+        <div class="mj-sparkle"></div>
+        <div class="mj-sparkle"></div>
     </div>
 
     <!-- Music Player FAB -->
@@ -1030,63 +1042,28 @@
                 <span>NOW PLAYING</span>
                 <button class="music-player-close" id="musicClose" aria-label="Close">&times;</button>
             </div>
-            <div class="music-player-body">
-                <div class="music-track-info">
-                    <div class="music-album-art">
-                        <svg class="vinyl-spin paused" id="vinylDisc" viewBox="0 0 48 48" width="48" height="48">
-                            <circle cx="24" cy="24" r="22" fill="#1a1a2e" stroke="#2a2a3e" stroke-width="1"/>
-                            <circle cx="24" cy="24" r="18" fill="none" stroke="#2a2a3e" stroke-width="0.5"/>
-                            <circle cx="24" cy="24" r="14" fill="none" stroke="#2a2a3e" stroke-width="0.5"/>
-                            <circle cx="24" cy="24" r="10" fill="none" stroke="#2a2a3e" stroke-width="0.5"/>
-                            <circle cx="24" cy="24" r="6" fill="#64ffda" opacity="0.3"/>
-                            <circle cx="24" cy="24" r="3" fill="#64ffda"/>
-                            <circle cx="24" cy="24" r="1" fill="#0a192f"/>
-                        </svg>
-                    </div>
-                    <div class="music-track-text">
-                        <div class="music-track-title" id="trackTitle">Billie Jean</div>
-                        <div class="music-track-artist" id="trackArtist">Michael Jackson</div>
-                    </div>
-                </div>
-                <div class="music-progress-bar" id="progressBar">
-                    <div class="music-progress-fill" id="progressFill"></div>
-                </div>
-                <div class="music-time-row">
-                    <span id="currentTime">0:00</span>
-                    <span id="totalTime">0:00</span>
-                </div>
-                <div class="music-controls">
-                    <button class="music-ctrl-btn" id="prevTrack" aria-label="Previous">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2h2v12H3V2zm3 6l8-6v12L6 8z"/></svg>
-                    </button>
-                    <button class="music-ctrl-play" id="playPause" aria-label="Play">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" id="playIcon"><path d="M4 2l12 7-12 7V2z"/></svg>
-                    </button>
-                    <button class="music-ctrl-btn" id="nextTrack" aria-label="Next">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M11 2h2v12h-2V2zM10 8L2 2v12l8-6z"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="music-volume-row">
-                <span class="music-volume-icon" id="volumeIcon">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 5h3l4-4v14L5 11H2V5zm10.5 3a4.5 4.5 0 00-2-3.7v7.4a4.5 4.5 0 002-3.7z"/></svg>
-                </span>
-                <input type="range" class="music-volume-slider" id="volumeSlider" min="0" max="100" value="40">
-            </div>
+            <iframe 
+                id="spotifyEmbed"
+                style="border:none; border-radius:0;" 
+                src="" 
+                width="320" 
+                height="152" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy">
+            </iframe>
             <div class="music-now-playing">
                 <div class="eq-bars" id="eqBars">
                     <span></span><span></span><span></span><span></span>
                 </div>
-                <span id="nowPlayingLabel">Billie Jean &mdash; Michael Jackson</span>
+                <span>Billie Jean &mdash; Michael Jackson</span>
             </div>
         </div>
         <button class="music-toggle" id="musicToggle" aria-label="Play music">
             <span class="pulse-ring"></span>
             <span id="musicIcon">&#x25B6;</span>
-            <span class="music-tooltip">Click to play music</span>
+            <span class="music-tooltip">Billie Jean &middot; MJ</span>
         </button>
     </div>
-    <audio id="audioPlayer" preload="none" loop></audio>
 
     <nav id="navbar">
         <div class="nav-inner">
@@ -1762,147 +1739,49 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Global scroll progress bar + scroll indicator
+        // Global scroll progress bar + moonwalker
         const scrollProgressFill = document.getElementById('scrollProgress');
-        const scrollIndicator = document.getElementById('scrollIndicator');
+        const moonwalker = document.getElementById('moonwalker');
         function updateScrollProgress() {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
             scrollProgressFill.style.height = progress + '%';
-            if (scrollIndicator) scrollIndicator.style.top = Math.max(1, Math.min(99, progress)) + '%';
+            if (moonwalker) moonwalker.style.top = Math.max(2, Math.min(98, progress)) + '%';
         }
         window.addEventListener('scroll', updateScrollProgress, { passive: true });
         updateScrollProgress();
 
-        // Music Player — HTML5 Audio with playlist
-        const audio = document.getElementById('audioPlayer');
+        // Music player — Spotify embed
         const musicToggle = document.getElementById('musicToggle');
         const musicPlayer = document.getElementById('musicPlayer');
         const musicClose = document.getElementById('musicClose');
+        const spotifyEmbed = document.getElementById('spotifyEmbed');
         const eqBars = document.getElementById('eqBars');
         const musicIcon = document.getElementById('musicIcon');
-        const playPauseBtn = document.getElementById('playPause');
-        const playIcon = document.getElementById('playIcon');
-        const progressBar = document.getElementById('progressBar');
-        const progressFill = document.getElementById('progressFill');
-        const currentTimeEl = document.getElementById('currentTime');
-        const totalTimeEl = document.getElementById('totalTime');
-        const trackTitleEl = document.getElementById('trackTitle');
-        const trackArtistEl = document.getElementById('trackArtist');
-        const nowPlayingLabel = document.getElementById('nowPlayingLabel');
-        const vinylDisc = document.getElementById('vinylDisc');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const prevTrackBtn = document.getElementById('prevTrack');
-        const nextTrackBtn = document.getElementById('nextTrack');
+        let musicOpen = false;
 
-        const playlist = [
-            {
-                title: 'Billie Jean',
-                artist: 'Michael Jackson',
-                src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
-            },
-            {
-                title: 'Smooth Criminal',
-                artist: 'Michael Jackson',
-                src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
-            },
-            {
-                title: 'Beat It',
-                artist: 'Michael Jackson',
-                src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
-            }
-        ];
-        let currentTrack = 0;
-        let playerOpen = false;
-        let isPlaying = false;
-
-        function loadTrack(index) {
-            currentTrack = ((index % playlist.length) + playlist.length) % playlist.length;
-            const track = playlist[currentTrack];
-            audio.src = track.src;
-            trackTitleEl.textContent = track.title;
-            trackArtistEl.textContent = track.artist;
-            nowPlayingLabel.textContent = track.title + ' \u2014 ' + track.artist;
-            progressFill.style.width = '0%';
-            currentTimeEl.textContent = '0:00';
-            totalTimeEl.textContent = '0:00';
-        }
-
-        function togglePlay() {
-            if (isPlaying) {
-                audio.pause();
-            } else {
-                if (!audio.src || audio.src === window.location.href) loadTrack(currentTrack);
-                audio.play().catch(() => {});
-            }
-        }
-
-        function updatePlayState(playing) {
-            isPlaying = playing;
-            const pausePath = 'M4 2h3v14H4V2zm7 0h3v14h-3V2z';
-            const playPath = 'M4 2l12 7-12 7V2z';
-            playIcon.innerHTML = '<path d="' + (playing ? pausePath : playPath) + '"/>';
-            musicIcon.innerHTML = playing ? '&#x23F8;' : '&#x25B6;';
-            eqBars.classList.toggle('playing', playing);
-            musicToggle.classList.toggle('playing', playing);
-            vinylDisc.classList.toggle('paused', !playing);
-        }
-
-        audio.addEventListener('play', () => updatePlayState(true));
-        audio.addEventListener('pause', () => updatePlayState(false));
-        audio.addEventListener('ended', () => { loadTrack(currentTrack + 1); audio.play().catch(() => {}); });
-
-        audio.addEventListener('timeupdate', () => {
-            if (audio.duration) {
-                const pct = (audio.currentTime / audio.duration) * 100;
-                progressFill.style.width = pct + '%';
-                currentTimeEl.textContent = formatTime(audio.currentTime);
-            }
-        });
-        audio.addEventListener('loadedmetadata', () => {
-            totalTimeEl.textContent = formatTime(audio.duration);
-        });
-
-        function formatTime(s) {
-            if (!s || isNaN(s)) return '0:00';
-            const m = Math.floor(s / 60);
-            const sec = Math.floor(s % 60);
-            return m + ':' + (sec < 10 ? '0' : '') + sec;
-        }
-
-        progressBar.addEventListener('click', (e) => {
-            if (audio.duration) {
-                const rect = progressBar.getBoundingClientRect();
-                audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-            }
-        });
-
-        volumeSlider.addEventListener('input', () => {
-            audio.volume = volumeSlider.value / 100;
-        });
-        audio.volume = 0.4;
-
-        playPauseBtn.addEventListener('click', togglePlay);
-        prevTrackBtn.addEventListener('click', () => { loadTrack(currentTrack - 1); if (isPlaying) audio.play().catch(() => {}); });
-        nextTrackBtn.addEventListener('click', () => { loadTrack(currentTrack + 1); if (isPlaying) audio.play().catch(() => {}); });
+        const spotifyTrackUrl = 'https://open.spotify.com/embed/track/5ChkMS8OtDnJGx8WNMYkbg?utm_source=generator&theme=0';
 
         musicToggle.addEventListener('click', () => {
-            if (!playerOpen) {
-                playerOpen = true;
-                musicPlayer.classList.add('open');
-                if (!audio.src || audio.src === window.location.href) loadTrack(0);
-                togglePlay();
-            } else {
-                togglePlay();
+            musicOpen = !musicOpen;
+            musicPlayer.classList.toggle('open', musicOpen);
+            musicToggle.classList.toggle('playing', musicOpen);
+            if (musicOpen && !spotifyEmbed.src) {
+                spotifyEmbed.src = spotifyTrackUrl;
             }
+            eqBars.classList.toggle('playing', musicOpen);
+            musicIcon.innerHTML = musicOpen ? '&#x23F8;' : '&#x25B6;';
         });
 
         musicClose.addEventListener('click', (e) => {
             e.stopPropagation();
-            playerOpen = false;
-            audio.pause();
+            musicOpen = false;
             musicPlayer.classList.remove('open');
+            musicToggle.classList.remove('playing');
+            eqBars.classList.remove('playing');
+            musicIcon.innerHTML = '&#x25B6;';
+            spotifyEmbed.src = '';
         });
 
         // Journey train animation
