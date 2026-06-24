@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charan Rathore — Product Analyst & AI Systems Builder</title>
+    <title>Charan Rathore · Product Analyst & AI Systems Builder</title>
     <meta name="description" content="Product Analyst Intern at Flipkart. Building production-grade AI systems from first principles. BITS Pilani '26.">
     <meta name="keywords" content="Charan Rathore, Product Analyst, Flipkart, AI Engineer, BITS Pilani, RAG, Machine Learning">
     
-    <meta property="og:title" content="Charan Rathore — Product Analyst & AI Systems Builder">
+    <meta property="og:title" content="Charan Rathore · Product Analyst & AI Systems Builder">
     <meta property="og:description" content="Product Analyst Intern at Flipkart. Building production-grade AI systems from scratch.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://charan-rathore.github.io">
@@ -20,20 +20,20 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg: #09090b;
-            --bg-elevated: #0f0f13;
-            --bg-card: #141419;
-            --bg-card-hover: #1a1a22;
-            --text: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #52525b;
-            --accent: #818cf8;
-            --accent-bright: #a78bfa;
-            --accent-alt: #34d399;
-            --accent-warm: #fb923c;
-            --accent-pink: #f472b6;
-            --border: #1e1e28;
-            --border-hover: #2e2e3a;
+            --bg: #0a192f;
+            --bg-elevated: #0e1f3d;
+            --bg-card: #112240;
+            --bg-card-hover: #162b50;
+            --text: #ccd6f6;
+            --text-secondary: #8892b0;
+            --text-muted: #495670;
+            --accent: #64ffda;
+            --accent-bright: #64ffda;
+            --accent-alt: #64ffda;
+            --accent-warm: #64ffda;
+            --accent-pink: #64ffda;
+            --border: #1d3456;
+            --border-hover: #264573;
             --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --mono: 'JetBrains Mono', 'Fira Code', monospace;
         }
@@ -52,7 +52,7 @@
             position: fixed;
             width: 500px; height: 500px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(129,140,248,0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(100,255,218,0.05) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
             transform: translate(-50%, -50%);
@@ -65,20 +65,18 @@
             z-index: 100;
             padding: 1.2rem 2.5rem;
             backdrop-filter: blur(24px) saturate(180%);
-            background: rgba(9, 9, 11, 0.75);
+            background: rgba(10, 25, 47, 0.75);
             border-bottom: 1px solid rgba(30,30,40,0.5);
             transition: all 0.3s;
         }
-        nav.scrolled { padding: 0.8rem 2.5rem; background: rgba(9, 9, 11, 0.92); }
+        nav.scrolled { padding: 0.8rem 2.5rem; background: rgba(10, 25, 47, 0.92); }
         .nav-inner {
             max-width: 1100px; margin: 0 auto;
             display: flex; justify-content: space-between; align-items: center;
         }
         .nav-logo {
             font-weight: 800; font-size: 1.1rem;
-            background: linear-gradient(135deg, var(--accent), var(--accent-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; text-decoration: none;
+            color: var(--accent); text-decoration: none;
         }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-links a {
@@ -103,10 +101,10 @@
             color: var(--accent); letter-spacing: 3px;
             text-transform: uppercase;
             padding: 0.35rem 0.9rem;
-            border: 1px solid rgba(129,140,248,0.2);
+            border: 1px solid rgba(100,255,218,0.2);
             border-radius: 100px;
             margin-bottom: 1.5rem;
-            background: rgba(129,140,248,0.05);
+            background: rgba(100,255,218,0.05);
         }
         .section-heading {
             font-size: clamp(2rem, 4vw, 3rem);
@@ -127,8 +125,8 @@
         .hero-chip {
             display: inline-flex; align-items: center; gap: 0.6rem;
             font-size: 0.85rem; color: var(--accent-alt);
-            background: rgba(52,211,153,0.08);
-            border: 1px solid rgba(52,211,153,0.15);
+            background: rgba(100,255,218,0.08);
+            border: 1px solid rgba(100,255,218,0.15);
             border-radius: 100px; padding: 0.4rem 1rem;
             margin-bottom: 1.8rem;
             opacity: 0; animation: fadeUp 0.5s ease forwards 0.1s;
@@ -147,9 +145,7 @@
             opacity: 0; animation: fadeUp 0.6s ease forwards 0.25s;
         }
         .hero-name .highlight {
-            background: linear-gradient(135deg, var(--accent), var(--accent-bright), var(--accent-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--accent);
         }
         .hero-tagline {
             font-size: 1.2rem; color: var(--text-secondary);
@@ -173,17 +169,18 @@
             cursor: pointer; border: none;
         }
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
-            color: #fff; box-shadow: 0 4px 20px rgba(129,140,248,0.2);
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(129,140,248,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); background: rgba(100,255,218,0.07); }
         .btn-ghost {
             background: transparent; color: var(--text);
             border: 1px solid var(--border);
         }
-        .btn-ghost:hover { border-color: var(--accent); background: rgba(129,140,248,0.04); }
+        .btn-ghost:hover { border-color: var(--accent); background: rgba(100,255,218,0.04); }
 
-        /* ===== ABOUT — Narrative Driven ===== */
+        /* ===== ABOUT | Narrative Driven ===== */
         .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
         .about-narrative p { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 1.5rem; }
         .about-narrative strong { color: var(--text); }
@@ -201,9 +198,7 @@
         .about-card:hover { border-color: var(--accent); transform: translateY(-3px); }
         .about-card .num {
             font-size: 2rem; font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--accent-pink));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--accent);
         }
         .about-card .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
 
@@ -220,15 +215,15 @@
         .exp-date {
             font-family: var(--mono); font-size: 0.78rem;
             color: var(--text-muted); padding: 0.3rem 0.8rem;
-            background: rgba(129,140,248,0.06); border-radius: 6px;
-            border: 1px solid rgba(129,140,248,0.1);
+            background: rgba(100,255,218,0.06); border-radius: 6px;
+            border: 1px solid rgba(100,255,218,0.1);
         }
         .exp-desc { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
         .exp-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
         .exp-tags span {
             font-family: var(--mono); font-size: 0.72rem;
             padding: 0.25rem 0.65rem; border-radius: 5px;
-            background: rgba(52,211,153,0.06); border: 1px solid rgba(52,211,153,0.12);
+            background: rgba(100,255,218,0.06); border: 1px solid rgba(100,255,218,0.12);
             color: var(--accent-alt);
         }
 
@@ -249,10 +244,10 @@
         }
         .toolkit-card:hover { border-color: var(--border-hover); }
         .toolkit-card:hover::before { opacity: 1; }
-        .toolkit-card:nth-child(1)::before { background: linear-gradient(90deg, var(--accent), var(--accent-bright)); }
-        .toolkit-card:nth-child(2)::before { background: linear-gradient(90deg, var(--accent-alt), #6ee7b7); }
-        .toolkit-card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-warm), #fbbf24); }
-        .toolkit-card:nth-child(4)::before { background: linear-gradient(90deg, var(--accent-pink), #f9a8d4); }
+        .toolkit-card:nth-child(1)::before { background: var(--accent); }
+        .toolkit-card:nth-child(2)::before { background: var(--accent); opacity: 0.7; }
+        .toolkit-card:nth-child(3)::before { background: var(--accent); opacity: 0.5; }
+        .toolkit-card:nth-child(4)::before { background: var(--accent); opacity: 0.35; }
         .toolkit-label {
             font-family: var(--mono); font-size: 0.72rem;
             text-transform: uppercase; letter-spacing: 2px;
@@ -285,7 +280,7 @@
         .project-card::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0;
             height: 3px; opacity: 0; transition: opacity 0.3s;
-            background: linear-gradient(90deg, var(--accent), var(--accent-pink));
+            background: var(--accent);
         }
         .project-card:hover {
             border-color: var(--border-hover);
@@ -312,21 +307,21 @@
             font-size: 0.68rem; padding: 0.2rem 0.6rem;
             border-radius: 5px; margin-bottom: 0.8rem;
         }
-        .badge-active { background: rgba(52,211,153,0.08); color: var(--accent-alt); border: 1px solid rgba(52,211,153,0.15); }
-        .badge-complete { background: rgba(129,140,248,0.08); color: var(--accent); border: 1px solid rgba(129,140,248,0.15); }
-        .badge-live { background: rgba(251,146,60,0.08); color: var(--accent-warm); border: 1px solid rgba(251,146,60,0.15); }
+        .badge-active { background: rgba(100,255,218,0.08); color: var(--accent-alt); border: 1px solid rgba(100,255,218,0.15); }
+        .badge-complete { background: rgba(100,255,218,0.08); color: var(--accent); border: 1px solid rgba(100,255,218,0.15); }
+        .badge-live { background: rgba(100,255,218,0.08); color: var(--accent-warm); border: 1px solid rgba(100,255,218,0.15); }
         .project-desc { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 1.5rem; flex-grow: 1; }
         .project-impact {
             font-family: var(--mono); font-size: 0.78rem;
             color: var(--accent-alt); margin-bottom: 1rem;
-            padding: 0.5rem 0.8rem; background: rgba(52,211,153,0.04);
-            border-radius: 6px; border: 1px solid rgba(52,211,153,0.08);
+            padding: 0.5rem 0.8rem; background: rgba(100,255,218,0.04);
+            border-radius: 6px; border: 1px solid rgba(100,255,218,0.08);
         }
         .project-tech { display: flex; flex-wrap: wrap; gap: 0.35rem; }
         .project-tech span {
             font-family: var(--mono); font-size: 0.72rem;
             padding: 0.2rem 0.55rem; border-radius: 4px;
-            background: rgba(129,140,248,0.05); border: 1px solid rgba(129,140,248,0.1);
+            background: rgba(100,255,218,0.05); border: 1px solid rgba(100,255,218,0.1);
             color: var(--accent);
         }
 
@@ -362,7 +357,7 @@
             position: absolute;
             left: 0; top: 0; width: 100%;
             height: var(--track-fill, 0%);
-            background: linear-gradient(180deg, var(--accent), var(--accent-alt), var(--accent-pink));
+            background: linear-gradient(180deg, var(--accent), rgba(100,255,218,0.2));
             border-radius: 2px;
             transition: height 0.1s linear;
         }
@@ -375,15 +370,17 @@
             transform: translate(-50%, -50%);
             z-index: 10;
             transition: top 0.1s linear;
-            filter: drop-shadow(0 0 12px rgba(129,140,248,0.5));
+            filter: drop-shadow(0 0 12px rgba(100,255,218,0.5));
         }
         .train-body {
             width: 36px; height: 36px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 1rem;
-            box-shadow: 0 0 20px rgba(129,140,248,0.4), 0 0 40px rgba(129,140,248,0.15);
+            box-shadow: 0 0 20px rgba(100,255,218,0.4), 0 0 40px rgba(100,255,218,0.15);
             animation: trainPulse 2s ease-in-out infinite;
             position: relative;
         }
@@ -392,12 +389,12 @@
             position: absolute;
             width: 50px; height: 50px;
             border-radius: 50%;
-            border: 2px solid rgba(129,140,248,0.2);
+            border: 2px solid rgba(100,255,218,0.2);
             animation: trainRing 2s ease-in-out infinite;
         }
         @keyframes trainPulse {
-            0%,100% { box-shadow: 0 0 20px rgba(129,140,248,0.4), 0 0 40px rgba(129,140,248,0.15); }
-            50% { box-shadow: 0 0 30px rgba(129,140,248,0.6), 0 0 60px rgba(129,140,248,0.25); }
+            0%,100% { box-shadow: 0 0 20px rgba(100,255,218,0.4), 0 0 40px rgba(100,255,218,0.15); }
+            50% { box-shadow: 0 0 30px rgba(100,255,218,0.6), 0 0 60px rgba(100,255,218,0.25); }
         }
         @keyframes trainRing {
             0%,100% { transform: scale(1); opacity: 0.6; }
@@ -414,7 +411,7 @@
         .smoke-particle {
             position: absolute;
             width: 6px; height: 6px;
-            background: rgba(129,140,248,0.3);
+            background: rgba(100,255,218,0.3);
             border-radius: 50%;
             animation: smokeRise 1.5s ease-out infinite;
         }
@@ -453,7 +450,7 @@
         }
         .journey-station.active .station-dot {
             border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(129,140,248,0.4);
+            box-shadow: 0 0 15px rgba(100,255,218,0.4);
         }
         .journey-station.active .station-dot::after {
             content: '';
@@ -489,7 +486,7 @@
         .journey-station:nth-child(even) .station-content::before { left: -20px; }
 
         .journey-station.active .station-content {
-            border-color: rgba(129,140,248,0.3);
+            border-color: rgba(100,255,218,0.3);
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         }
         .journey-station.active .station-content::before { background: var(--accent); }
@@ -504,10 +501,10 @@
             font-size: 0.65rem; padding: 0.15rem 0.5rem;
             border-radius: 4px; letter-spacing: 0.5px;
         }
-        .type-edu { background: rgba(129,140,248,0.1); color: var(--accent); border: 1px solid rgba(129,140,248,0.15); }
-        .type-work { background: rgba(52,211,153,0.1); color: var(--accent-alt); border: 1px solid rgba(52,211,153,0.15); }
-        .type-project { background: rgba(251,146,60,0.1); color: var(--accent-warm); border: 1px solid rgba(251,146,60,0.15); }
-        .type-milestone { background: rgba(244,114,182,0.1); color: var(--accent-pink); border: 1px solid rgba(244,114,182,0.15); }
+        .type-edu { background: rgba(100,255,218,0.1); color: var(--accent); border: 1px solid rgba(100,255,218,0.15); }
+        .type-work { background: rgba(100,255,218,0.1); color: var(--accent-alt); border: 1px solid rgba(100,255,218,0.15); }
+        .type-project { background: rgba(100,255,218,0.1); color: var(--accent-warm); border: 1px solid rgba(100,255,218,0.15); }
+        .type-milestone { background: rgba(100,255,218,0.1); color: var(--accent-pink); border: 1px solid rgba(100,255,218,0.15); }
 
         .station-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
         .station-org { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem; }
@@ -603,7 +600,7 @@
             .nav-links.active {
                 display: flex; flex-direction: column;
                 position: absolute; top: 100%; left: 0; right: 0;
-                background: rgba(9,9,11,0.98); padding: 1rem 2rem;
+                background: rgba(10,25,47,0.98); padding: 1rem 2rem;
                 border-bottom: 1px solid var(--border);
             }
             .about-layout { grid-template-columns: 1fr; }
@@ -630,10 +627,10 @@
         .scroll-progress-fill {
             width: 100%;
             height: 0%;
-            background: linear-gradient(180deg, var(--accent), var(--accent-alt), var(--accent-pink));
+            background: linear-gradient(180deg, var(--accent), rgba(100,255,218,0.2));
             border-radius: 0 0 2px 2px;
             transition: height 0.05s linear;
-            box-shadow: 0 0 8px rgba(129,140,248,0.4);
+            box-shadow: 0 0 8px rgba(100,255,218,0.4);
         }
 
         /* ===== MOONWALK FIGURE ===== */
@@ -645,7 +642,7 @@
             transform: translateY(-50%);
             transition: top 0.05s linear;
             pointer-events: none;
-            filter: drop-shadow(0 0 6px rgba(129,140,248,0.5));
+            filter: drop-shadow(0 0 6px rgba(100,255,218,0.5));
         }
         .moonwalker svg {
             width: 32px; height: 32px;
@@ -677,24 +674,24 @@
         .music-toggle {
             width: 48px; height: 48px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1DB954, #1ed760);
+            background: rgba(100,255,218,0.15);
             border: none;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.3rem;
-            box-shadow: 0 4px 20px rgba(29,185,84,0.3);
+            box-shadow: 0 4px 20px rgba(100,255,218,0.3);
             transition: all 0.3s;
             position: relative;
         }
         .music-toggle:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(29,185,84,0.4);
+            box-shadow: 0 6px 30px rgba(100,255,218,0.4);
         }
         .music-toggle .pulse-ring {
             position: absolute;
             width: 48px; height: 48px;
             border-radius: 50%;
-            border: 2px solid rgba(29,185,84,0.4);
+            border: 2px solid rgba(100,255,218,0.4);
             animation: musicPulse 2s ease-out infinite;
         }
         .music-toggle.playing .pulse-ring { animation: musicPulse 1.5s ease-out infinite; }
@@ -764,7 +761,7 @@
         }
         .eq-bars span {
             width: 3px; border-radius: 1px;
-            background: #1DB954;
+            background: #64ffda;
         }
         .eq-bars.playing span { animation: eqBounce 0.6s ease-in-out infinite alternate; }
         .eq-bars.playing span:nth-child(1) { height: 6px; animation-delay: 0s; }
@@ -813,13 +810,13 @@
         .journey-dot-indicator.reached {
             background: var(--accent);
             border-color: var(--accent);
-            box-shadow: 0 0 8px rgba(129,140,248,0.5);
+            box-shadow: 0 0 8px rgba(100,255,218,0.5);
         }
         .journey-dot-indicator.current {
             background: var(--accent);
             border-color: var(--accent-bright);
             transform: scale(1.4);
-            box-shadow: 0 0 12px rgba(129,140,248,0.6), 0 0 24px rgba(129,140,248,0.2);
+            box-shadow: 0 0 12px rgba(100,255,218,0.6), 0 0 24px rgba(100,255,218,0.2);
         }
         .journey-dot-indicator .dot-tooltip {
             position: absolute;
@@ -865,19 +862,21 @@
             transform: translateY(-3px);
         }
         .banner-block:nth-child(1) {
-            background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(129,140,248,0.3);
+            box-shadow: 0 4px 15px rgba(100,255,218,0.3);
         }
         .banner-block:nth-child(2) {
-            background: linear-gradient(135deg, var(--accent-alt), #6ee7b7);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(52,211,153,0.3);
+            background: rgba(100,255,218,0.08);
+            color: var(--accent);
+            box-shadow: 0 4px 15px rgba(100,255,218,0.3);
         }
         .banner-block:nth-child(3) {
-            background: linear-gradient(135deg, var(--accent-warm), #fbbf24);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(251,146,60,0.3);
+            background: rgba(100,255,218,0.06);
+            color: var(--accent);
+            box-shadow: 0 4px 15px rgba(100,255,218,0.3);
         }
         .banner-icon {
             width: 52px; height: 52px;
@@ -901,28 +900,28 @@
     <div class="moonwalker moonwalker-glide" id="moonwalker">
         <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
             <!-- Hat -->
-            <ellipse cx="32" cy="10" rx="12" ry="4" fill="#a78bfa"/>
-            <rect x="26" y="4" width="12" height="7" rx="2" fill="#a78bfa"/>
+            <ellipse cx="32" cy="10" rx="12" ry="4" fill="#64ffda"/>
+            <rect x="26" y="4" width="12" height="7" rx="2" fill="#64ffda"/>
             <!-- Head -->
-            <circle cx="32" cy="17" r="6" fill="#c4b5fd"/>
+            <circle cx="32" cy="17" r="6" fill="#9ef5e6"/>
             <!-- Body -->
-            <rect x="29" y="23" width="6" height="14" rx="2" fill="#a78bfa"/>
+            <rect x="29" y="23" width="6" height="14" rx="2" fill="#64ffda"/>
             <!-- Left arm (out) -->
-            <line x1="29" y1="26" x2="19" y2="22" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="29" y1="26" x2="19" y2="22" stroke="#64ffda" stroke-width="2.5" stroke-linecap="round"/>
             <!-- Right arm (bent) -->
-            <line x1="35" y1="26" x2="42" y2="20" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="42" y1="20" x2="44" y2="14" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="35" y1="26" x2="42" y2="20" stroke="#64ffda" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="42" y1="20" x2="44" y2="14" stroke="#64ffda" stroke-width="2.5" stroke-linecap="round"/>
             <!-- Left leg (forward, toe-tip) -->
-            <line x1="30" y1="37" x2="24" y2="50" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round" class="moonwalker-legs"/>
-            <line x1="24" y1="50" x2="20" y2="50" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+            <line x1="30" y1="37" x2="24" y2="50" stroke="#9ef5e6" stroke-width="2.5" stroke-linecap="round" class="moonwalker-legs"/>
+            <line x1="24" y1="50" x2="20" y2="50" stroke="#9ef5e6" stroke-width="2" stroke-linecap="round"/>
             <!-- Right leg (back, sliding) -->
-            <line x1="34" y1="37" x2="40" y2="50" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round" class="moonwalker-legs"/>
-            <line x1="40" y1="50" x2="44" y2="50" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round"/>
+            <line x1="34" y1="37" x2="40" y2="50" stroke="#9ef5e6" stroke-width="2.5" stroke-linecap="round" class="moonwalker-legs"/>
+            <line x1="40" y1="50" x2="44" y2="50" stroke="#9ef5e6" stroke-width="2" stroke-linecap="round"/>
             <!-- Sparkles -->
-            <circle cx="18" cy="18" r="1.5" fill="#818cf8" opacity="0.6">
+            <circle cx="18" cy="18" r="1.5" fill="#64ffda" opacity="0.6">
                 <animate attributeName="opacity" values="0.6;0;0.6" dur="1.5s" repeatCount="indefinite"/>
             </circle>
-            <circle cx="46" cy="12" r="1" fill="#f472b6" opacity="0.4">
+            <circle cx="46" cy="12" r="1" fill="#64ffda" opacity="0.4">
                 <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/>
             </circle>
         </svg>
@@ -948,13 +947,13 @@
                 <div class="eq-bars" id="eqBars">
                     <span></span><span></span><span></span><span></span>
                 </div>
-                <span>Billie Jean &mdash; Michael Jackson</span>
+                <span>Billie Jean / Michael Jackson</span>
             </div>
         </div>
         <button class="music-toggle" id="musicToggle" aria-label="Play music">
             <span class="pulse-ring"></span>
             <span id="musicIcon">&#x1f3b5;</span>
-            <span class="music-tooltip">Billie Jean &mdash; MJ</span>
+            <span class="music-tooltip">Billie Jean · MJ</span>
         </button>
     </div>
 
@@ -991,7 +990,7 @@
                 Product Analyst at Flipkart by day. AI systems engineer by obsession.
             </p>
             <p class="hero-sub">
-                From seller funnel analytics to building a production-grade RAG platform from scratch &mdash; 
+                From seller funnel analytics to building a production-grade RAG platform from scratch | 
                 I operate at the intersection of data, AI, and systems thinking. BITS Pilani '26.
             </p>
             <div class="hero-cta">
@@ -1011,9 +1010,9 @@
             <div class="about-layout">
                 <div class="about-narrative reveal">
                     <p>
-                        <strong>I'm a mechanical engineer who got lost in data &mdash; and never looked back.</strong>
+                        <strong>I'm a mechanical engineer who got lost in data, and never looked back.</strong>
                         Pursuing a dual degree at BITS Pilani (MSc Chemistry + BE Mechanical Engineering), 
-                        I discovered that the most interesting engineering problems aren't about machines &mdash; 
+                        I discovered that the most interesting engineering problems aren't about machines | 
                         they're about information.
                     </p>
                     <div class="callout">
@@ -1023,7 +1022,7 @@
                     <p>
                         At <strong>Flipkart</strong>, I work on seller funnel analytics and search personalization, 
                         turning behavioral data into product decisions. Outside work, I'm building 
-                        <strong>IntelliRAG</strong> &mdash; a production-grade RAG platform from scratch, because the 
+                        <strong>IntelliRAG</strong>. A production-grade RAG platform from scratch, because the 
                         best way to understand a system is to build every piece of it yourself.
                     </p>
                     <p>
@@ -1068,7 +1067,7 @@
                         <div class="exp-role">Product Analyst Intern</div>
                         <div class="exp-company">Flipkart</div>
                     </div>
-                    <span class="exp-date">2025 &mdash; Present</span>
+                    <span class="exp-date">2025 - Present</span>
                 </div>
                 <p class="exp-desc">
                     Driving seller funnel analytics within the search personalization team. 
@@ -1088,10 +1087,10 @@
             <div class="exp-card reveal">
                 <div class="exp-header">
                     <div>
-                        <div class="exp-role">Independent &mdash; AI Systems Builder</div>
+                        <div class="exp-role">Independent · AI Systems Builder</div>
                         <div class="exp-company">Personal Projects</div>
                     </div>
-                    <span class="exp-date">2024 &mdash; Present</span>
+                    <span class="exp-date">2024 - Present</span>
                 </div>
                 <p class="exp-desc">
                     Designing and building production-grade AI systems from first principles: 
@@ -1124,7 +1123,7 @@
                 <div class="project-card project-featured reveal">
                     <div>
                         <div class="project-top">
-                            <div class="project-icon" style="background:rgba(129,140,248,0.1);">&#x1f9e0;</div>
+                            <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f9e0;</div>
                             <div class="project-links">
                                 <a href="https://github.com/charan-rathore/IntelliRAG" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                             </div>
@@ -1137,7 +1136,7 @@
                             RAGAS evaluation framework, Celery workers with dead-letter queues, and immutable 
                             document versioning in PostgreSQL. Every architectural decision is documented with tradeoffs.
                         </p>
-                        <div class="project-impact">Impact: Built from first principles &mdash; 77+ Python modules, 12 test suites, 5 SQL migrations</div>
+                        <div class="project-impact">Impact: Built from first principles · 77+ Python modules, 12 test suites, 5 SQL migrations</div>
                         <div class="project-tech">
                             <span>Python</span><span>FastAPI</span><span>Celery</span>
                             <span>PostgreSQL</span><span>Redis</span><span>ChromaDB</span><span>Ollama</span><span>RAGAS</span>
@@ -1165,7 +1164,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 <!-- Project Management Tool -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(251,146,60,0.1);">&#x1f4cb;</div>
+                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f4cb;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/project-management-tool" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                             <a href="https://project-management-tool-nine-zeta.vercel.app" target="_blank" rel="noopener noreferrer">Live &nearr;</a>
@@ -1185,7 +1184,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 <!-- Agentic Finance -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(244,114,182,0.1);">&#x1f4c8;</div>
+                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f4c8;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/agentic-finance-advisor" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                         </div>
@@ -1204,7 +1203,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 <!-- 3D Bolt Dataset -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(52,211,153,0.1);">&#x2699;&#xfe0f;</div>
+                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x2699;&#xfe0f;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/Automation-of-3D-Bolt-Dataset" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                         </div>
@@ -1224,7 +1223,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 <!-- Drone Detection -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(129,140,248,0.1);">&#x1f985;</div>
+                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f985;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/Object-detection-from-drone-captured-videos" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                         </div>
@@ -1243,7 +1242,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 <!-- Gen-AI Extraction -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(251,146,60,0.1);">&#x1f52c;</div>
+                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f52c;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/Gen-AI-Extraction-Optimization" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                         </div>
@@ -1277,7 +1276,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
             <div class="toolkit-grid">
                 <div class="toolkit-card reveal">
                     <div class="toolkit-label">AI & Machine Learning</div>
-                    <div class="toolkit-subtitle">The intelligence layer &mdash; building models that learn.</div>
+                    <div class="toolkit-subtitle">The intelligence layer: building models that learn.</div>
                     <div class="toolkit-items">
                         <span class="toolkit-item">PyTorch</span>
                         <span class="toolkit-item">YOLOv8</span>
@@ -1291,7 +1290,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 </div>
                 <div class="toolkit-card reveal">
                     <div class="toolkit-label">Data & Analytics</div>
-                    <div class="toolkit-subtitle">The insight engine &mdash; turning noise into signal.</div>
+                    <div class="toolkit-subtitle">The insight engine: turning noise into signal.</div>
                     <div class="toolkit-items">
                         <span class="toolkit-item">Python</span>
                         <span class="toolkit-item">SQL</span>
@@ -1305,7 +1304,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 </div>
                 <div class="toolkit-card reveal">
                     <div class="toolkit-label">Backend & Infrastructure</div>
-                    <div class="toolkit-subtitle">The plumbing &mdash; making things reliable at scale.</div>
+                    <div class="toolkit-subtitle">The plumbing: making things reliable at scale.</div>
                     <div class="toolkit-items">
                         <span class="toolkit-item">FastAPI</span>
                         <span class="toolkit-item">Celery</span>
@@ -1318,7 +1317,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 </div>
                 <div class="toolkit-card reveal">
                     <div class="toolkit-label">Frontend & Product</div>
-                    <div class="toolkit-subtitle">The interface &mdash; where humans meet the system.</div>
+                    <div class="toolkit-subtitle">The interface: where humans meet the system.</div>
                     <div class="toolkit-items">
                         <span class="toolkit-item">React</span>
                         <span class="toolkit-item">Next.js</span>
@@ -1388,7 +1387,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                         <div class="station-desc">
                             Automated generation of 1,000+ labeled 3D datasets using Fusion 360 API 
                             for ML-based CAD classification. First taste of building data pipelines 
-                            from scratch &mdash; and I was hooked.
+                            from scratch | and I was hooked.
                         </div>
                         <div class="station-tags">
                             <span>Python</span><span>Fusion 360 API</span><span>Deep Learning</span>
@@ -1407,7 +1406,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                         <div class="station-org">Drone Wildlife Detection (YOLOv8)</div>
                         <div class="station-desc">
                             Built a YOLOv8-based detection system for identifying blackbuck from 
-                            drone footage. Learned that ML isn't just about models &mdash; it's about 
+                            drone footage. Learned that ML isn't just about models. It's about 
                             the messy reality of real-world data.
                         </div>
                         <div class="station-tags">
@@ -1432,7 +1431,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                         <div class="station-desc">
                             Built an agentic finance advisor using LangChain, ran systematic 
                             experiments on LLM prompting strategies, and realized I wanted to 
-                            understand AI infrastructure &mdash; not just use APIs.
+                            understand AI infrastructure, not just use APIs.
                         </div>
                         <div class="station-tags">
                             <span>LangChain</span><span>Multi-Agent</span><span>Prompt Engineering</span>
@@ -1487,10 +1486,10 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                 <div class="journey-station" data-year="2025-b">
                     <div class="station-content">
                         <div class="station-date">
-                            2025 &mdash; Present
+                            2025 - Present
                             <span class="station-type type-milestone">Flagship</span>
                         </div>
-                        <div class="station-title">IntelliRAG &mdash; Building from Scratch</div>
+                        <div class="station-title">IntelliRAG. Building from Scratch</div>
                         <div class="station-org">Production-Grade RAG Platform</div>
                         <div class="station-desc">
                             The culmination of everything: building an enterprise RAG system from 
