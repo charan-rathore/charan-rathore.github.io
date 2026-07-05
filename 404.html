@@ -3,50 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 — Charan Rathore</title>
+    <title>404 | Charan Rathore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0a0a0f;
-            color: #e8e8ed;
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(168deg, #F7F1E8, #EDE4D6);
+            color: #141414;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             text-align: center;
         }
-        .container { padding: 2rem; }
-        h1 {
-            font-size: 6rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #00d2ff, #7b68ee, #ff6b9d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .container {
+            padding: 2.5rem;
+            background: #FFFCF7;
+            border: 2px solid rgba(20,20,20,0.85);
+            border-radius: 20px;
+            box-shadow: 4px 4px 0 rgba(20,20,20,0.08);
         }
-        p { color: #8888a0; font-size: 1.1rem; margin: 1rem 0 2rem; }
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(4rem, 12vw, 6rem);
+            font-weight: 800;
+        }
+        p { color: #8C847A; font-size: 1.05rem; margin: 1rem 0 2rem; }
         a {
             display: inline-block;
-            padding: 0.8rem 2rem;
-            background: linear-gradient(135deg, #00d2ff, #7b68ee);
-            color: white;
+            padding: 0.85rem 1.65rem;
+            background: #141414;
+            color: #FFFCF7;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 999px;
             font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(123, 104, 238, 0.3);
+            border: 2px solid rgba(20,20,20,0.85);
+            box-shadow: 2px 2px 0 rgba(20,20,20,0.12);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>404</h1>
-        <p>The page you're looking for doesn't exist.</p>
-        <a href="/">Back to Home</a>
+        <p>This page doesn't exist. Maybe it got lost in the RAG pipeline.</p>
+        <a href="/">Back Home</a>
     </div>
 </body>
 </html>

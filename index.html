@@ -6,975 +6,41 @@
     <title>Charan Rathore · Product Analyst & AI Systems Builder</title>
     <meta name="description" content="Product Analyst Intern at Flipkart. Building production-grade AI systems from first principles. BITS Pilani '26.">
     <meta name="keywords" content="Charan Rathore, Product Analyst, Flipkart, AI Engineer, BITS Pilani, RAG, Machine Learning">
-    
+
     <meta property="og:title" content="Charan Rathore · Product Analyst & AI Systems Builder">
     <meta property="og:description" content="Product Analyst Intern at Flipkart. Building production-grade AI systems from scratch.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://charan-rathore.github.io">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --bg: #0a192f;
-            --bg-elevated: #0e1f3d;
-            --bg-card: #112240;
-            --bg-card-hover: #162b50;
-            --text: #ccd6f6;
-            --text-secondary: #8892b0;
-            --text-muted: #495670;
-            --accent: #64ffda;
-            --accent-bright: #64ffda;
-            --accent-alt: #64ffda;
-            --accent-warm: #64ffda;
-            --accent-pink: #64ffda;
-            --border: #1d3456;
-            --border-hover: #264573;
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --mono: 'JetBrains Mono', 'Fira Code', monospace;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* ===== CURSOR GLOW ===== */
-        .cursor-glow {
-            position: fixed;
-            width: 500px; height: 500px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(100,255,218,0.05) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-            transform: translate(-50%, -50%);
-        }
-
-        /* ===== NAVIGATION ===== */
-        nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            padding: 1.2rem 2.5rem;
-            backdrop-filter: blur(24px) saturate(180%);
-            background: rgba(10, 25, 47, 0.75);
-            border-bottom: 1px solid rgba(30,30,40,0.5);
-            transition: all 0.3s;
-        }
-        nav.scrolled { padding: 0.8rem 2.5rem; background: rgba(10, 25, 47, 0.92); }
-        .nav-inner {
-            max-width: 1100px; margin: 0 auto;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .nav-logo {
-            font-weight: 800; font-size: 1.1rem;
-            color: var(--accent); text-decoration: none;
-        }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a {
-            color: var(--text-muted); text-decoration: none;
-            font-size: 0.88rem; font-weight: 500;
-            transition: color 0.3s; letter-spacing: 0.3px;
-        }
-        .nav-links a:hover { color: var(--text); }
-        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
-        .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); margin: 5px 0; transition: all 0.3s; border-radius: 2px; }
-
-        /* ===== LAYOUT ===== */
-        .container {
-            position: relative; z-index: 1;
-            max-width: 1100px; margin: 0 auto; padding: 0 2rem;
-        }
-        section { padding: 7rem 0; }
-
-        .section-tag {
-            display: inline-block;
-            font-family: var(--mono); font-size: 0.72rem;
-            color: var(--accent); letter-spacing: 3px;
-            text-transform: uppercase;
-            padding: 0.35rem 0.9rem;
-            border: 1px solid rgba(100,255,218,0.2);
-            border-radius: 100px;
-            margin-bottom: 1.5rem;
-            background: rgba(100,255,218,0.05);
-        }
-        .section-heading {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800; line-height: 1.15;
-            margin-bottom: 1rem;
-        }
-        .section-sub {
-            color: var(--text-secondary); font-size: 1.1rem;
-            max-width: 600px; margin-bottom: 3.5rem;
-        }
-
-        /* ===== HERO ===== */
-        #hero {
-            min-height: 100vh;
-            display: flex; align-items: center;
-            padding-top: 5rem;
-        }
-        .hero-chip {
-            display: inline-flex; align-items: center; gap: 0.6rem;
-            font-size: 0.85rem; color: var(--accent-alt);
-            background: rgba(100,255,218,0.08);
-            border: 1px solid rgba(100,255,218,0.15);
-            border-radius: 100px; padding: 0.4rem 1rem;
-            margin-bottom: 1.8rem;
-            opacity: 0; animation: fadeUp 0.5s ease forwards 0.1s;
-        }
-        .hero-chip .dot {
-            width: 7px; height: 7px; border-radius: 50%;
-            background: var(--accent-alt);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-        
-        .hero-name {
-            font-size: clamp(3rem, 7vw, 5rem);
-            font-weight: 900; line-height: 1.05;
-            margin-bottom: 1.5rem;
-            opacity: 0; animation: fadeUp 0.6s ease forwards 0.25s;
-        }
-        .hero-name .highlight {
-            color: var(--accent);
-        }
-        .hero-tagline {
-            font-size: 1.2rem; color: var(--text-secondary);
-            max-width: 600px; margin-bottom: 0.8rem;
-            opacity: 0; animation: fadeUp 0.6s ease forwards 0.4s;
-        }
-        .hero-sub {
-            font-size: 1rem; color: var(--text-muted);
-            max-width: 550px; margin-bottom: 2.5rem;
-            opacity: 0; animation: fadeUp 0.6s ease forwards 0.5s;
-        }
-        .hero-cta {
-            display: flex; gap: 1rem; flex-wrap: wrap;
-            opacity: 0; animation: fadeUp 0.6s ease forwards 0.6s;
-        }
-        .btn {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.85rem 2rem; border-radius: 10px;
-            font-size: 0.92rem; font-weight: 600;
-            text-decoration: none; transition: all 0.3s;
-            cursor: pointer; border: none;
-        }
-        .btn-primary {
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-        }
-        .btn-primary:hover { transform: translateY(-2px); background: rgba(100,255,218,0.07); }
-        .btn-ghost {
-            background: transparent; color: var(--text);
-            border: 1px solid var(--border);
-        }
-        .btn-ghost:hover { border-color: var(--accent); background: rgba(100,255,218,0.04); }
-
-        /* ===== ABOUT | Narrative Driven ===== */
-        .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-        .about-narrative p { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 1.5rem; }
-        .about-narrative strong { color: var(--text); }
-        .about-narrative .callout {
-            background: var(--bg-card); border-left: 3px solid var(--accent);
-            border-radius: 0 10px 10px 0; padding: 1.2rem 1.5rem;
-            margin: 2rem 0; font-style: italic; color: var(--text-secondary);
-        }
-        .about-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .about-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 14px; padding: 1.5rem; text-align: center;
-            transition: all 0.3s;
-        }
-        .about-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-        .about-card .num {
-            font-size: 2rem; font-weight: 800;
-            color: var(--accent);
-        }
-        .about-card .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
-
-        /* ===== EXPERIENCE ===== */
-        .exp-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 2.5rem;
-            transition: all 0.3s; margin-bottom: 1.5rem;
-        }
-        .exp-card:hover { border-color: var(--border-hover); }
-        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
-        .exp-role { font-size: 1.3rem; font-weight: 700; }
-        .exp-company { color: var(--accent); font-weight: 600; }
-        .exp-date {
-            font-family: var(--mono); font-size: 0.78rem;
-            color: var(--text-muted); padding: 0.3rem 0.8rem;
-            background: rgba(100,255,218,0.06); border-radius: 6px;
-            border: 1px solid rgba(100,255,218,0.1);
-        }
-        .exp-desc { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
-        .exp-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .exp-tags span {
-            font-family: var(--mono); font-size: 0.72rem;
-            padding: 0.25rem 0.65rem; border-radius: 5px;
-            background: rgba(100,255,218,0.06); border: 1px solid rgba(100,255,218,0.12);
-            color: var(--accent-alt);
-        }
-
-        /* ===== TOOLKIT ===== */
-        .toolkit-intro {
-            color: var(--text-secondary); font-size: 1.05rem;
-            max-width: 650px; margin-bottom: 3rem;
-        }
-        .toolkit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
-        .toolkit-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 14px; padding: 2rem;
-            transition: all 0.3s; position: relative; overflow: hidden;
-        }
-        .toolkit-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0;
-            height: 2px; opacity: 0; transition: opacity 0.3s;
-        }
-        .toolkit-card:hover { border-color: var(--border-hover); }
-        .toolkit-card:hover::before { opacity: 1; }
-        .toolkit-card:nth-child(1)::before { background: var(--accent); }
-        .toolkit-card:nth-child(2)::before { background: var(--accent); opacity: 0.7; }
-        .toolkit-card:nth-child(3)::before { background: var(--accent); opacity: 0.5; }
-        .toolkit-card:nth-child(4)::before { background: var(--accent); opacity: 0.35; }
-        .toolkit-label {
-            font-family: var(--mono); font-size: 0.72rem;
-            text-transform: uppercase; letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-        .toolkit-card:nth-child(1) .toolkit-label { color: var(--accent); }
-        .toolkit-card:nth-child(2) .toolkit-label { color: var(--accent-alt); }
-        .toolkit-card:nth-child(3) .toolkit-label { color: var(--accent-warm); }
-        .toolkit-card:nth-child(4) .toolkit-label { color: var(--accent-pink); }
-        .toolkit-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem; font-style: italic; }
-        .toolkit-items { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-        .toolkit-item {
-            padding: 0.35rem 0.8rem; font-size: 0.82rem;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            border-radius: 6px; color: var(--text-secondary);
-            transition: all 0.25s;
-        }
-        .toolkit-item:hover { background: rgba(255,255,255,0.06); color: var(--text); border-color: var(--border-hover); }
-
-        /* ===== PROJECTS ===== */
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.2rem; }
-        
-        .project-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 2rem;
-            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-            position: relative; overflow: hidden;
-            display: flex; flex-direction: column;
-        }
-        .project-card::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0;
-            height: 3px; opacity: 0; transition: opacity 0.3s;
-            background: var(--accent);
-        }
-        .project-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-        }
-        .project-card:hover::after { opacity: 1; }
-        .project-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
-        .project-icon {
-            width: 42px; height: 42px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem;
-        }
-        .project-links a {
-            color: var(--text-muted); text-decoration: none;
-            font-size: 0.85rem; transition: color 0.3s; margin-left: 0.8rem;
-        }
-        .project-links a:hover { color: var(--accent); }
-        .project-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; }
-        .project-title a { color: var(--text); text-decoration: none; }
-        .project-title a:hover { color: var(--accent); }
-        .project-badge {
-            display: inline-block; font-family: var(--mono);
-            font-size: 0.68rem; padding: 0.2rem 0.6rem;
-            border-radius: 5px; margin-bottom: 0.8rem;
-        }
-        .badge-active { background: rgba(100,255,218,0.08); color: var(--accent-alt); border: 1px solid rgba(100,255,218,0.15); }
-        .badge-complete { background: rgba(100,255,218,0.08); color: var(--accent); border: 1px solid rgba(100,255,218,0.15); }
-        .badge-live { background: rgba(100,255,218,0.08); color: var(--accent-warm); border: 1px solid rgba(100,255,218,0.15); }
-        .project-desc { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 1.5rem; flex-grow: 1; }
-        .project-impact {
-            font-family: var(--mono); font-size: 0.78rem;
-            color: var(--accent-alt); margin-bottom: 1rem;
-            padding: 0.5rem 0.8rem; background: rgba(100,255,218,0.04);
-            border-radius: 6px; border: 1px solid rgba(100,255,218,0.08);
-        }
-        .project-tech { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-        .project-tech span {
-            font-family: var(--mono); font-size: 0.72rem;
-            padding: 0.2rem 0.55rem; border-radius: 4px;
-            background: rgba(100,255,218,0.05); border: 1px solid rgba(100,255,218,0.1);
-            color: var(--accent);
-        }
-
-        /* Featured project */
-        .project-featured {
-            grid-column: 1 / -1;
-            display: grid; grid-template-columns: 1.2fr 1fr;
-            gap: 2.5rem; align-items: center;
-        }
-        .project-visual {
-            background: var(--bg-elevated); border: 1px solid var(--border);
-            border-radius: 12px; padding: 2rem;
-            font-family: var(--mono); font-size: 0.78rem;
-            color: var(--text-muted); line-height: 2;
-        }
-        .project-visual .highlight-line { color: var(--accent-alt); }
-        .project-visual .dim { color: var(--text-muted); opacity: 0.5; }
-
-        /* ===== JOURNEY TIMELINE ===== */
-        .journey-wrapper { position: relative; padding: 3rem 0 4rem; }
-
-        .journey-track {
-            position: absolute;
-            left: 50%; top: 0; bottom: 0;
-            width: 4px;
-            transform: translateX(-50%);
-            background: var(--border);
-            border-radius: 2px;
-            overflow: visible;
-        }
-        .journey-track::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; width: 100%;
-            height: var(--track-fill, 0%);
-            background: linear-gradient(180deg, var(--accent), rgba(100,255,218,0.2));
-            border-radius: 2px;
-            transition: height 0.1s linear;
-        }
-
-        /* Train */
-        .journey-train {
-            position: absolute;
-            left: 50%;
-            top: var(--train-top, 0%);
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            transition: top 0.1s linear;
-            filter: drop-shadow(0 0 12px rgba(100,255,218,0.5));
-        }
-        .train-body {
-            width: 36px; height: 36px;
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1rem;
-            box-shadow: 0 0 20px rgba(100,255,218,0.4), 0 0 40px rgba(100,255,218,0.15);
-            animation: trainPulse 2s ease-in-out infinite;
-            position: relative;
-        }
-        .train-body::after {
-            content: '';
-            position: absolute;
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            border: 2px solid rgba(100,255,218,0.2);
-            animation: trainRing 2s ease-in-out infinite;
-        }
-        @keyframes trainPulse {
-            0%,100% { box-shadow: 0 0 20px rgba(100,255,218,0.4), 0 0 40px rgba(100,255,218,0.15); }
-            50% { box-shadow: 0 0 30px rgba(100,255,218,0.6), 0 0 60px rgba(100,255,218,0.25); }
-        }
-        @keyframes trainRing {
-            0%,100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.3); opacity: 0; }
-        }
-
-        /* Train smoke particles */
-        .train-smoke {
-            position: absolute;
-            bottom: 100%; left: 50%;
-            transform: translateX(-50%);
-            pointer-events: none;
-        }
-        .smoke-particle {
-            position: absolute;
-            width: 6px; height: 6px;
-            background: rgba(100,255,218,0.3);
-            border-radius: 50%;
-            animation: smokeRise 1.5s ease-out infinite;
-        }
-        .smoke-particle:nth-child(2) { animation-delay: 0.5s; left: -4px; }
-        .smoke-particle:nth-child(3) { animation-delay: 1s; left: 4px; }
-        @keyframes smokeRise {
-            0% { opacity: 0.5; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-30px) scale(2); }
-        }
-
-        /* Stations */
-        .journey-station {
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr 80px 1fr;
-            align-items: center;
-            margin-bottom: 5rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s cubic-bezier(0.4,0,0.2,1);
-        }
-        .journey-station.visible { opacity: 1; transform: translateY(0); }
-        .journey-station:last-child { margin-bottom: 0; }
-
-        .station-dot-col {
-            display: flex; justify-content: center; align-items: center;
-            position: relative; z-index: 5;
-        }
-        .station-dot {
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            background: var(--bg);
-            border: 3px solid var(--border);
-            transition: all 0.4s;
-            position: relative;
-        }
-        .journey-station.active .station-dot {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(100,255,218,0.4);
-        }
-        .journey-station.active .station-dot::after {
-            content: '';
-            position: absolute;
-            inset: 3px;
-            border-radius: 50%;
-            background: var(--accent);
-        }
-
-        .station-content {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.8rem 2rem;
-            transition: all 0.4s;
-            position: relative;
-        }
-        .station-content::before {
-            content: '';
-            position: absolute;
-            top: 50%; width: 20px; height: 2px;
-            background: var(--border);
-            transition: background 0.4s;
-        }
-        .journey-station:nth-child(odd) .station-content { grid-column: 1; }
-        .journey-station:nth-child(odd) .station-dot-col { grid-column: 2; }
-        .journey-station:nth-child(odd) .station-spacer { grid-column: 3; }
-        .journey-station:nth-child(odd) .station-content::before { right: -20px; }
-        
-        .journey-station:nth-child(even) .station-spacer { grid-column: 1; }
-        .journey-station:nth-child(even) .station-dot-col { grid-column: 2; }
-        .journey-station:nth-child(even) .station-content { grid-column: 3; }
-        .journey-station:nth-child(even) .station-content::before { left: -20px; }
-
-        .journey-station.active .station-content {
-            border-color: rgba(100,255,218,0.3);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-        }
-        .journey-station.active .station-content::before { background: var(--accent); }
-
-        .station-date {
-            font-family: var(--mono); font-size: 0.75rem;
-            color: var(--accent); letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-            display: flex; align-items: center; gap: 0.5rem;
-        }
-        .station-date .station-type {
-            font-size: 0.65rem; padding: 0.15rem 0.5rem;
-            border-radius: 4px; letter-spacing: 0.5px;
-        }
-        .type-edu { background: rgba(100,255,218,0.1); color: var(--accent); border: 1px solid rgba(100,255,218,0.15); }
-        .type-work { background: rgba(100,255,218,0.1); color: var(--accent-alt); border: 1px solid rgba(100,255,218,0.15); }
-        .type-project { background: rgba(100,255,218,0.1); color: var(--accent-warm); border: 1px solid rgba(100,255,218,0.15); }
-        .type-milestone { background: rgba(100,255,218,0.1); color: var(--accent-pink); border: 1px solid rgba(100,255,218,0.15); }
-
-        .station-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
-        .station-org { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem; }
-        .station-desc { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
-        .station-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.8rem; }
-        .station-tags span {
-            font-family: var(--mono); font-size: 0.68rem;
-            padding: 0.2rem 0.5rem; border-radius: 4px;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            color: var(--text-muted);
-        }
-
-        /* Journey start/end markers */
-        .journey-endpoint {
-            text-align: center; position: relative; z-index: 5;
-            margin-bottom: 3rem;
-        }
-        .journey-endpoint:last-child { margin-top: 3rem; margin-bottom: 0; }
-        .endpoint-label {
-            font-family: var(--mono); font-size: 0.75rem;
-            color: var(--text-muted); letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 768px) {
-            .journey-station {
-                grid-template-columns: 40px 1fr;
-                gap: 0;
-            }
-            .journey-track { left: 20px; transform: none; }
-            .journey-train { left: 20px; }
-            .station-dot-col { grid-column: 1 !important; grid-row: 1; }
-            .station-content { grid-column: 2 !important; grid-row: 1; }
-            .station-spacer { display: none; }
-            .station-content::before { left: -20px !important; right: auto !important; }
-            .journey-station:nth-child(odd) .station-content { grid-column: 2 !important; }
-            .journey-station:nth-child(odd) .station-dot-col { grid-column: 1 !important; }
-        }
-
-        /* ===== CONTACT ===== */
-        #contact { text-align: center; padding-bottom: 4rem; }
-        .contact-heading {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800; margin-bottom: 1rem;
-        }
-        .contact-sub { color: var(--text-secondary); font-size: 1.05rem; max-width: 500px; margin: 0 auto 2.5rem; }
-        .contact-grid {
-            display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
-        }
-        .contact-item {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 12px; padding: 1.3rem 2.2rem;
-            text-decoration: none; color: var(--text-secondary);
-            transition: all 0.3s; display: flex; align-items: center; gap: 0.7rem;
-            font-size: 0.95rem;
-        }
-        .contact-item:hover { border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
-        .contact-item .ico { font-size: 1.2rem; }
-        .contact-response {
-            margin-top: 2rem; font-size: 0.82rem;
-            color: var(--text-muted); font-family: var(--mono);
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            position: relative; z-index: 1;
-            text-align: center; padding: 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted); font-size: 0.82rem;
-        }
-
-        /* ===== DIVIDER ===== */
-        .section-divider {
-            border: none; border-top: 1px solid var(--border);
-            margin: 0;
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .reveal {
-            opacity: 0; transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hamburger { display: block; }
-            .nav-links.active {
-                display: flex; flex-direction: column;
-                position: absolute; top: 100%; left: 0; right: 0;
-                background: rgba(10,25,47,0.98); padding: 1rem 2rem;
-                border-bottom: 1px solid var(--border);
-            }
-            .about-layout { grid-template-columns: 1fr; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .project-featured { grid-template-columns: 1fr; }
-            .toolkit-grid { grid-template-columns: 1fr; }
-            section { padding: 4.5rem 0; }
-            .container { padding: 0 1.5rem; }
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
-
-        /* ===== GLOBAL SCROLL PROGRESS BAR ===== */
-        .scroll-progress {
-            position: fixed;
-            top: 0; right: 0;
-            width: 4px; height: 100vh;
-            z-index: 200;
-            background: rgba(30,30,40,0.4);
-        }
-        .scroll-progress-fill {
-            width: 100%;
-            height: 0%;
-            background: linear-gradient(180deg, var(--accent), rgba(100,255,218,0.2));
-            border-radius: 0 0 2px 2px;
-            transition: height 0.05s linear;
-            box-shadow: 0 0 8px rgba(100,255,218,0.4);
-        }
-
-        /* ===== SCROLL INDICATOR (glowing dot) ===== */
-        .scroll-indicator {
-            position: fixed;
-            right: 1px;
-            top: 0%;
-            z-index: 201;
-            transform: translateY(-50%);
-            transition: top 0.08s linear;
-            pointer-events: none;
-        }
-        .scroll-indicator-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 10px rgba(100,255,218,0.7), 0 0 20px rgba(100,255,218,0.3);
-            position: relative;
-        }
-        .scroll-indicator-dot::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(100,255,218,0.3);
-            animation: scrollRing 2s ease-in-out infinite;
-        }
-        @keyframes scrollRing {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.6); opacity: 0; }
-        }
-        .scroll-indicator-trail {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 20px;
-            background: linear-gradient(to top, rgba(100,255,218,0.4), transparent);
-            border-radius: 1px;
-        }
-
-        /* ===== MUSIC PLAYER ===== */
-        .music-fab {
-            position: fixed;
-            bottom: 2rem; left: 2rem;
-            z-index: 300;
-            display: flex; flex-direction: column;
-            align-items: flex-start;
-            gap: 0.8rem;
-        }
-        .music-toggle {
-            width: 48px; height: 48px;
-            border-radius: 50%;
-            background: rgba(100,255,218,0.15);
-            border: none;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 20px rgba(100,255,218,0.3);
-            transition: all 0.3s;
-            position: relative;
-        }
-        .music-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(100,255,218,0.4);
-        }
-        .music-toggle .pulse-ring {
-            position: absolute;
-            width: 48px; height: 48px;
-            border-radius: 50%;
-            border: 2px solid rgba(100,255,218,0.4);
-            animation: musicPulse 2s ease-out infinite;
-        }
-        .music-toggle.playing .pulse-ring { animation: musicPulse 1.5s ease-out infinite; }
-        @keyframes musicPulse {
-            0% { transform: scale(1); opacity: 0.6; }
-            100% { transform: scale(1.8); opacity: 0; }
-        }
-
-        .music-tooltip {
-            position: absolute;
-            left: calc(100% + 12px);
-            top: 50%; transform: translateY(-50%);
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.5rem 0.9rem;
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s;
-            font-family: var(--mono);
-        }
-        .music-toggle:hover .music-tooltip { opacity: 1; }
-
-        .music-player-embed {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-            transform: translateY(10px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            width: 280px;
-        }
-        .music-player-embed.open {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .music-player-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.6rem 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-        .music-player-header span {
-            font-family: var(--mono); font-size: 0.72rem;
-            color: var(--text-muted); letter-spacing: 1px;
-        }
-        .music-player-close {
-            background: none; border: none;
-            color: var(--text-muted); cursor: pointer;
-            font-size: 1.1rem; padding: 0;
-            transition: color 0.2s;
-        }
-        .music-player-close:hover { color: var(--text); }
-        .mp-track-info {
-            padding: 0.7rem 1rem 0.4rem;
-            display: flex; align-items: center; gap: 0.7rem;
-        }
-        .mp-disc {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-            position: relative;
-        }
-        .mp-disc::after {
-            content: '';
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-        }
-        .mp-disc.spinning {
-            animation: discSpin 2s linear infinite;
-        }
-        @keyframes discSpin {
-            to { transform: rotate(360deg); }
-        }
-        .mp-meta {
-            overflow: hidden;
-        }
-        .mp-title {
-            font-size: 0.82rem; color: var(--text);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .mp-artist {
-            font-size: 0.7rem; color: var(--text-muted);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .mp-progress-wrap {
-            padding: 0 1rem;
-            display: flex; align-items: center; gap: 0.5rem;
-        }
-        .mp-progress {
-            flex: 1; height: 3px;
-            background: var(--border);
-            border-radius: 2px;
-            cursor: pointer;
-            position: relative;
-        }
-        .mp-progress-fill {
-            height: 100%; width: 0%;
-            background: var(--accent);
-            border-radius: 2px;
-            transition: width 0.2s linear;
-        }
-        .mp-time {
-            font-family: var(--mono);
-            font-size: 0.62rem;
-            color: var(--text-muted);
-            min-width: 30px;
-            text-align: center;
-        }
-        .mp-controls {
-            display: flex; align-items: center; justify-content: center;
-            gap: 1rem; padding: 0.5rem 1rem 0.7rem;
-        }
-        .mp-btn {
-            background: none; border: none;
-            color: var(--text-secondary);
-            cursor: pointer; font-size: 0.9rem;
-            transition: color 0.2s;
-            padding: 4px;
-        }
-        .mp-btn:hover { color: var(--accent); }
-        .mp-btn-play {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: var(--bg);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.85rem;
-            border: none; cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .mp-btn-play:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 12px rgba(100,255,218,0.4);
-        }
-
-        @media (max-width: 768px) {
-            .music-fab { bottom: 1rem; left: 1rem; }
-            .music-toggle { width: 42px; height: 42px; font-size: 1.1rem; }
-            .scroll-indicator-dot { width: 8px; height: 8px; }
-        }
-
-        /* ===== JOURNEY STATION DOTS (horizontal) ===== */
-        .journey-dots {
-            position: sticky;
-            bottom: 0;
-            left: 0; right: 0;
-            z-index: 20;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1.2rem;
-            padding: 1.2rem 0;
-            background: linear-gradient(0deg, var(--bg) 60%, transparent);
-            pointer-events: none;
-        }
-        .journey-dot-indicator {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: var(--border);
-            border: 2px solid var(--border);
-            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-            pointer-events: auto;
-            cursor: pointer;
-            position: relative;
-        }
-        .journey-dot-indicator.reached {
-            background: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 0 8px rgba(100,255,218,0.5);
-        }
-        .journey-dot-indicator.current {
-            background: var(--accent);
-            border-color: var(--accent-bright);
-            transform: scale(1.4);
-            box-shadow: 0 0 12px rgba(100,255,218,0.6), 0 0 24px rgba(100,255,218,0.2);
-        }
-        .journey-dot-indicator .dot-tooltip {
-            position: absolute;
-            bottom: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%) translateY(6px);
-            white-space: nowrap;
-            font-family: var(--mono);
-            font-size: 0.68rem;
-            color: var(--text);
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 0.3rem 0.7rem;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.25s;
-        }
-        .journey-dot-indicator:hover .dot-tooltip {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* ===== JOURNEY BANNER ===== */
-        .journey-banner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.8rem;
-            margin-top: 2.5rem;
-            flex-wrap: wrap;
-        }
-        .banner-block {
-            padding: 0.7rem 1.6rem;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .banner-block:hover {
-            transform: translateY(-3px);
-        }
-        .banner-block:nth-child(1) {
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(100,255,218,0.3);
-        }
-        .banner-block:nth-child(2) {
-            background: rgba(100,255,218,0.08);
-            color: var(--accent);
-            box-shadow: 0 4px 15px rgba(100,255,218,0.3);
-        }
-        .banner-block:nth-child(3) {
-            background: rgba(100,255,218,0.06);
-            color: var(--accent);
-            box-shadow: 0 4px 15px rgba(100,255,218,0.3);
-        }
-        .banner-icon {
-            width: 52px; height: 52px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <div class="cursor-glow" id="cursorGlow"></div>
+    <!-- Warm layered background + subtle kinetic grid -->
+    <div class="page-wash" aria-hidden="true"></div>
+    <div class="kinetic-grid" id="kineticGrid" aria-hidden="true"></div>
 
-    <!-- Global scroll progress bar -->
+    <!-- Astha-style side rails -->
+    <aside class="side-rail side-rail-left" aria-label="Primary navigation">
+        <a href="#hero" class="side-tab">Home</a>
+        <a href="#projects" class="side-tab">Work</a>
+        <a href="#toolkit" class="side-tab">Play</a>
+        <a href="#about" class="side-tab">About</a>
+    </aside>
+    <aside class="side-rail side-rail-right" aria-label="Secondary links">
+        <a href="#experience" class="side-tab">Resume</a>
+        <a href="https://linkedin.com/in/charan-rathore" class="side-tab" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="#contact" class="side-tab">Contact</a>
+    </aside>
+
     <div class="scroll-progress">
         <div class="scroll-progress-fill" id="scrollProgress"></div>
     </div>
 
-    <!-- Scroll position indicator -->
-    <div class="scroll-indicator" id="scrollIndicator">
-        <div class="scroll-indicator-trail"></div>
-        <div class="scroll-indicator-dot"></div>
-    </div>
-
-    <!-- Music Player FAB -->
+    <!-- Music Player -->
     <div class="music-fab" id="musicFab">
         <audio id="audioEl" preload="none"></audio>
         <div class="music-player-embed" id="musicPlayer">
@@ -1009,77 +75,118 @@
         </button>
     </div>
 
-    <nav id="navbar">
-        <div class="nav-inner">
-            <a href="#hero" class="nav-logo">Charan Rathore</a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#toolkit">Toolkit</a></li>
-                <li><a href="#journey">Journey</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <button class="hamburger" id="hamburger" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
+    <!-- Floating pill nav (Astha-inspired) -->
+    <nav class="nav-float" id="navFloat">
+        <a href="#hero" class="nav-brand" aria-label="Charan Rathore Home">
+            <svg class="logo-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="32" height="32" rx="9" fill="#0C0C0C"/>
+                <path d="M9 22V10h4.2c2.4 0 3.9 1.2 3.9 3.1 0 1.3-.7 2.3-1.9 2.8L18.5 22H15l-2.6-5.4H12.2V22H9zm3.2-7.8h1c1 0 1.5-.5 1.5-1.2s-.5-1.2-1.5-1.2h-1v2.4z" fill="#FAFAF8"/>
+                <path d="M19.5 10h3.2l3.8 12h-3.3l-.6-2h-3.5l-.6 2h-3.2L19.5 10zm1.6 7.2l-1-3.4-1 3.4h2z" fill="#FAFAF8"/>
+            </svg>
+            <span class="logo-text">Charan</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Work</a></li>
+            <li><a href="#toolkit">Toolkit</a></li>
+            <li><a href="#journey">Journey</a></li>
+            <li><a href="#contact" class="nav-cta">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
     </nav>
 
-    <!-- ===== HERO ===== -->
+    <!-- HERO: Astha bento grid -->
     <section id="hero">
         <div class="container">
-            <div class="hero-chip">
-                <span class="dot"></span>
-                Currently at Flipkart &middot; Open to opportunities
-            </div>
-            <h1 class="hero-name">
-                I'm <span class="highlight">Charan</span>,<br>
-                I build systems that<br>
-                <span class="highlight">think.</span>
-            </h1>
-            <p class="hero-tagline">
-                Product Analyst at Flipkart by day. AI systems engineer by obsession.
-            </p>
-            <p class="hero-sub">
-                From seller funnel analytics to building a production-grade RAG platform from scratch | 
-                I operate at the intersection of data, AI, and systems thinking. BITS Pilani '26.
-            </p>
-            <div class="hero-cta">
-                <a href="#projects" class="btn btn-primary">See My Work &darr;</a>
-                <a href="https://github.com/charan-rathore" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://linkedin.com/in/charan-rathore" class="btn btn-ghost" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <div class="bento-hero">
+                <div class="bento-card bento-white bento-wide hero-animate">
+                    <p class="bento-eyebrow">This isn't just a portfolio</p>
+                    <h1 class="hero-title">
+                        <span class="line">Hi, I'm <span class="mesh-text-wrap mesh-accent" data-mesh-text="Charan">Charan</span></span>
+                        <span class="line">I build systems that <span id="textMorph">think.</span></span>
+                    </h1>
+                    <p class="bento-body">I'm building my digital dreamhouse here, at the intersection of product, data, and AI infrastructure.</p>
+                    <p class="bento-body-sm"><span class="scramble-text" id="heroScramble" data-scramble="deep tech · AI infra · product · BITS '26"></span></p>
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn btn-primary magnetic">See My Work &darr;</a>
+                        <a href="https://github.com/charan-rathore" class="btn btn-ghost magnetic" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+
+                <div class="bento-card bento-yellow hero-animate">
+                    <div class="bento-visual" aria-hidden="true">
+                        <span class="bento-emoji">&#x1f4bc;</span>
+                        <div class="bento-orbit">
+                            <span>SQL</span><span>AI</span><span>RAG</span>
+                        </div>
+                    </div>
+                    <h3 class="bento-card-title title-blue">Product Analyst &amp; AI Builder</h3>
+                    <p class="bento-body-sm">Flipkart by day. AI research startup by obsession. Turning behavioral data and deep tech into systems that scale.</p>
+                    <span class="bento-pill">WORK</span>
+                </div>
+
+                <div class="bento-card bento-white hero-animate">
+                    <h3 class="bento-card-title title-yellow">Deep Tech &amp; AI Infra</h3>
+                    <p class="bento-body-sm">Working at a top-tier research startup where deep technology meets AI infrastructure, building the systems layer behind Claude, ChatGPT, and next-gen foundation models.</p>
+                </div>
+
+                <div class="bento-card bento-teal hero-animate">
+                    <div class="bento-visual" aria-hidden="true">
+                        <span class="bento-emoji">&#x2699;&#xfe0f;</span>
+                    </div>
+                    <h3 class="bento-card-title title-white">10+ Projects Shipped</h3>
+                    <p class="bento-body-sm">Production-grade systems across RAG, computer vision, full-stack, and multi-agent AI. Not demos, not tutorials.</p>
+                    <span class="bento-pill">BUILD</span>
+                </div>
+
+                <div class="bento-card bento-white hero-animate">
+                    <h3 class="bento-card-title title-pink">5 AI/ML Domains</h3>
+                    <p class="bento-body-sm">RAG pipelines, LLM infra, computer vision, quantitative finance, and prompt engineering, explored with documented tradeoffs.</p>
+                </div>
+
+                <div class="bento-card bento-blue hero-animate">
+                    <div class="bento-visual" aria-hidden="true">
+                        <span class="bento-emoji">&#x1f393;</span>
+                    </div>
+                    <h3 class="bento-card-title title-white">BITS Pilani '26</h3>
+                    <p class="bento-body-sm">Dual degree: MSc Chemistry + BE Mechanical. Mechanical by curriculum, systems thinker by choice.</p>
+                    <span class="bento-pill">ABOUT</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== ABOUT ===== -->
+    <!-- ABOUT -->
     <section id="about">
         <div class="container">
-            <span class="section-tag reveal">The Story</span>
-            <h2 class="section-heading reveal">The Method Behind the Madness</h2>
-            
+            <span class="section-tag reveal" data-scramble="The Story">The Story</span>
+            <h2 class="section-heading reveal heading-fx"><span class="heading-line">The Method Behind</span><br><span class="heading-line">the Madness</span></h2>
+
             <div class="about-layout">
                 <div class="about-narrative reveal">
                     <p>
                         <strong>I'm a mechanical engineer who got lost in data, and never looked back.</strong>
-                        Pursuing a dual degree at BITS Pilani (MSc Chemistry + BE Mechanical Engineering), 
-                        I discovered that the most interesting engineering problems aren't about machines | 
+                        Pursuing a dual degree at BITS Pilani (MSc Chemistry + BE Mechanical Engineering),
+                        I discovered that the most interesting engineering problems aren't about machines |
                         they're about information.
                     </p>
                     <div class="callout">
-                        "Most tutorials show you how to call an API. I want to understand 
+                        "Most tutorials show you how to call an API. I want to understand
                         how to build the infrastructure that makes AI work reliably at scale."
                     </div>
                     <p>
-                        At <strong>Flipkart</strong>, I work on seller funnel analytics and search personalization, 
-                        turning behavioral data into product decisions. Outside work, I'm building 
-                        <strong>IntelliRAG</strong>. A production-grade RAG platform from scratch, because the 
+                        At <strong>Flipkart</strong>, I work on seller funnel analytics and search personalization,
+                        turning behavioral data into product decisions. At a top-tier AI research startup, I'm building
+                        at the intersection of deep tech and AI infrastructure. Outside work, I'm building
+                        <strong>IntelliRAG</strong>, a production-grade RAG platform from scratch, because the
                         best way to understand a system is to build every piece of it yourself.
                     </p>
                     <p>
-                        I care about <strong>correctness over convenience</strong>, 
-                        <strong>documented tradeoffs over hand-waving</strong>, and 
+                        I care about <strong>correctness over convenience</strong>,
+                        <strong>documented tradeoffs over hand-waving</strong>, and
                         <strong>systems that fail gracefully</strong> when things go wrong.
                     </p>
                 </div>
@@ -1107,11 +214,34 @@
 
     <hr class="section-divider">
 
-    <!-- ===== EXPERIENCE ===== -->
+    <!-- EXPERIENCE -->
     <section id="experience">
         <div class="container">
-            <span class="section-tag reveal">Experience</span>
-            <h2 class="section-heading reveal">Where I've Made Impact</h2>
+            <span class="section-tag reveal" data-scramble="Experience">Experience</span>
+            <h2 class="section-heading reveal heading-fx"><span class="heading-line">Where I've Made Impact</span></h2>
+
+            <div class="exp-card featured reveal">
+                <div class="exp-header">
+                    <div>
+                        <div class="exp-role">AI Infrastructure &amp; Product</div>
+                        <div class="exp-company">Top-Tier AI Research Startup</div>
+                    </div>
+                    <span class="exp-date">2026 - Present</span>
+                </div>
+                <p class="exp-desc">
+                    Recently joined a top-tier research startup at the intersection of deep technology
+                    and AI infrastructure, weaving both into a product that tackles one of the most
+                    sought-after problems in today's AI world: the systems layer behind Claude, ChatGPT,
+                    and the next generation of foundation-model applications.
+                </p>
+                <div class="exp-tags">
+                    <span>AI Infrastructure</span>
+                    <span>Deep Tech</span>
+                    <span>LLM Systems</span>
+                    <span>Product Engineering</span>
+                    <span>Foundation Models</span>
+                </div>
+            </div>
             
             <div class="exp-card reveal">
                 <div class="exp-header">
@@ -1122,9 +252,9 @@
                     <span class="exp-date">2025 - Present</span>
                 </div>
                 <p class="exp-desc">
-                    Driving seller funnel analytics within the search personalization team. 
-                    Building data pipelines and dashboards that translate user behavior into 
-                    actionable product insights. Optimizing discovery workflows that impact 
+                    Driving seller funnel analytics within the search personalization team.
+                    Building data pipelines and dashboards that translate user behavior into
+                    actionable product insights. Optimizing discovery workflows that impact
                     millions of daily searches.
                 </p>
                 <div class="exp-tags">
@@ -1145,8 +275,8 @@
                     <span class="exp-date">2024 - Present</span>
                 </div>
                 <p class="exp-desc">
-                    Designing and building production-grade AI systems from first principles: 
-                    RAG pipelines, multi-agent systems, computer vision models, and quantitative finance tools. 
+                    Designing and building production-grade AI systems from first principles:
+                    RAG pipelines, multi-agent systems, computer vision models, and quantitative finance tools.
                     Every project has documented architecture decisions, tradeoff analysis, and failure modes.
                 </p>
                 <div class="exp-tags">
@@ -1163,29 +293,32 @@
 
     <hr class="section-divider">
 
-    <!-- ===== PROJECTS ===== -->
+    <!-- PROJECTS -->
     <section id="projects">
         <div class="container">
-            <span class="section-tag reveal">Work</span>
-            <h2 class="section-heading reveal">Projects That Define Me</h2>
+            <span class="section-tag reveal" data-scramble="Work">Work</span>
+            <h2 class="section-heading reveal heading-fx"><span class="heading-line">Projects That Define Me</span></h2>
             <p class="section-sub reveal">Not demos. Not tutorials. Systems built with production thinking.</p>
 
             <div class="projects-grid">
-                <!-- Featured: IntelliRAG -->
                 <div class="project-card project-featured reveal">
                     <div>
                         <div class="project-top">
-                            <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f9e0;</div>
+                            <div class="project-icon">&#x1f9e0;</div>
                             <div class="project-links">
                                 <a href="https://github.com/charan-rathore/IntelliRAG" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                             </div>
                         </div>
-                        <h3 class="project-title"><a href="https://github.com/charan-rathore/IntelliRAG" target="_blank" rel="noopener noreferrer">IntelliRAG</a></h3>
+                        <h3 class="project-title">
+                            <a href="https://github.com/charan-rathore/IntelliRAG" target="_blank" rel="noopener noreferrer">
+                                <span class="lift-text">IntelliRAG</span>
+                            </a>
+                        </h3>
                         <span class="project-badge badge-active">Flagship &middot; Active Development</span>
                         <p class="project-desc">
-                            Production-grade RAG platform built entirely from scratch. No LangChain shortcuts. 
-                            Full async ingestion pipeline, 5 chunking strategies with benchmark-driven defaults, 
-                            RAGAS evaluation framework, Celery workers with dead-letter queues, and immutable 
+                            Production-grade RAG platform built entirely from scratch. No LangChain shortcuts.
+                            Full async ingestion pipeline, 5 chunking strategies with benchmark-driven defaults,
+                            RAGAS evaluation framework, Celery workers with dead-letter queues, and immutable
                             document versioning in PostgreSQL. Every architectural decision is documented with tradeoffs.
                         </p>
                         <div class="project-impact">Impact: Built from first principles · 77+ Python modules, 12 test suites, 5 SQL migrations</div>
@@ -1213,19 +346,22 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     </div>
                 </div>
 
-                <!-- Project Management Tool -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f4cb;</div>
+                        <div class="project-icon">&#x1f4cb;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/project-management-tool" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                             <a href="https://project-management-tool-nine-zeta.vercel.app" target="_blank" rel="noopener noreferrer">Live &nearr;</a>
                         </div>
                     </div>
-                    <h3 class="project-title"><a href="https://github.com/charan-rathore/project-management-tool" target="_blank" rel="noopener noreferrer">Project Management Tool</a></h3>
+                    <h3 class="project-title">
+                        <a href="https://github.com/charan-rathore/project-management-tool" target="_blank" rel="noopener noreferrer">
+                            <span class="lift-text">Project Management Tool</span>
+                        </a>
+                    </h3>
                     <span class="project-badge badge-live">Live on Vercel</span>
                     <p class="project-desc">
-                        Full-stack Kanban board with drag-and-drop task management, 
+                        Full-stack Kanban board with drag-and-drop task management,
                         team collaboration, and real-time updates. End-to-end TypeScript.
                     </p>
                     <div class="project-tech">
@@ -1233,18 +369,21 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     </div>
                 </div>
 
-                <!-- Agentic Finance -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f4c8;</div>
+                        <div class="project-icon">&#x1f4c8;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/agentic-finance-advisor" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                         </div>
                     </div>
-                    <h3 class="project-title"><a href="https://github.com/charan-rathore/agentic-finance-advisor" target="_blank" rel="noopener noreferrer">Agentic Finance Advisor</a></h3>
+                    <h3 class="project-title">
+                        <a href="https://github.com/charan-rathore/agentic-finance-advisor" target="_blank" rel="noopener noreferrer">
+                            <span class="lift-text">Agentic Finance Advisor</span>
+                        </a>
+                    </h3>
                     <span class="project-badge badge-complete">Complete</span>
                     <p class="project-desc">
-                        Multi-agent AI system using LLMs to monitor stocks, analyze market sentiment 
+                        Multi-agent AI system using LLMs to monitor stocks, analyze market sentiment
                         from news and social media, and generate actionable investment recommendations.
                     </p>
                     <div class="project-tech">
@@ -1252,18 +391,21 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     </div>
                 </div>
 
-                <!-- 3D Bolt Dataset -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x2699;&#xfe0f;</div>
+                        <div class="project-icon">&#x2699;&#xfe0f;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/Automation-of-3D-Bolt-Dataset" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                         </div>
                     </div>
-                    <h3 class="project-title"><a href="https://github.com/charan-rathore/Automation-of-3D-Bolt-Dataset" target="_blank" rel="noopener noreferrer">3D Bolt Dataset Automation</a></h3>
+                    <h3 class="project-title">
+                        <a href="https://github.com/charan-rathore/Automation-of-3D-Bolt-Dataset" target="_blank" rel="noopener noreferrer">
+                            <span class="lift-text">3D Bolt Dataset Automation</span>
+                        </a>
+                    </h3>
                     <span class="project-badge badge-complete">Complete</span>
                     <p class="project-desc">
-                        Automated generation of 1,000+ labeled STL datasets via Fusion 360 API 
+                        Automated generation of 1,000+ labeled STL datasets via Fusion 360 API
                         for ML-based CAD classification. Full pipeline from parametric generation to labeling.
                     </p>
                     <div class="project-impact">Impact: 1,000+ labeled 3D datasets generated automatically</div>
@@ -1272,18 +414,21 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     </div>
                 </div>
 
-                <!-- Drone Detection -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f985;</div>
+                        <div class="project-icon">&#x1f985;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/Object-detection-from-drone-captured-videos" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                         </div>
                     </div>
-                    <h3 class="project-title"><a href="https://github.com/charan-rathore/Object-detection-from-drone-captured-videos" target="_blank" rel="noopener noreferrer">Drone Wildlife Detection</a></h3>
+                    <h3 class="project-title">
+                        <a href="https://github.com/charan-rathore/Object-detection-from-drone-captured-videos" target="_blank" rel="noopener noreferrer">
+                            <span class="lift-text">Drone Wildlife Detection</span>
+                        </a>
+                    </h3>
                     <span class="project-badge badge-complete">Complete</span>
                     <p class="project-desc">
-                        YOLOv8-based object detection for identifying blackbuck species 
+                        YOLOv8-based object detection for identifying blackbuck species
                         from drone-captured video footage. Applied ML for ecological conservation.
                     </p>
                     <div class="project-tech">
@@ -1291,18 +436,21 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     </div>
                 </div>
 
-                <!-- Gen-AI Extraction -->
                 <div class="project-card reveal">
                     <div class="project-top">
-                        <div class="project-icon" style="background:rgba(100,255,218,0.1);">&#x1f52c;</div>
+                        <div class="project-icon">&#x1f52c;</div>
                         <div class="project-links">
                             <a href="https://github.com/charan-rathore/Gen-AI-Extraction-Optimization" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
                         </div>
                     </div>
-                    <h3 class="project-title"><a href="https://github.com/charan-rathore/Gen-AI-Extraction-Optimization" target="_blank" rel="noopener noreferrer">Gen-AI Extraction Optimization</a></h3>
+                    <h3 class="project-title">
+                        <a href="https://github.com/charan-rathore/Gen-AI-Extraction-Optimization" target="_blank" rel="noopener noreferrer">
+                            <span class="lift-text">Gen-AI Extraction Optimization</span>
+                        </a>
+                    </h3>
                     <span class="project-badge badge-complete">Complete</span>
                     <p class="project-desc">
-                        Systematic research across multiple prompting strategies and LLM configurations 
+                        Systematic research across multiple prompting strategies and LLM configurations
                         to optimize information extraction accuracy. Documented results and methodology.
                     </p>
                     <div class="project-tech">
@@ -1315,13 +463,13 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
 
     <hr class="section-divider">
 
-    <!-- ===== TOOLKIT ===== -->
+    <!-- TOOLKIT -->
     <section id="toolkit">
         <div class="container">
-            <span class="section-tag reveal">Capabilities</span>
-            <h2 class="section-heading reveal">My Toolkit</h2>
+            <span class="section-tag reveal" data-scramble="Capabilities">Capabilities</span>
+            <h2 class="section-heading reveal heading-fx"><span class="heading-line">My Toolkit</span></h2>
             <p class="toolkit-intro reveal">
-                I don't just use tools; I understand when and why to reach for each one. 
+                I don't just use tools; I understand when and why to reach for each one.
                 Grouped by the problems they solve, not just the labels on the box.
             </p>
 
@@ -1384,11 +532,11 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
 
     <hr class="section-divider">
 
-    <!-- ===== JOURNEY TIMELINE ===== -->
+    <!-- JOURNEY -->
     <section id="journey">
         <div class="container">
-            <span class="section-tag reveal">Journey</span>
-            <h2 class="section-heading reveal">The Road So Far</h2>
+            <span class="section-tag reveal" data-scramble="Journey">Journey</span>
+            <h2 class="section-heading reveal heading-fx"><span class="heading-line">The Road So Far</span></h2>
             <p class="section-sub reveal">Every station shaped how I think about systems, data, and building things that matter.</p>
 
             <div class="journey-wrapper" id="journeyWrapper">
@@ -1406,18 +554,14 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     <div class="endpoint-label">&#x1f6a9; Where it began</div>
                 </div>
 
-                <!-- Station 1: BITS Pilani -->
                 <div class="journey-station" data-year="2021">
                     <div class="station-content">
-                        <div class="station-date">
-                            2021
-                            <span class="station-type type-edu">Education</span>
-                        </div>
+                        <div class="station-date">2021 <span class="station-type">Education</span></div>
                         <div class="station-title">Joined BITS Pilani</div>
                         <div class="station-org">MSc Chemistry + BE Mechanical Engineering</div>
                         <div class="station-desc">
-                            Started a dual degree at one of India's top engineering institutes. 
-                            Mechanical engineering by curriculum, but curiosity about data patterns 
+                            Started a dual degree at one of India's top engineering institutes.
+                            Mechanical engineering by curriculum, but curiosity about data patterns
                             was already pulling me in a different direction.
                         </div>
                     </div>
@@ -1425,20 +569,16 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     <div class="station-spacer"></div>
                 </div>
 
-                <!-- Station 2: First ML Project -->
                 <div class="journey-station" data-year="2023">
                     <div class="station-spacer"></div>
                     <div class="station-dot-col"><div class="station-dot"></div></div>
                     <div class="station-content">
-                        <div class="station-date">
-                            2023
-                            <span class="station-type type-project">Project</span>
-                        </div>
+                        <div class="station-date">2023 <span class="station-type">Project</span></div>
                         <div class="station-title">First ML Deep Dive</div>
                         <div class="station-org">3D Bolt Dataset Automation</div>
                         <div class="station-desc">
-                            Automated generation of 1,000+ labeled 3D datasets using Fusion 360 API 
-                            for ML-based CAD classification. First taste of building data pipelines 
+                            Automated generation of 1,000+ labeled 3D datasets using Fusion 360 API
+                            for ML-based CAD classification. First taste of building data pipelines
                             from scratch | and I was hooked.
                         </div>
                         <div class="station-tags">
@@ -1447,18 +587,14 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     </div>
                 </div>
 
-                <!-- Station 3: Computer Vision -->
                 <div class="journey-station" data-year="2024-a">
                     <div class="station-content">
-                        <div class="station-date">
-                            Early 2024
-                            <span class="station-type type-project">Project</span>
-                        </div>
+                        <div class="station-date">Early 2024 <span class="station-type">Project</span></div>
                         <div class="station-title">Computer Vision for Conservation</div>
                         <div class="station-org">Drone Wildlife Detection (YOLOv8)</div>
                         <div class="station-desc">
-                            Built a YOLOv8-based detection system for identifying blackbuck from 
-                            drone footage. Learned that ML isn't just about models. It's about 
+                            Built a YOLOv8-based detection system for identifying blackbuck from
+                            drone footage. Learned that ML isn't just about models. It's about
                             the messy reality of real-world data.
                         </div>
                         <div class="station-tags">
@@ -1469,20 +605,16 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     <div class="station-spacer"></div>
                 </div>
 
-                <!-- Station 4: AI & LLMs -->
                 <div class="journey-station" data-year="2024-b">
                     <div class="station-spacer"></div>
                     <div class="station-dot-col"><div class="station-dot"></div></div>
                     <div class="station-content">
-                        <div class="station-date">
-                            Mid 2024
-                            <span class="station-type type-milestone">Pivot</span>
-                        </div>
+                        <div class="station-date">Mid 2024 <span class="station-type">Pivot</span></div>
                         <div class="station-title">Deep into AI & LLMs</div>
                         <div class="station-org">Multi-Agent Systems & Prompt Research</div>
                         <div class="station-desc">
-                            Built an agentic finance advisor using LangChain, ran systematic 
-                            experiments on LLM prompting strategies, and realized I wanted to 
+                            Built an agentic finance advisor using LangChain, ran systematic
+                            experiments on LLM prompting strategies, and realized I wanted to
                             understand AI infrastructure, not just use APIs.
                         </div>
                         <div class="station-tags">
@@ -1491,17 +623,13 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     </div>
                 </div>
 
-                <!-- Station 5: Full-Stack -->
                 <div class="journey-station" data-year="2024-c">
                     <div class="station-content">
-                        <div class="station-date">
-                            Late 2024
-                            <span class="station-type type-project">Project</span>
-                        </div>
+                        <div class="station-date">Late 2024 <span class="station-type">Project</span></div>
                         <div class="station-title">Full-Stack Engineering</div>
                         <div class="station-org">Project Management Tool (Live on Vercel)</div>
                         <div class="station-desc">
-                            Shipped a production app end-to-end: TypeScript, React, Next.js, 
+                            Shipped a production app end-to-end: TypeScript, React, Next.js,
                             Tailwind. Proved I could build the whole stack, not just ML models.
                         </div>
                         <div class="station-tags">
@@ -1512,20 +640,16 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     <div class="station-spacer"></div>
                 </div>
 
-                <!-- Station 6: Flipkart -->
                 <div class="journey-station" data-year="2025">
                     <div class="station-spacer"></div>
                     <div class="station-dot-col"><div class="station-dot"></div></div>
                     <div class="station-content">
-                        <div class="station-date">
-                            2025
-                            <span class="station-type type-work">Work</span>
-                        </div>
+                        <div class="station-date">2025 <span class="station-type">Work</span></div>
                         <div class="station-title">Product Analyst Intern</div>
                         <div class="station-org">Flipkart</div>
                         <div class="station-desc">
-                            Joined Flipkart's search personalization team. Driving seller funnel 
-                            analytics, building dashboards that translate user behavior into product 
+                            Joined Flipkart's search personalization team. Driving seller funnel
+                            analytics, building dashboards that translate user behavior into product
                             decisions impacting millions of daily searches.
                         </div>
                         <div class="station-tags">
@@ -1534,19 +658,15 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     </div>
                 </div>
 
-                <!-- Station 7: IntelliRAG -->
                 <div class="journey-station" data-year="2025-b">
                     <div class="station-content">
-                        <div class="station-date">
-                            2025 - Present
-                            <span class="station-type type-milestone">Flagship</span>
-                        </div>
+                        <div class="station-date">2025 - Present <span class="station-type">Flagship</span></div>
                         <div class="station-title">IntelliRAG. Building from Scratch</div>
                         <div class="station-org">Production-Grade RAG Platform</div>
                         <div class="station-desc">
-                            The culmination of everything: building an enterprise RAG system from 
-                            first principles. Async pipelines, benchmark-driven chunking, evaluation 
-                            frameworks, Celery workers, PostgreSQL lifecycle management. 
+                            The culmination of everything: building an enterprise RAG system from
+                            first principles. Async pipelines, benchmark-driven chunking, evaluation
+                            frameworks, Celery workers, PostgreSQL lifecycle management.
                             No shortcuts, no hand-waving.
                         </div>
                         <div class="station-tags">
@@ -1557,20 +677,35 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     <div class="station-spacer"></div>
                 </div>
 
-                <!-- Station 8: What's Next -->
-                <div class="journey-station" data-year="2026">
+                <div class="journey-station" data-year="2026-a">
+                    <div class="station-content highlight-station">
+                        <div class="station-date">2026 <span class="station-type">Work</span></div>
+                        <div class="station-title">Deep Tech &amp; AI Infrastructure</div>
+                        <div class="station-org">Top-Tier AI Research Startup</div>
+                        <div class="station-desc">
+                            Recently started at a top-tier research startup where deep technology meets
+                            AI infrastructure, building product systems that solve one of the most critical
+                            problems in today's AI landscape: the infrastructure powering Claude, ChatGPT,
+                            and next-gen foundation models. Not just using AI. Building what makes it work.
+                        </div>
+                        <div class="station-tags">
+                            <span>AI Infrastructure</span><span>Deep Tech</span><span>LLM Systems</span><span>Product</span>
+                        </div>
+                    </div>
+                    <div class="station-dot-col"><div class="station-dot"></div></div>
+                    <div class="station-spacer"></div>
+                </div>
+
+                <div class="journey-station" data-year="2026-b">
                     <div class="station-spacer"></div>
                     <div class="station-dot-col"><div class="station-dot"></div></div>
                     <div class="station-content">
-                        <div class="station-date">
-                            2026
-                            <span class="station-type type-milestone">Next</span>
-                        </div>
+                        <div class="station-date">2026 <span class="station-type">Next</span></div>
                         <div class="station-title">Graduating &amp; What's Next</div>
                         <div class="station-org">BITS Pilani '26</div>
                         <div class="station-desc">
-                            Graduating with a dual degree and a portfolio of production-grade systems. 
-                            Looking for roles where I can combine product thinking with 
+                            Graduating with a dual degree and a portfolio of production-grade systems.
+                            Looking for roles where I can combine product thinking with
                             deep technical execution in AI/ML and data systems.
                         </div>
                     </div>
@@ -1580,35 +715,18 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     <div class="endpoint-label">&#x1f680; The best is yet to come</div>
                 </div>
 
-                <!-- Horizontal station dot indicators -->
                 <div class="journey-dots" id="journeyDots">
-                    <div class="journey-dot-indicator" data-station="0">
-                        <span class="dot-tooltip">2021 &middot; BITS Pilani</span>
-                    </div>
-                    <div class="journey-dot-indicator" data-station="1">
-                        <span class="dot-tooltip">2023 &middot; First ML Project</span>
-                    </div>
-                    <div class="journey-dot-indicator" data-station="2">
-                        <span class="dot-tooltip">2024 &middot; Computer Vision</span>
-                    </div>
-                    <div class="journey-dot-indicator" data-station="3">
-                        <span class="dot-tooltip">2024 &middot; AI &amp; LLMs</span>
-                    </div>
-                    <div class="journey-dot-indicator" data-station="4">
-                        <span class="dot-tooltip">2024 &middot; Full-Stack</span>
-                    </div>
-                    <div class="journey-dot-indicator" data-station="5">
-                        <span class="dot-tooltip">2025 &middot; Flipkart</span>
-                    </div>
-                    <div class="journey-dot-indicator" data-station="6">
-                        <span class="dot-tooltip">2025 &middot; IntelliRAG</span>
-                    </div>
-                    <div class="journey-dot-indicator" data-station="7">
-                        <span class="dot-tooltip">2026 &middot; What's Next</span>
-                    </div>
+                    <div class="journey-dot-indicator" data-station="0"><span class="dot-tooltip">2021 · BITS</span></div>
+                    <div class="journey-dot-indicator" data-station="1"><span class="dot-tooltip">2023 · ML</span></div>
+                    <div class="journey-dot-indicator" data-station="2"><span class="dot-tooltip">2024 · CV</span></div>
+                    <div class="journey-dot-indicator" data-station="3"><span class="dot-tooltip">2024 · LLMs</span></div>
+                    <div class="journey-dot-indicator" data-station="4"><span class="dot-tooltip">2024 · Full-Stack</span></div>
+                    <div class="journey-dot-indicator" data-station="5"><span class="dot-tooltip">2025 · Flipkart</span></div>
+                    <div class="journey-dot-indicator" data-station="6"><span class="dot-tooltip">2025 · IntelliRAG</span></div>
+                    <div class="journey-dot-indicator" data-station="7"><span class="dot-tooltip">2026 · AI Startup</span></div>
+                    <div class="journey-dot-indicator" data-station="8"><span class="dot-tooltip">2026 · Next</span></div>
                 </div>
 
-                <!-- Journey banner -->
                 <div class="journey-banner reveal">
                     <span class="banner-block">Journey</span>
                     <span class="banner-block">To</span>
@@ -1621,35 +739,60 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
 
     <hr class="section-divider">
 
-    <!-- ===== CONTACT ===== -->
+    <!-- CONTACT -->
     <section id="contact">
         <div class="container">
-            <span class="section-tag reveal">Let's Talk</span>
-            <h2 class="contact-heading reveal">Let's Build Something Together</h2>
+            <span class="section-tag reveal" data-scramble="Let's Talk">Let's Talk</span>
+            <h2 class="contact-heading reveal heading-fx"><span class="heading-line">Let's Build Something Together</span></h2>
             <p class="contact-sub reveal">
-                Always open to discussing product analytics, AI systems, 
+                Always open to discussing product analytics, AI systems,
                 or any technically interesting problem.
             </p>
-            
-            <div class="contact-grid reveal">
-                <a href="mailto:ra7hore.charan@gmail.com" class="contact-item">
-                    <span class="ico">&#x2709;&#xfe0f;</span>
-                    ra7hore.charan@gmail.com
+
+            <div class="contact-bento reveal">
+                <a href="mailto:ra7hore.charan@gmail.com" class="contact-card">
+                    <span class="contact-icon contact-icon-gmail" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11A2.5 2.5 0 0 1 17.5 20h-11A2.5 2.5 0 0 1 4 17.5v-11Z" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M4 17.5V8.5l7.2 5.4a1 1 0 0 0 1.2 0L20 8.5v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <span class="contact-card-label">Email</span>
+                    <span class="contact-card-value">ra7hore.charan@gmail.com</span>
                 </a>
-                <a href="https://linkedin.com/in/charan-rathore" class="contact-item" target="_blank" rel="noopener noreferrer">
-                    <span class="ico">&#x1f310;</span>
-                    LinkedIn
+
+                <a href="https://linkedin.com/in/charan-rathore" class="contact-card" target="_blank" rel="noopener noreferrer">
+                    <span class="contact-icon contact-icon-linkedin" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </span>
+                    <span class="contact-card-label">LinkedIn</span>
+                    <span class="contact-card-value">charan-rathore</span>
                 </a>
-                <a href="https://github.com/charan-rathore" class="contact-item" target="_blank" rel="noopener noreferrer">
-                    <span class="ico">&#x1f4bb;</span>
-                    GitHub
+
+                <a href="https://github.com/charan-rathore" class="contact-card" target="_blank" rel="noopener noreferrer">
+                    <span class="contact-icon contact-icon-github" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                        </svg>
+                    </span>
+                    <span class="contact-card-label">GitHub</span>
+                    <span class="contact-card-value">charan-rathore</span>
                 </a>
-                <a href="https://x.com/huesofbanter" class="contact-item" target="_blank" rel="noopener noreferrer">
-                    <span class="ico">&#x1d54f;</span>
-                    @huesofbanter
+
+                <a href="https://x.com/huesofbanter" class="contact-card" target="_blank" rel="noopener noreferrer">
+                    <span class="contact-icon contact-icon-x" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </span>
+                    <span class="contact-card-label">X</span>
+                    <span class="contact-card-value">@huesofbanter</span>
                 </a>
             </div>
-            <p class="contact-response reveal" style="font-size:0.78rem; color:#495670; margin-top:0.3rem;">
+            <p class="contact-response reveal" style="font-size:0.78rem; margin-top:0.5rem;">
                 The X handle is for memes, puns &amp; friendly banter. Follow only if you're into that sort of thing.
             </p>
             <div class="contact-response reveal">Response time: Usually within 24 hours</div>
@@ -1660,225 +803,6 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
         <p>Built by Charan Rathore &middot; Hosted on GitHub Pages</p>
     </footer>
 
-    <script>
-        // Cursor glow
-        const glow = document.getElementById('cursorGlow');
-        document.addEventListener('mousemove', e => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
-        });
-
-        // Navbar scroll
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        // Mobile menu
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
-        navLinks.querySelectorAll('a').forEach(link =>
-            link.addEventListener('click', () => navLinks.classList.remove('active'))
-        );
-
-        // Scroll reveal
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // Global scroll progress bar + glowing dot
-        const scrollProgressFill = document.getElementById('scrollProgress');
-        const scrollIndicator = document.getElementById('scrollIndicator');
-        function updateScrollProgress() {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-            scrollProgressFill.style.height = progress + '%';
-            if (scrollIndicator) scrollIndicator.style.top = Math.max(1, Math.min(99, progress)) + '%';
-        }
-        window.addEventListener('scroll', updateScrollProgress, { passive: true });
-        updateScrollProgress();
-
-        // Music player — HTML5 Audio with free tracks
-        const audio = document.getElementById('audioEl');
-        const musicToggle = document.getElementById('musicToggle');
-        const musicPlayer = document.getElementById('musicPlayer');
-        const musicClose = document.getElementById('musicClose');
-        const musicIcon = document.getElementById('musicIcon');
-        const mpDisc = document.getElementById('mpDisc');
-        const mpTitle = document.getElementById('mpTitle');
-        const mpArtist = document.getElementById('mpArtist');
-        const mpPlay = document.getElementById('mpPlay');
-        const mpPrev = document.getElementById('mpPrev');
-        const mpNext = document.getElementById('mpNext');
-        const mpFill = document.getElementById('mpFill');
-        const mpProgress = document.getElementById('mpProgress');
-        const mpCur = document.getElementById('mpCur');
-        const mpDur = document.getElementById('mpDur');
-        let musicOpen = false;
-        let isPlaying = false;
-
-        const playlist = [
-            { title: 'Chill Groove', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-            { title: 'Mellow Beats', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-            { title: 'Night Drive', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
-            { title: 'Sunset Waves', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
-            { title: 'Deep Focus', artist: 'SoundHelix', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3' }
-        ];
-        let trackIdx = 0;
-        let trackLoaded = false;
-
-        function loadTrack(idx, andPlay) {
-            trackIdx = ((idx % playlist.length) + playlist.length) % playlist.length;
-            const t = playlist[trackIdx];
-            mpTitle.textContent = t.title;
-            mpArtist.textContent = t.artist;
-            mpFill.style.width = '0%';
-            mpCur.textContent = '0:00';
-            mpDur.textContent = '0:00';
-            trackLoaded = false;
-            audio.src = t.src;
-            audio.load();
-            if (andPlay) {
-                audio.addEventListener('canplay', function onCanPlay() {
-                    audio.removeEventListener('canplay', onCanPlay);
-                    trackLoaded = true;
-                    audio.play().catch(() => {});
-                });
-            }
-        }
-
-        function setPlayingUI(playing) {
-            isPlaying = playing;
-            mpPlay.innerHTML = playing ? '&#x23F8;' : '&#x25B6;';
-            musicIcon.innerHTML = playing ? '&#x23F8;' : '&#x25B6;';
-            mpDisc.classList.toggle('spinning', playing);
-            musicToggle.classList.toggle('playing', playing);
-        }
-
-        audio.addEventListener('play', () => setPlayingUI(true));
-        audio.addEventListener('pause', () => setPlayingUI(false));
-
-        function fmtTime(s) {
-            if (!s || isNaN(s)) return '0:00';
-            const m = Math.floor(s / 60);
-            const sec = Math.floor(s % 60);
-            return m + ':' + (sec < 10 ? '0' : '') + sec;
-        }
-
-        audio.addEventListener('timeupdate', () => {
-            if (audio.duration) {
-                mpFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
-                mpCur.textContent = fmtTime(audio.currentTime);
-            }
-        });
-        audio.addEventListener('loadedmetadata', () => {
-            mpDur.textContent = fmtTime(audio.duration);
-            trackLoaded = true;
-        });
-        audio.addEventListener('ended', () => loadTrack(trackIdx + 1, true));
-
-        mpPlay.addEventListener('click', () => {
-            if (!trackLoaded) { loadTrack(trackIdx, true); return; }
-            if (audio.paused) audio.play().catch(() => {});
-            else audio.pause();
-        });
-        mpPrev.addEventListener('click', () => loadTrack(trackIdx - 1, true));
-        mpNext.addEventListener('click', () => loadTrack(trackIdx + 1, true));
-
-        mpProgress.addEventListener('click', (e) => {
-            if (audio.duration) {
-                audio.currentTime = (e.offsetX / mpProgress.offsetWidth) * audio.duration;
-            }
-        });
-
-        musicToggle.addEventListener('click', () => {
-            musicOpen = !musicOpen;
-            musicPlayer.classList.toggle('open', musicOpen);
-            if (musicOpen) {
-                if (!trackLoaded && !isPlaying) loadTrack(0, true);
-                else if (!isPlaying) audio.play().catch(() => {});
-            } else {
-                if (isPlaying) audio.pause();
-            }
-        });
-
-        musicClose.addEventListener('click', (e) => {
-            e.stopPropagation();
-            musicOpen = false;
-            musicPlayer.classList.remove('open');
-            if (isPlaying) audio.pause();
-        });
-
-        // Journey train animation
-        const journeyWrapper = document.getElementById('journeyWrapper');
-        const journeyTrack = document.getElementById('journeyTrack');
-        const journeyTrain = document.getElementById('journeyTrain');
-        const stations = document.querySelectorAll('.journey-station');
-
-        function updateJourney() {
-            if (!journeyWrapper || !journeyTrack || !journeyTrain) return;
-
-            const wrapperRect = journeyWrapper.getBoundingClientRect();
-            const wrapperTop = wrapperRect.top;
-            const wrapperHeight = wrapperRect.height;
-            const viewportCenter = window.innerHeight * 0.5;
-
-            const progress = Math.max(0, Math.min(1,
-                (viewportCenter - wrapperTop) / wrapperHeight
-            ));
-
-            journeyTrack.style.setProperty('--track-fill', (progress * 100) + '%');
-            journeyTrain.style.setProperty('--train-top', (progress * 100) + '%');
-
-            const dotIndicators = document.querySelectorAll('.journey-dot-indicator');
-            let currentIdx = -1;
-
-            stations.forEach((station, i) => {
-                const stationRect = station.getBoundingClientRect();
-                const stationCenter = stationRect.top + stationRect.height / 2;
-                if (stationCenter < viewportCenter + 80) {
-                    station.classList.add('visible', 'active');
-                    currentIdx = i;
-                } else {
-                    station.classList.remove('active');
-                }
-            });
-
-            dotIndicators.forEach((dot, i) => {
-                dot.classList.remove('reached', 'current');
-                if (i < currentIdx) {
-                    dot.classList.add('reached');
-                } else if (i === currentIdx) {
-                    dot.classList.add('current');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', updateJourney, { passive: true });
-        updateJourney();
-
-        // Dot click to scroll to station
-        document.querySelectorAll('.journey-dot-indicator').forEach(dot => {
-            dot.addEventListener('click', function() {
-                const idx = parseInt(this.dataset.station);
-                const target = stations[idx];
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            });
-        });
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        });
-    </script>
+    <script src="assets/js/effects.js"></script>
 </body>
 </html>
