@@ -1,9 +1,18 @@
 /* Originkit-inspired effects + site interactions — light theme */
 
+const IS_MOBILE_LAYOUT = window.matchMedia('(max-width: 768px)').matches;
+const IS_COARSE_POINTER = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IS_TOUCH_DEVICE = IS_COARSE_POINTER || IS_MOBILE_LAYOUT;
+
+document.documentElement.classList.toggle('is-mobile', IS_MOBILE_LAYOUT);
+document.documentElement.classList.toggle('is-touch', IS_TOUCH_DEVICE);
+document.documentElement.classList.toggle('reduce-motion', REDUCE_MOTION);
+
 // ===== Originkit: Kinetic Grid =====
 (function initKineticGrid() {
     const container = document.getElementById('kineticGrid');
-    if (!container) return;
+    if (!container || IS_TOUCH_DEVICE || REDUCE_MOTION) return;
 
     const canvas = document.createElement('canvas');
     container.appendChild(canvas);
@@ -184,7 +193,15 @@ function initMeshText(el) {
     setTimeout(resize, 150);
 }
 
-document.querySelectorAll('[data-mesh-text]').forEach(initMeshText);
+if (!IS_TOUCH_DEVICE) {
+    document.querySelectorAll('[data-mesh-text]').forEach(initMeshText);
+} else {
+    document.querySelectorAll('[data-mesh-text]').forEach((el) => {
+        const text = el.dataset.meshText || el.textContent.trim();
+        el.textContent = text;
+        el.classList.add('mesh-text-fallback');
+    });
+}
 
 // ===== Originkit: Flicker Text (section tags only) =====
 document.querySelectorAll('.flicker-text:not(.heading-fx)').forEach(el => {
@@ -203,7 +220,11 @@ document.querySelectorAll('.flicker-text:not(.heading-fx)').forEach(el => {
 });
 
 // ===== Originkit: Magnetic elements =====
-document.querySelectorAll('.magnetic').forEach(el => {
+if (IS_TOUCH_DEVICE) {
+    document.querySelectorAll('.magnetic').forEach((el) => el.classList.add('magnetic-static'));
+}
+
+document.querySelectorAll('.magnetic:not(.magnetic-static)').forEach(el => {
     el.addEventListener('mousemove', e => {
         const rect = el.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
@@ -326,7 +347,9 @@ function initHeadingFx(heading) {
     heading.addEventListener('mouseleave', () => heading.classList.remove('direction-active'));
 }
 
-document.querySelectorAll('.heading-fx').forEach(initHeadingFx);
+if (!IS_TOUCH_DEVICE && !REDUCE_MOTION) {
+    document.querySelectorAll('.heading-fx').forEach(initHeadingFx);
+}
 
 // ===== Text Lift (project titles) =====
 document.querySelectorAll('.lift-text').forEach(el => {

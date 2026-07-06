@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Charan Rathore · Product Analyst & AI Systems Builder</title>
     <meta name="description" content="AI systems builder & product analyst. Ex-Flipkart (Jan–Jun 2026). Building IntelliRAG, ThermoSense, and production-grade ML systems. BITS Pilani '26.">
     <meta name="keywords" content="Charan Rathore, Product Analyst, AI Engineer, BITS Pilani, RAG, ThermoSense, Machine Learning">
@@ -85,6 +85,10 @@
             </svg>
             <span class="logo-text">Charan</span>
         </a>
+        <span class="visitor-pill" aria-label="Portfolio visitors">
+            <span class="visitor-pill-dot" aria-hidden="true"></span>
+            <span data-visitor-count>—</span> visitors
+        </span>
         <ul class="nav-links" id="navLinks">
             <li><a href="#about">About</a></li>
             <li><a href="#experience">Experience</a></li>
@@ -834,10 +838,22 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
     </section>
 
     <footer>
-        <p>Built by Charan Rathore &middot; Hosted on GitHub Pages</p>
+        <div class="footer-inner">
+            <p>Built by Charan Rathore &middot; Hosted on GitHub Pages</p>
+            <div class="visitor-stats" aria-live="polite">
+                <span class="visitor-stat"><strong data-visitor-count>—</strong> total visitors</span>
+                <span class="visitor-divider" aria-hidden="true">·</span>
+                <span class="visitor-stat visitor-breakdown">
+                    <strong data-mobile-count>—</strong> mobile · <strong data-desktop-count>—</strong> desktop
+                </span>
+                <span class="visitor-divider visitor-device-only" aria-hidden="true">·</span>
+                <span class="visitor-stat visitor-device-only">viewing on <strong data-device-mode>—</strong></span>
+            </div>
+        </div>
     </footer>
 
     <script src="assets/js/effects.js"></script>
     <script src="assets/js/live-location.js" defer></script>
+    <script src="assets/js/visitor-counter.js" defer></script>
 </body>
 </html>
