@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charan Rathore · Product Analyst & AI Systems Builder</title>
-    <meta name="description" content="Product Analyst Intern at Flipkart. Building production-grade AI systems from first principles. BITS Pilani '26.">
-    <meta name="keywords" content="Charan Rathore, Product Analyst, Flipkart, AI Engineer, BITS Pilani, RAG, Machine Learning">
+    <meta name="description" content="AI systems builder & product analyst. Ex-Flipkart (Jan–Jun 2026). Building IntelliRAG, ThermoSense, and production-grade ML systems. BITS Pilani '26.">
+    <meta name="keywords" content="Charan Rathore, Product Analyst, AI Engineer, BITS Pilani, RAG, ThermoSense, Machine Learning">
 
     <meta property="og:title" content="Charan Rathore · Product Analyst & AI Systems Builder">
-    <meta property="og:description" content="Product Analyst Intern at Flipkart. Building production-grade AI systems from scratch.">
+    <meta property="og:description" content="Building production-grade AI systems from scratch — RAG, hyperlocal weather ML, and full-stack apps.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://charan-rathore.github.io">
 
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     <h3 class="bento-card-title title-blue">Product Analyst &amp; AI Builder</h3>
-                    <p class="bento-body-sm">Flipkart by day. AI research startup by obsession. Turning behavioral data and deep tech into systems that scale.</p>
+                    <p class="bento-body-sm">Ex-Flipkart intern (Jan–Jun 2026). AI research startup by obsession. Turning behavioral data and deep tech into systems that scale.</p>
                     <span class="bento-pill">WORK</span>
                 </div>
 
@@ -147,14 +147,22 @@
                     <p class="bento-body-sm">RAG pipelines, LLM infra, computer vision, quantitative finance, and prompt engineering, explored with documented tradeoffs.</p>
                 </div>
 
-                <div class="bento-card bento-blue hero-animate">
-                    <div class="bento-visual" aria-hidden="true">
-                        <span class="bento-emoji">&#x1f393;</span>
+                <aside class="bento-card bento-white live-widget hero-animate" aria-label="Live location and weather">
+                    <div class="live-widget-header">
+                        <span>Live Whereabouts</span>
+                        <span>Google Maps</span>
                     </div>
-                    <h3 class="bento-card-title title-white">BITS Pilani '26</h3>
-                    <p class="bento-body-sm">Dual degree: MSc Chemistry + BE Mechanical. Mechanical by curriculum, systems thinker by choice.</p>
-                    <span class="bento-pill">ABOUT</span>
-                </div>
+                    <div id="liveMap" role="img" aria-label="Map showing current location"></div>
+                    <div class="live-widget-body">
+                        <div class="live-temp-row">
+                            <div id="liveTemp">—</div>
+                            <div id="liveCondition">Fetching conditions…</div>
+                        </div>
+                        <div id="liveLocation">Locating you…</div>
+                        <div id="liveHumidity"></div>
+                        <span id="liveUpdated"></span>
+                    </div>
+                </aside>
             </div>
         </div>
     </section>
@@ -178,10 +186,10 @@
                         how to build the infrastructure that makes AI work reliably at scale."
                     </div>
                     <p>
-                        At <strong>Flipkart</strong>, I work on seller funnel analytics and search personalization,
+                        Previously at <strong>Flipkart</strong> (Jan–Jun 2026), I drove seller funnel analytics and search personalization,
                         turning behavioral data into product decisions. At a top-tier AI research startup, I'm building
                         at the intersection of deep tech and AI infrastructure. Outside work, I'm building
-                        <strong>IntelliRAG</strong>, a production-grade RAG platform from scratch, because the
+                        <strong>IntelliRAG</strong> and <strong>ThermoSense</strong> — production systems from scratch, because the
                         best way to understand a system is to build every piece of it yourself.
                     </p>
                     <p>
@@ -249,12 +257,12 @@
                         <div class="exp-role">Product Analyst Intern</div>
                         <div class="exp-company">Flipkart</div>
                     </div>
-                    <span class="exp-date">2025 - Present</span>
+                    <span class="exp-date">Jan 2026 – Jun 2026</span>
                 </div>
                 <p class="exp-desc">
-                    Driving seller funnel analytics within the search personalization team.
-                    Building data pipelines and dashboards that translate user behavior into
-                    actionable product insights. Optimizing discovery workflows that impact
+                    Drove seller funnel analytics within the search personalization team.
+                    Built data pipelines and dashboards that translate user behavior into
+                    actionable product insights. Optimized discovery workflows impacting
                     millions of daily searches.
                 </p>
                 <div class="exp-tags">
@@ -343,6 +351,30 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
 <span class="dim">// The Philosophy</span>
 <span class="highlight-line">"When retrieval fails, do you know why?</span>
 <span class="highlight-line"> Can you debug it?"</span></pre>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
+                    <div class="project-top">
+                        <div class="project-icon">&#x1f321;&#xfe0f;</div>
+                        <div class="project-links">
+                            <a href="https://github.com/charan-rathore/Time-Series-Temperature-Modelling" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
+                        </div>
+                    </div>
+                    <h3 class="project-title">
+                        <a href="https://github.com/charan-rathore/Time-Series-Temperature-Modelling" target="_blank" rel="noopener noreferrer">
+                            <span class="lift-text">ThermoSense</span>
+                        </a>
+                    </h3>
+                    <span class="project-badge badge-active">IoT + ML · Hyperlocal Forecasting</span>
+                    <p class="project-desc">
+                        End-to-end temperature intelligence: Raspberry Pi + DHT22 sensor deployment,
+                        API bias correction against commercial weather apps, SARIMAX/LightGBM/TFT ensemble models,
+                        and a live accuracy leaderboard proving microclimate beats generic forecasts.
+                    </p>
+                    <div class="project-impact">Impact: Learns your location's systematic weather bias · MLflow-tracked pipeline</div>
+                    <div class="project-tech">
+                        <span>Python</span><span>FastAPI</span><span>React</span><span>MLflow</span><span>statsmodels</span><span>LightGBM</span><span>IoT</span>
                     </div>
                 </div>
 
@@ -499,6 +531,8 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                         <span class="toolkit-item">Mixpanel</span>
                         <span class="toolkit-item">Matplotlib</span>
                         <span class="toolkit-item">statsmodels</span>
+                        <span class="toolkit-item">MLflow</span>
+                        <span class="toolkit-item">LightGBM</span>
                         <span class="toolkit-item">Jupyter</span>
                     </div>
                 </div>
@@ -640,16 +674,16 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     <div class="station-spacer"></div>
                 </div>
 
-                <div class="journey-station" data-year="2025">
+                <div class="journey-station" data-year="2026">
                     <div class="station-spacer"></div>
                     <div class="station-dot-col"><div class="station-dot"></div></div>
                     <div class="station-content">
-                        <div class="station-date">2025 <span class="station-type">Work</span></div>
+                        <div class="station-date">Jan – Jun 2026 <span class="station-type">Work</span></div>
                         <div class="station-title">Product Analyst Intern</div>
                         <div class="station-org">Flipkart</div>
                         <div class="station-desc">
-                            Joined Flipkart's search personalization team. Driving seller funnel
-                            analytics, building dashboards that translate user behavior into product
+                            Six-month internship on Flipkart's search personalization team. Drove seller funnel
+                            analytics and built dashboards that translate user behavior into product
                             decisions impacting millions of daily searches.
                         </div>
                         <div class="station-tags">
@@ -721,7 +755,7 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
                     <div class="journey-dot-indicator" data-station="2"><span class="dot-tooltip">2024 · CV</span></div>
                     <div class="journey-dot-indicator" data-station="3"><span class="dot-tooltip">2024 · LLMs</span></div>
                     <div class="journey-dot-indicator" data-station="4"><span class="dot-tooltip">2024 · Full-Stack</span></div>
-                    <div class="journey-dot-indicator" data-station="5"><span class="dot-tooltip">2025 · Flipkart</span></div>
+                    <div class="journey-dot-indicator" data-station="5"><span class="dot-tooltip">2026 · Flipkart</span></div>
                     <div class="journey-dot-indicator" data-station="6"><span class="dot-tooltip">2025 · IntelliRAG</span></div>
                     <div class="journey-dot-indicator" data-station="7"><span class="dot-tooltip">2026 · AI Startup</span></div>
                     <div class="journey-dot-indicator" data-station="8"><span class="dot-tooltip">2026 · Next</span></div>
@@ -804,5 +838,6 @@ Documents <span class="highlight-line">&rarr;</span> Ingest <span class="highlig
     </footer>
 
     <script src="assets/js/effects.js"></script>
+    <script src="assets/js/live-location.js" defer></script>
 </body>
 </html>
