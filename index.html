@@ -92,6 +92,10 @@
             </svg>
             <span class="logo-text">Charan</span>
         </a>
+        <span class="weather-pill" id="visitorWeather" aria-label="Your approximate local temperature">
+            <span aria-hidden="true">🌡</span>
+            <span id="visitorTemp">—</span>
+        </span>
         <span class="visitor-pill" aria-label="Portfolio visitors">
             <span class="visitor-pill-dot" aria-hidden="true"></span>
             <span data-visitor-count>—</span> visitors
@@ -158,22 +162,11 @@
                     <p class="bento-body-sm">RAG pipelines, LLM infra, computer vision, quantitative finance, and prompt engineering, explored with documented tradeoffs.</p>
                 </div>
 
-                <aside class="bento-card bento-white live-widget hero-animate" aria-label="Live location and weather">
-                    <div class="live-widget-header">
-                        <span>Live Whereabouts</span>
-                        <span>Google Maps</span>
-                    </div>
-                    <div id="liveMap" role="img" aria-label="Map showing current location"></div>
-                    <div class="live-widget-body">
-                        <div class="live-temp-row">
-                            <div id="liveTemp">—</div>
-                            <div id="liveCondition">Fetching conditions…</div>
-                        </div>
-                        <div id="liveLocation">Locating you…</div>
-                        <div id="liveHumidity"></div>
-                        <span id="liveUpdated"></span>
-                    </div>
-                </aside>
+                <div class="bento-card bento-white hero-animate">
+                    <h3 class="bento-card-title title-blue">Open to Opportunities</h3>
+                    <p class="bento-body-sm">Graduating BITS Pilani '26. Interested in product analytics, AI infrastructure, and data systems where reliability and tradeoffs matter.</p>
+                    <span class="bento-pill">CONNECT</span>
+                </div>
             </div>
         </div>
     </section>
