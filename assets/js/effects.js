@@ -92,6 +92,14 @@ function initMeshText(el) {
     if (!el) return;
     const text = el.dataset.meshText || el.textContent.trim();
     el.setAttribute('aria-label', text);
+
+    // Static gradient text on hero — avoids canvas flash on first paint
+    if (el.classList.contains('mesh-accent')) {
+        el.textContent = text;
+        el.classList.add('mesh-text-fallback');
+        return;
+    }
+
     el.innerHTML = '';
     const canvas = document.createElement('canvas');
     canvas.setAttribute('aria-hidden', 'true');
@@ -203,21 +211,7 @@ if (!IS_TOUCH_DEVICE) {
     });
 }
 
-// ===== Originkit: Flicker Text (section tags only) =====
-document.querySelectorAll('.flicker-text:not(.heading-fx)').forEach(el => {
-    const original = el.textContent;
-    setInterval(() => {
-        if (Math.random() > 0.92) {
-            const chars = original.split('');
-            const idx = Math.floor(Math.random() * chars.length);
-            if (chars[idx] === ' ') return;
-            const glitch = '!@#$%&*0123456789'[Math.floor(Math.random() * 14)];
-            chars[idx] = glitch;
-            el.textContent = chars.join('');
-            setTimeout(() => { el.textContent = original; }, 60 + Math.random() * 80);
-        }
-    }, 120);
-});
+// ===== Flicker text disabled — kept readable on load =====
 
 // ===== Originkit: Magnetic elements =====
 if (IS_TOUCH_DEVICE) {
@@ -236,8 +230,12 @@ document.querySelectorAll('.magnetic:not(.magnetic-static)').forEach(el => {
     });
 });
 
-// ===== Originkit: Random Letter Swap / Scramble =====
+// ===== Scramble (section tags on scroll only — not hero) =====
 function scrambleText(el, finalText, duration = 1400) {
+    if (REDUCE_MOTION) {
+        el.textContent = finalText;
+        return;
+    }
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$&';
     const start = performance.now();
 
@@ -262,7 +260,7 @@ document.querySelectorAll('[data-scramble]').forEach(el => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !el.dataset.scrambled) {
                 el.dataset.scrambled = 'true';
-                scrambleText(el, text);
+                scrambleText(el, text, 900);
             }
         });
     }, { threshold: 0.4 });
@@ -271,20 +269,38 @@ document.querySelectorAll('[data-scramble]').forEach(el => {
 
 const heroScramble = document.getElementById('heroScramble');
 if (heroScramble) {
-    setTimeout(() => scrambleText(heroScramble, heroScramble.dataset.scramble, 1800), 500);
+    heroScramble.textContent = heroScramble.dataset.scramble || heroScramble.textContent;
 }
 
-// ===== Originkit: Text Morph (hero rotating words) =====
+// ===== Hero word rotation — calm crossfade, no random glyphs =====
 (function initTextMorph() {
     const el = document.getElementById('textMorph');
     if (!el) return;
+
     const words = ['think.', 'scale.', 'ship.', 'debug.'];
     let idx = 0;
 
-    setInterval(() => {
-        idx = (idx + 1) % words.length;
-        scrambleText(el, words[idx], 550);
-    }, 3400);
+    const inner = document.createElement('span');
+    inner.className = 'text-morph-inner';
+    inner.textContent = words[0];
+    el.textContent = '';
+    el.appendChild(inner);
+
+    if (REDUCE_MOTION) return;
+
+    function rotateWord() {
+        inner.classList.add('is-changing');
+        setTimeout(() => {
+            idx = (idx + 1) % words.length;
+            inner.textContent = words[idx];
+            inner.classList.remove('is-changing');
+        }, 420);
+    }
+
+    // Wait until hero has settled before first rotation
+    setTimeout(() => {
+        setInterval(rotateWord, 4500);
+    }, 3200);
 })();
 
 // ===== Originkit: Direction Hover + Text Lift + Pixel Drift on headings =====
