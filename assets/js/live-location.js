@@ -4,7 +4,7 @@
 
     if (!tempEl || !widgetEl) return;
 
-    const FALLBACK = { lat: 28.3670, lng: 75.5880 };
+    const FALLBACK = { lat: 28.367, lng: 75.588 };
 
     async function resolveCoordsFromIp() {
         const providers = [
@@ -13,14 +13,19 @@
                 if (!res.ok) throw new Error('ipwho unavailable');
                 const data = await res.json();
                 if (!data.success) throw new Error('ipwho failed');
-                return { lat: data.latitude, lng: data.longitude };
+                const lat = Number(data.latitude);
+                const lng = Number(data.longitude);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng)) throw new Error('invalid ipwho');
+                return { lat, lng };
             },
             async () => {
-                const res = await fetch('https://ipapi.co/json/');
-                if (!res.ok) throw new Error('ipapi unavailable');
+                const res = await fetch('https://get.geojs.io/v1/ip/geo.json');
+                if (!res.ok) throw new Error('geojs unavailable');
                 const data = await res.json();
-                if (data.error) throw new Error('ipapi failed');
-                return { lat: data.latitude, lng: data.longitude };
+                const lat = parseFloat(data.latitude);
+                const lng = parseFloat(data.longitude);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng)) throw new Error('invalid geojs');
+                return { lat, lng };
             },
         ];
 
@@ -42,7 +47,7 @@
         url.searchParams.set('current', 'temperature_2m');
         url.searchParams.set('timezone', 'auto');
 
-        const res = await fetch(url);
+        const res = await fetch(url.toString());
         if (!res.ok) throw new Error('weather unavailable');
 
         const data = await res.json();
@@ -53,23 +58,33 @@
 
     function setTemperature(value) {
         tempEl.textContent = `${Math.round(value)}°C`;
-        widgetEl.setAttribute('aria-label', `Your approximate local temperature is ${Math.round(value)} degrees Celsius`);
+        widgetEl.setAttribute(
+            'aria-label',
+            `Your approximate local temperature is ${Math.round(value)} degrees Celsius`
+        );
     }
 
     async function start() {
+        tempEl.textContent = '…';
+
         try {
             const { lat, lng } = await resolveCoordsFromIp();
-            const temp = await fetchTemperature(lat, lng);
-            setTemperature(temp);
+            setTemperature(await fetchTemperature(lat, lng));
+            return;
         } catch {
-            try {
-                const temp = await fetchTemperature(FALLBACK.lat, FALLBACK.lng);
-                setTemperature(temp);
-            } catch {
-                tempEl.textContent = '—';
-            }
+            /* try fallback coords */
+        }
+
+        try {
+            setTemperature(await fetchTemperature(FALLBACK.lat, FALLBACK.lng));
+        } catch {
+            tempEl.textContent = '—';
         }
     }
 
-    start();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else {
+        start();
+    }
 })();
