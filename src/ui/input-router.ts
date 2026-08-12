@@ -3,6 +3,7 @@ import type { GameIntent, GameIntentType, InputSource } from './contracts';
 export interface IntentRouterOptions {
   dispatch(intent: GameIntent): void;
   isActive(): boolean;
+  isPaused?(): boolean;
   onExit(): void;
 }
 
@@ -46,12 +47,12 @@ export function createIntentRouter(options: IntentRouterOptions): {
       const type = intentFromKey(event.key);
       if (!type || isEditableTarget(event.target)) return;
       event.preventDefault();
-      options.dispatch({ type, source: 'keyboard' });
+      options.dispatch({ type: type === 'pause' && options.isPaused?.() ? 'resume' : type, source: 'keyboard' });
     },
     dispatchControl(value, source = 'control') {
       if (!options.isActive()) return;
       const type = intentFromControl(value);
-      if (type) options.dispatch({ type, source });
+      if (type) options.dispatch({ type: type === 'pause' && options.isPaused?.() ? 'resume' : type, source });
     },
   };
 }

@@ -42,7 +42,8 @@ describe('FrameScheduler', () => {
       scheduler.dispose();
       expect(receiver.cancelled).toEqual([1]);
     } finally {
-      Object.assign(globalThis, { window: previousWindow });
+      if (previousWindow === undefined) Reflect.deleteProperty(globalThis, 'window');
+      else Object.assign(globalThis, { window: previousWindow });
     }
   });
 

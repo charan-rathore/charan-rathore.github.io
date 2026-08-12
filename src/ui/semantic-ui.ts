@@ -1,8 +1,13 @@
 import type { GameIntent, LivingSystemsAdapter, LivingSystemsSnapshot } from './contracts';
 import { INITIAL_SEMANTIC_SNAPSHOT } from './contracts';
 import { createIntentRouter } from './input-router';
+import { createLiveAnnouncer } from './live-announcer';
 
-export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapter): () => void {
+export interface SemanticUIOptions {
+  readonly onModeChange?: (mode: 'visual' | 'direct') => void;
+}
+
+export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapter, options: SemanticUIOptions = {}): () => void {
   let snapshot = adapter?.getSnapshot?.() ?? INITIAL_SEMANTIC_SNAPSHOT;
   let controlsActive = false;
   let lastFocus: HTMLElement | null = null;
@@ -12,16 +17,12 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
   const inspection = root.querySelector<HTMLDialogElement>('[data-inspection]');
   const directPanel = root.querySelector<HTMLElement>('[data-direct-panel]');
 
-  const announce = (message: string): void => {
-    if (!announcer) return;
-    announcer.textContent = '';
-    window.setTimeout(() => { announcer.textContent = message; }, 20);
-  };
+  const liveAnnouncer = createLiveAnnouncer(announcer);
+  const announce = (message: string): void => liveAnnouncer.announce(message);
 
   const dispatch = (intent: GameIntent): void => {
     adapter?.dispatch(intent);
     root.dispatchEvent(new CustomEvent<GameIntent>('living-systems:intent', { bubbles: true, detail: intent }));
-    announce(intentAnnouncement(intent));
   };
 
   const leaveControls = (): void => {
@@ -32,7 +33,7 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     playButton?.focus();
   };
 
-  const router = createIntentRouter({ dispatch, isActive: () => controlsActive, onExit: leaveControls });
+  const router = createIntentRouter({ dispatch, isActive: () => controlsActive, isPaused: () => snapshot.phase === 'paused', onExit: leaveControls });
 
   const onClick = (event: MouseEvent): void => {
     const target = (event.target as Element | null)?.closest<HTMLElement>('[data-action], [data-intent]');
@@ -48,20 +49,23 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
       gameRegion?.setAttribute('data-control-active', 'true');
       target.setAttribute('aria-pressed', 'true');
       gameRegion?.focus();
-      announce('Game controls active. Use arrow keys to move, up to rotate, Space to place, U to undo, and Escape to exit.');
+      announce('Game controls active. Use arrow keys to move, up to rotate, Space to place, U to undo, P to pause or resume, and Escape to exit.');
       return;
     }
     if (action === 'direct') {
       root.dataset.mode = 'direct';
       directPanel?.removeAttribute('hidden');
-      controlsActive = false;
+      controlsActive = true;
+      options.onModeChange?.('direct');
       directPanel?.focus();
-      announce('Direct mode. The same system state is available as labeled controls and text.');
+      announce('Direct mode. The same reducer state is available as labeled, step-based controls and text.');
       return;
     }
     if (action === 'visual') {
       root.dataset.mode = 'visual';
       directPanel?.setAttribute('hidden', '');
+      controlsActive = true;
+      options.onModeChange?.('visual');
       playButton?.focus();
       announce('Visual play mode.');
       return;
@@ -78,7 +82,6 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
       inspection?.removeAttribute('open');
       lastFocus?.focus();
       announce('Inspection closed. Returning to the system.');
-      return;
     }
   };
 
@@ -95,6 +98,7 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     const startX = Number(surface.dataset.startX ?? event.clientX);
     const delta = event.clientX - startX;
     if (Math.abs(delta) >= 28) router.dispatchControl(delta > 0 ? 'moveRight' : 'moveLeft', event.pointerType === 'touch' ? 'touch' : 'pointer');
+    else router.dispatchControl('rotateClockwise', event.pointerType === 'touch' ? 'touch' : 'pointer');
   };
 
   const render = (next: LivingSystemsSnapshot): void => {
@@ -103,15 +107,23 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     root.querySelectorAll<HTMLElement>('[data-current-piece]').forEach((node) => { node.textContent = snapshot.currentPiece?.name ?? 'No active piece'; });
     root.querySelectorAll<HTMLElement>('[data-orientation]').forEach((node) => { node.textContent = snapshot.currentPiece?.orientation ?? '—'; });
     root.querySelectorAll<HTMLElement>('[data-ports]').forEach((node) => { node.textContent = snapshot.currentPiece?.ports.join('; ') ?? 'No open ports'; });
+    root.querySelectorAll<HTMLElement>('[data-phase]').forEach((node) => { node.textContent = snapshot.phase; });
+    root.querySelectorAll<HTMLElement>('[data-queue]').forEach((node) => { node.textContent = snapshot.queue.join(', ') || 'Queue complete'; });
+    root.querySelectorAll<HTMLElement>('[data-connections]').forEach((node) => { node.textContent = snapshot.connections.join('; ') || 'No typed connections yet'; });
     const completed = snapshot.recipe.completed.length;
     const required = snapshot.recipe.required.length;
     root.querySelectorAll<HTMLProgressElement>('[data-recipe-progress]').forEach((node) => { node.max = required; node.value = completed; });
-    root.querySelectorAll<HTMLElement>('[data-recipe-count]').forEach((node) => { node.textContent = `${completed} of ${required} roles connected`; });
-    const ghost = root.querySelector<HTMLElement>('[data-ghost-copy]');
-    if (ghost && snapshot.ghost) {
+    root.querySelectorAll<HTMLElement>('[data-recipe-count]').forEach((node) => { node.textContent = `${completed} of ${required} roles placed`; });
+    root.querySelectorAll<HTMLElement>('[data-ghost-copy]').forEach((ghost) => {
+      if (!snapshot.ghost) { ghost.textContent = snapshot.phase === 'counterfactualPrompt' ? 'System resolved — withhold Provenance to test the evidence path.' : 'No active placement preview.'; return; }
       ghost.dataset.state = snapshot.ghost.state;
       ghost.textContent = [snapshot.ghost.message, snapshot.ghost.consequence].filter(Boolean).join(' ');
-    }
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-intent="pause"]').forEach((button) => {
+      const paused = snapshot.phase === 'paused';
+      button.textContent = paused ? 'Resume' : 'Pause';
+      button.setAttribute('aria-label', paused ? 'Resume game' : 'Pause game');
+    });
     if (snapshot.announcement) announce(snapshot.announcement);
   };
 
@@ -121,23 +133,12 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
   root.addEventListener('pointerup', onPointerUp);
   document.addEventListener('keydown', router.onKeyDown);
   const unsubscribe = adapter?.subscribe?.(render);
-
   return () => {
     root.removeEventListener('click', onClick);
     root.removeEventListener('pointerdown', onPointerDown);
     root.removeEventListener('pointerup', onPointerUp);
     document.removeEventListener('keydown', router.onKeyDown);
+    liveAnnouncer.dispose();
     unsubscribe?.();
   };
-}
-
-function intentAnnouncement(intent: GameIntent): string {
-  const messages: Record<GameIntent['type'], string> = {
-    moveLeft: 'Moved left.', moveRight: 'Moved right.', softDrop: 'Moved down one step.',
-    rotateClockwise: 'Rotated clockwise.', place: 'Place requested.', undo: 'Undo requested.',
-    pause: 'Game paused.', resume: 'Game resumed.',
-    withholdProvenance: 'Provenance withheld. Observe the citation and evaluation paths.',
-    restoreProvenance: 'Provenance restored. Evidence grounding repaired.',
-  };
-  return messages[intent.type];
 }

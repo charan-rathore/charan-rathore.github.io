@@ -16,14 +16,21 @@ describe('input intent normalization', () => {
 
   it('routes active controls through a shared dispatch contract', () => {
     const dispatch = vi.fn();
-    const router = createIntentRouter({ dispatch, isActive: () => true, onExit: vi.fn() });
+    const router = createIntentRouter({ dispatch, isActive: () => true, isPaused: () => false, onExit: vi.fn() });
     router.dispatchControl('place', 'touch');
     expect(dispatch).toHaveBeenCalledWith({ type: 'place', source: 'touch' });
   });
 
+  it('toggles a pause command to resume while paused', () => {
+    const dispatch = vi.fn();
+    const router = createIntentRouter({ dispatch, isActive: () => true, isPaused: () => true, onExit: vi.fn() });
+    router.dispatchControl('pause');
+    expect(dispatch).toHaveBeenCalledWith({ type: 'resume', source: 'control' });
+  });
+
   it('does not dispatch game commands before control mode is active', () => {
     const dispatch = vi.fn();
-    const router = createIntentRouter({ dispatch, isActive: () => false, onExit: vi.fn() });
+    const router = createIntentRouter({ dispatch, isActive: () => false, isPaused: () => false, onExit: vi.fn() });
     router.dispatchControl('place');
     expect(dispatch).not.toHaveBeenCalled();
   });
