@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { selectRendererProfile, type RendererProfile } from './renderer-profile';
 import { FrameScheduler } from './scheduler';
 import type { GhostState, PieceSnapshot, SemanticRole, WorldRuntimeOptions, WorldSnapshot } from './types';
 
@@ -85,7 +86,7 @@ export class LivingSystemsWorld {
   private readonly cameraTarget = new THREE.Vector3();
   private cameraTransitionStart = 0;
   private cameraTransitionDuration = 0;
-  private readonly quality: 'high' | 'low';
+  private readonly profile: RendererProfile;
   private contextRecoveryAttempted = false;
   private contextRecoveryTimer = 0;
   private permanentFailure = false;
@@ -93,8 +94,8 @@ export class LivingSystemsWorld {
   constructor(host: HTMLElement, options: WorldRuntimeOptions = {}) {
     this.host = host;
     this.options = options;
-    this.quality = options.quality === 'low' || (options.quality !== 'high' && matchMedia('(max-width: 700px)').matches) ? 'low' : 'high';
-    this.renderer = new THREE.WebGLRenderer({ antialias: this.quality === 'high', alpha: true, powerPreference: 'high-performance' });
+    this.profile = selectRendererProfile(options.quality, window.innerWidth, Boolean(options.reducedMotion));
+    this.renderer = new THREE.WebGLRenderer({ antialias: this.profile.quality === 'high', alpha: true, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.05;
@@ -144,12 +145,12 @@ export class LivingSystemsWorld {
 
   setCameraState(state: CameraState): void {
     if (state === this.cameraState) return;
-    const pose = CAMERA_POSES[state];
+    const pose = this.cameraPose(state);
     this.cameraState = state;
     this.cameraFrom.copy(this.camera.position);
     this.cameraTargetFrom.copy(this.cameraTarget);
     this.cameraTransitionStart = performance.now();
-    this.cameraTransitionDuration = this.options.reducedMotion ? 0 : state === 'systemResolve' ? 900 : 520;
+    this.cameraTransitionDuration = this.profile.animateTransitions ? state === 'systemResolve' ? 900 : 520 : 0;
     if (!this.cameraTransitionDuration) {
       this.camera.position.copy(pose.position);
       this.cameraTarget.copy(pose.target);
@@ -358,7 +359,8 @@ export class LivingSystemsWorld {
       const circuit = view.circuits[index]!;
       const node = view.nodes[index]!;
       const visible = Boolean(cell);
-      block.visible = circuit.visible = node.visible = visible;
+      block.visible = visible;
+      circuit.visible = node.visible = visible && (this.profile.showCircuitDetails || ghost);
       if (!cell) continue;
       block.position.set(cell.x * CELL, -cell.y * CELL, 0);
       circuit.position.copy(block.position);
@@ -410,6 +412,7 @@ export class LivingSystemsWorld {
   private pulsePlacement(pieceId: string): void {
     const view = this.pieceViews.get(pieceId);
     if (!view) return;
+    if (this.profile.quality === 'low') return;
     this.pulseMesh.material = this.pulseMaterials[view.role];
     this.pulseMesh.material.opacity = 0.68;
     this.pulseMesh.position.copy(view.group.position).add(new THREE.Vector3(CELL, -CELL * 0.5, 0.32));
@@ -422,7 +425,7 @@ export class LivingSystemsWorld {
   private render = (time: number): boolean => {
     if (this.hidden || this.offscreen || this.disposed || this.permanentFailure) return false;
     let active = time < this.animationUntil;
-    const pose = this.cameraState ? CAMERA_POSES[this.cameraState] : undefined;
+    const pose = this.cameraState ? this.cameraPose(this.cameraState) : undefined;
     if (pose && this.cameraTransitionDuration > 0) {
       const progress = Math.min(1, (time - this.cameraTransitionStart) / this.cameraTransitionDuration);
       const eased = 1 - Math.pow(1 - progress, 3);
@@ -445,13 +448,22 @@ export class LivingSystemsWorld {
     return active;
   };
 
+  private cameraPose(state: CameraState): { position: THREE.Vector3; target: THREE.Vector3 } {
+    const pose = CAMERA_POSES[state];
+    if (this.profile.quality === 'high') return pose;
+    return {
+      position: new THREE.Vector3(pose.position.x * 0.45, pose.position.y * 0.6, pose.position.z * 0.86),
+      target: pose.target,
+    };
+  }
+
   private resize = (): void => {
     if (this.disposed || this.permanentFailure) return;
     const width = Math.max(1, this.host.clientWidth);
     const height = Math.max(1, this.host.clientHeight);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, this.quality === 'high' ? 1.75 : 1.25));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, this.profile.dprCap));
     this.renderer.setSize(width, height, false);
     this.invalidate();
   };
