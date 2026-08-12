@@ -26,11 +26,16 @@ export function intentFromKey(key: string): GameIntentType | null {
 
 export function intentFromControl(value: string): GameIntentType | null {
   const known: readonly string[] = [
-    'moveLeft', 'moveRight', 'softDrop', 'rotateClockwise', 'place', 'undo',
+    'start', 'moveLeft', 'moveRight', 'softDrop', 'rotateClockwise', 'place', 'undo',
     'pause', 'resume', 'withholdProvenance', 'restoreProvenance',
   ];
   return known.includes(value) ? value as GameIntentType : null;
 }
+
+/** Board-control intents that enter game-control mode. Provenance experiments stay direct. */
+export const GAME_CONTROL_INTENTS: ReadonlySet<GameIntentType> = new Set<GameIntentType>([
+  'moveLeft', 'moveRight', 'softDrop', 'rotateClockwise', 'place', 'undo', 'pause', 'resume',
+]);
 
 export function createIntentRouter(options: IntentRouterOptions): {
   onKeyDown(event: KeyboardEvent): void;

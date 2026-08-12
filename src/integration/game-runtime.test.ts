@@ -28,6 +28,24 @@ describe('GameRuntime', () => {
     runtime.dispose();
   });
 
+  it('starts gravity on an explicit start intent without moving the piece', () => {
+    const callbacks: FrameRequestCallback[] = [];
+    const runtime = new GameRuntime({
+      gravityIntervalMs: 10,
+      maxTicksPerFrame: 2,
+      now: () => 0,
+      requestFrame: (callback) => { callbacks.push(callback); return callbacks.length; },
+      cancelFrame: vi.fn(),
+    });
+    runtime.start();
+    expect(callbacks).toHaveLength(0);
+    runtime.dispatch({ type: 'start', source: 'control' });
+    expect(runtime.getGameState().started).toBe(true);
+    expect(runtime.getGameState().active?.transform.x).toBe(4);
+    expect(callbacks).toHaveLength(1);
+    runtime.dispose();
+  });
+
   it('keeps direct mode step-based while preserving the same game state', () => {
     const callbacks: FrameRequestCallback[] = [];
     const runtime = new GameRuntime({ requestFrame: (callback) => { callbacks.push(callback); return callbacks.length; }, cancelFrame: vi.fn() });

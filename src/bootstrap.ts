@@ -37,7 +37,7 @@ export function bootstrapLivingSystems(elements: BootstrapElements, dependencies
 
   if (elements.stage) {
     try {
-      world = dependencies.createWorld(elements.stage, { reducedMotion: dependencies.reducedMotion ?? false, onFailure: enterFallback });
+      world = dependencies.createWorld(elements.stage, { reducedMotion: dependencies.reducedMotion ?? false, onFailure: enterFallback, onIntent: (intent) => runtime.dispatch({ type: intent, source: 'pointer' }) });
       runtime.start();
     } catch (error) {
       enterFallback(error instanceof Error ? `Visual world unavailable: ${error.message}` : 'Visual world unavailable.');

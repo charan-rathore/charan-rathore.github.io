@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest';
-import { createIntentRouter, intentFromControl, intentFromKey } from './input-router';
+import { createIntentRouter, GAME_CONTROL_INTENTS, intentFromControl, intentFromKey } from './input-router';
 
 describe('input intent normalization', () => {
   it('maps keyboard controls to typed intents', () => {
@@ -13,6 +13,14 @@ describe('input intent normalization', () => {
   it('rejects unknown control values', () => {
     expect(intentFromControl('undo')).toBe('undo');
     expect(intentFromControl('explode')).toBeNull();
+  });
+
+  it('classifies board-control intents as game controls and leaves provenance experiments direct', () => {
+    expect(GAME_CONTROL_INTENTS.has('moveLeft')).toBe(true);
+    expect(GAME_CONTROL_INTENTS.has('place')).toBe(true);
+    expect(GAME_CONTROL_INTENTS.has('pause')).toBe(true);
+    expect(GAME_CONTROL_INTENTS.has('withholdProvenance')).toBe(false);
+    expect(GAME_CONTROL_INTENTS.has('restoreProvenance')).toBe(false);
   });
 
   it('routes active controls through a shared dispatch contract', () => {

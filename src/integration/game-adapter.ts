@@ -36,7 +36,7 @@ export function semanticSnapshotFromGame(state: GameState, events: readonly Game
     connections: edges.map((edge) => `${PIECES[edge.fromPieceId].label} → ${PIECES[edge.toPieceId].label}`),
     ghost: ghost ? {
       state: ghost.kind,
-      message: ghost.kind === 'invalid' ? `Cannot place — ${ghost.reason}.` : ghost.message,
+      message: ghost.kind === 'invalid' ? `Cannot place, ${ghost.reason}.` : ghost.message,
       consequence: ghost.kind === 'compatible' ? ghost.edges.map((edge) => `${PIECES[edge.fromPieceId].label} → ${PIECES[edge.toPieceId].label}`).join(', ') : undefined,
     } : null,
     provenanceWithheld: state.removedProvenance !== null,

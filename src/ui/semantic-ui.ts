@@ -1,6 +1,6 @@
-import type { GameIntent, LivingSystemsAdapter, LivingSystemsSnapshot } from './contracts';
+import type { GameIntent, InputSource, LivingSystemsAdapter, LivingSystemsSnapshot } from './contracts';
 import { INITIAL_SEMANTIC_SNAPSHOT } from './contracts';
-import { createIntentRouter } from './input-router';
+import { createIntentRouter, GAME_CONTROL_INTENTS, intentFromControl } from './input-router';
 import { createLiveAnnouncer } from './live-announcer';
 import { pointerGesture } from './pointer-gesture';
 
@@ -34,6 +34,12 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     playButton?.focus();
   };
 
+  const activateControls = (): void => {
+    controlsActive = true;
+    gameRegion?.setAttribute('data-control-active', 'true');
+    playButton?.setAttribute('aria-pressed', 'true');
+  };
+
   const router = createIntentRouter({ dispatch, isActive: () => controlsActive, isPaused: () => snapshot.phase === 'paused', onExit: leaveControls });
 
   const onClick = (event: MouseEvent): void => {
@@ -42,13 +48,17 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     const action = target.dataset.action;
     const intent = target.dataset.intent;
     if (intent) {
-      const pointerType = 'pointerType' in event ? event.pointerType : '';
-      router.dispatchControl(intent, pointerType === 'touch' ? 'touch' : 'control');
+      const type = intentFromControl(intent);
+      if (type) {
+        const pointerType = 'pointerType' in event ? event.pointerType : '';
+        const source: InputSource = pointerType === 'touch' ? 'touch' : 'control';
+        if (GAME_CONTROL_INTENTS.has(type) && !controlsActive) activateControls();
+        dispatch({ type, source });
+      }
     }
     if (action === 'play') {
-      controlsActive = true;
-      gameRegion?.setAttribute('data-control-active', 'true');
-      target.setAttribute('aria-pressed', 'true');
+      activateControls();
+      dispatch({ type: 'start', source: 'control' });
       gameRegion?.focus();
       announce('Game controls active. Use arrow keys to move, up to rotate, Space to place, U to undo, P to pause or resume, and Escape to exit.');
       return;
@@ -111,7 +121,7 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     snapshot = next;
     root.dataset.phase = snapshot.phase;
     root.querySelectorAll<HTMLElement>('[data-current-piece]').forEach((node) => { node.textContent = snapshot.currentPiece?.name ?? 'No active piece'; });
-    root.querySelectorAll<HTMLElement>('[data-orientation]').forEach((node) => { node.textContent = snapshot.currentPiece?.orientation ?? '—'; });
+    root.querySelectorAll<HTMLElement>('[data-orientation]').forEach((node) => { node.textContent = snapshot.currentPiece?.orientation ?? 'none'; });
     root.querySelectorAll<HTMLElement>('[data-ports]').forEach((node) => { node.textContent = snapshot.currentPiece?.ports.join('; ') ?? 'No open ports'; });
     root.querySelectorAll<HTMLElement>('[data-phase]').forEach((node) => { node.textContent = snapshot.phase; });
     root.querySelectorAll<HTMLElement>('[data-queue]').forEach((node) => {
@@ -136,7 +146,7 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     root.querySelectorAll<HTMLProgressElement>('[data-recipe-progress]').forEach((node) => { node.max = required; node.value = completed; });
     root.querySelectorAll<HTMLElement>('[data-recipe-count]').forEach((node) => { node.textContent = `${completed} of ${required} roles placed`; });
     root.querySelectorAll<HTMLElement>('[data-ghost-copy]').forEach((ghost) => {
-      if (!snapshot.ghost) { ghost.textContent = snapshot.phase === 'counterfactualPrompt' ? 'System resolved — withhold Provenance to test the evidence path.' : 'No active placement preview.'; return; }
+      if (!snapshot.ghost) { ghost.textContent = snapshot.phase === 'counterfactualPrompt' ? 'System resolved. Withhold Provenance to test the evidence path.' : 'No active placement preview.'; return; }
       ghost.dataset.state = snapshot.ghost.state;
       ghost.textContent = [snapshot.ghost.message, snapshot.ghost.consequence].filter(Boolean).join(' ');
     });

@@ -4,6 +4,7 @@ import type { GameIntent as SemanticIntent } from './contracts';
 /** Keeps presentation vocabulary out of the deterministic model contract. */
 export function toModelCommand(intent: SemanticIntent, state?: Pick<GameState, 'phase'>): ModelGameCommand {
   switch (intent.type) {
+    case 'start': return { type: 'start' };
     case 'moveLeft': return { type: 'move', dx: -1 };
     case 'moveRight': return { type: 'move', dx: 1 };
     case 'softDrop': return { type: 'soft-drop' };

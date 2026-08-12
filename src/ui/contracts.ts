@@ -1,4 +1,5 @@
 export const GAME_INTENTS = [
+  'start',
   'moveLeft',
   'moveRight',
   'softDrop',
@@ -85,7 +86,7 @@ export const INITIAL_SEMANTIC_SNAPSHOT: LivingSystemsSnapshot = {
   connections: ['Ingestion → Chunking'],
   ghost: {
     state: 'compatible',
-    message: 'Can place — compatible evidence path.',
+    message: 'Can place, compatible evidence path.',
     consequence: 'Predicted connection: Chunking → Retrieval.',
   },
   provenanceWithheld: false,

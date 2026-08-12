@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { CANVAS_DRAG_STEP_PX, canvasDragMoves, isCanvasClick } from './canvas-input';
 import { selectRendererProfile, type RendererProfile } from './renderer-profile';
 import { FrameScheduler } from './scheduler';
 import type { GhostState, PieceSnapshot, SemanticRole, WorldRuntimeOptions, WorldSnapshot } from './types';
@@ -90,6 +91,13 @@ export class LivingSystemsWorld {
   private contextRecoveryAttempted = false;
   private contextRecoveryTimer = 0;
   private permanentFailure = false;
+  private boardFrame?: THREE.LineSegments<THREE.EdgesGeometry, THREE.LineBasicMaterial>;
+  private hovering = false;
+  private dragging = false;
+  private dragStartX = 0;
+  private dragStartY = 0;
+  private dragLastX = 0;
+  private dragMoved = false;
 
   constructor(host: HTMLElement, options: WorldRuntimeOptions = {}) {
     this.host = host;
@@ -102,7 +110,13 @@ export class LivingSystemsWorld {
     this.renderer.setClearColor(0x0a0a0c, 0);
     this.renderer.domElement.setAttribute('aria-hidden', 'true');
     this.renderer.domElement.tabIndex = -1;
+    this.renderer.domElement.style.cursor = 'default';
+    this.renderer.domElement.style.touchAction = 'pan-y';
     host.append(this.renderer.domElement);
+    this.renderer.domElement.addEventListener('pointerdown', this.onCanvasPointerDown);
+    this.renderer.domElement.addEventListener('pointermove', this.onCanvasPointerMove);
+    this.renderer.domElement.addEventListener('pointerup', this.onCanvasPointerUp);
+    this.renderer.domElement.addEventListener('pointerleave', this.onCanvasPointerLeave);
 
     this.solidCellGeometry = this.own(new THREE.BoxGeometry(CELL * 0.91, CELL * 0.91, 0.2));
     this.ghostCellGeometry = this.own(new THREE.BoxGeometry(CELL * 0.91, CELL * 0.91, 0.025));
@@ -169,6 +183,68 @@ export class LivingSystemsWorld {
     if (!this.hidden && !this.offscreen && !this.disposed && !this.permanentFailure) this.scheduler.invalidate();
   }
 
+  private get playable(): boolean {
+    return Boolean(this.snapshot && this.snapshot.mode === 'playing' && this.snapshot.pieces.some((piece) => piece.active));
+  }
+
+  private setHover(hovering: boolean): void {
+    if (this.hovering === hovering) return;
+    this.hovering = hovering;
+    if (!this.dragging) this.renderer.domElement.style.cursor = hovering && this.playable ? 'grab' : 'default';
+    if (this.boardFrame) {
+      this.boardFrame.material.opacity = hovering ? 1 : 0.8;
+      this.boardFrame.material.color.setHex(hovering ? 0x8a8a9a : 0x454553);
+    }
+    this.invalidate();
+  }
+
+  private onCanvasPointerDown = (event: PointerEvent): void => {
+    if (this.disposed || this.permanentFailure) return;
+    event.stopPropagation();
+    if (!this.playable) return;
+    this.setHover(true);
+    this.dragging = true;
+    this.dragStartX = event.clientX;
+    this.dragStartY = event.clientY;
+    this.dragLastX = event.clientX;
+    this.dragMoved = false;
+    this.renderer.domElement.style.cursor = 'grabbing';
+    this.renderer.domElement.setPointerCapture?.(event.pointerId);
+  };
+
+  private onCanvasPointerMove = (event: PointerEvent): void => {
+    if (this.disposed || this.permanentFailure) return;
+    if (!this.dragging) {
+      this.setHover(true);
+      return;
+    }
+    event.stopPropagation();
+    const delta = event.clientX - this.dragLastX;
+    const moves = canvasDragMoves(delta);
+    for (const move of moves) this.options.onIntent?.(move);
+    if (moves.length) {
+      this.dragLastX += moves.length * CANVAS_DRAG_STEP_PX * Math.sign(delta);
+      this.dragMoved = true;
+    } else if (!isCanvasClick(event.clientX - this.dragStartX, event.clientY - this.dragStartY)) {
+      this.dragMoved = true;
+    }
+  };
+
+  private onCanvasPointerUp = (event: PointerEvent): void => {
+    if (this.disposed || this.permanentFailure) return;
+    event.stopPropagation();
+    if (!this.dragging) return;
+    this.renderer.domElement.releasePointerCapture?.(event.pointerId);
+    this.dragging = false;
+    if (this.playable && !this.dragMoved) this.options.onIntent?.('rotateClockwise');
+    this.renderer.domElement.style.cursor = this.playable ? 'grab' : 'default';
+  };
+
+  private onCanvasPointerLeave = (): void => {
+    if (this.dragging) return;
+    this.setHover(false);
+  };
+
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
@@ -178,6 +254,10 @@ export class LivingSystemsWorld {
     document.removeEventListener('visibilitychange', this.onVisibility);
     this.renderer.domElement.removeEventListener('webglcontextlost', this.onContextLost);
     this.renderer.domElement.removeEventListener('webglcontextrestored', this.onContextRestored);
+    this.renderer.domElement.removeEventListener('pointerdown', this.onCanvasPointerDown);
+    this.renderer.domElement.removeEventListener('pointermove', this.onCanvasPointerMove);
+    this.renderer.domElement.removeEventListener('pointerup', this.onCanvasPointerUp);
+    this.renderer.domElement.removeEventListener('pointerleave', this.onCanvasPointerLeave);
     this.ownedResources.forEach((resource) => resource.dispose());
     this.ownedResources.clear();
     this.renderer.dispose();
@@ -216,9 +296,9 @@ export class LivingSystemsWorld {
     this.boardView.add(new THREE.LineSegments(gridGeometry, this.own(new THREE.LineBasicMaterial({ color: 0x252530, transparent: true, opacity: 0.42 }))));
 
     const frameBox = this.own(new THREE.BoxGeometry(BOARD_WIDTH * CELL + 0.22, BOARD_HEIGHT * CELL + 0.22, 0.35));
-    const frame = new THREE.LineSegments(this.own(new THREE.EdgesGeometry(frameBox)), this.own(new THREE.LineBasicMaterial({ color: 0x454553, transparent: true, opacity: 0.8 })));
-    frame.position.z = -0.03;
-    this.boardView.add(frame);
+    this.boardFrame = new THREE.LineSegments(this.own(new THREE.EdgesGeometry(frameBox)), this.own(new THREE.LineBasicMaterial({ color: 0x454553, transparent: true, opacity: 0.8 })));
+    this.boardFrame.position.z = -0.03;
+    this.boardView.add(this.boardFrame);
   }
 
   private buildLighting(): void {

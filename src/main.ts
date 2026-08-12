@@ -38,6 +38,7 @@ if (stage) {
   void loadVisualWorld(stage, {
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     onFailure: enterFallback,
+    onIntent: (intent) => runtime.dispatch({ type: intent, source: 'pointer' }),
   }).then((loadedWorld) => {
     if (!loadedWorld) return;
     if (disposed) {
