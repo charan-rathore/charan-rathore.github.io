@@ -1,0 +1,10 @@
+# Charan Rathore — Living Systems
+
+Charan Rathore builds reliable AI and product systems with explicit tradeoffs and observable failure modes.
+
+## Primary links
+
+- [Portfolio](https://charan-rathore.github.io/)
+- [GitHub](https://github.com/charan-rathore)
+- [IntelliRAG](https://github.com/charan-rathore/IntelliRAG)
+- [LinkedIn](https://linkedin.com/in/charan-rathore)
