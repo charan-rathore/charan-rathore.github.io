@@ -1,0 +1,11 @@
+import { PIECES } from './content';
+import { BOARD_HEIGHT, BOARD_WIDTH } from './types';
+import type { Facing, PieceDefinition, PlacedPiece, Point, Rotation, Transform } from './types';
+const FACINGS: readonly Facing[] = ['north', 'east', 'south', 'west'];
+export const rotatePoint = (point: Point, rotation: Rotation, pivot: Point = { x: 0, y: 0 }): Point => { let x = point.x - pivot.x; let y = point.y - pivot.y; for (let i = 0; i < rotation; i += 1) [x, y] = [-y, x]; return { x: x + pivot.x, y: y + pivot.y }; };
+export const rotateFacing = (facing: Facing, rotation: Rotation): Facing => FACINGS[(FACINGS.indexOf(facing) + rotation) % 4] ?? facing;
+export const worldCells = (definition: PieceDefinition, transform: Transform): readonly Point[] => definition.cells.map((cell) => { const p = rotatePoint(cell, transform.rotation, definition.pivot); return { x: p.x + transform.x, y: p.y + transform.y }; });
+export const placementValidity = (definition: PieceDefinition, transform: Transform, placements: readonly PlacedPiece[]): 'valid' | 'occupied' | 'out-of-bounds' => { const occupied = new Set(placements.flatMap((p) => worldCells(PIECES[p.pieceId], p.transform).map((c) => `${c.x},${c.y}`))); for (const c of worldCells(definition, transform)) { if (c.x < 0 || c.x >= BOARD_WIDTH || c.y < 0 || c.y >= BOARD_HEIGHT) return 'out-of-bounds'; if (occupied.has(`${c.x},${c.y}`)) return 'occupied'; } return 'valid'; };
+export const landingTransform = (definition: PieceDefinition, transform: Transform, placements: readonly PlacedPiece[]): Transform => { let result = transform; while (placementValidity(definition, { ...result, y: result.y + 1 }, placements) === 'valid') result = { ...result, y: result.y + 1 }; return result; };
+export const adjacentPoint = ({ x, y }: Point, facing: Facing): Point => facing === 'north' ? { x, y: y - 1 } : facing === 'east' ? { x: x + 1, y } : facing === 'south' ? { x, y: y + 1 } : { x: x - 1, y };
+export const oppositeFacing = (facing: Facing): Facing => rotateFacing(facing, 2);
