@@ -1,6 +1,7 @@
 import './styles.css';
 import { GameRuntime } from './integration/game-runtime';
 import { loadVisualWorld } from './load-visual-world';
+import { handlePageHide } from './page-lifecycle';
 import { mountSemanticUI } from './ui/semantic-ui';
 import type { LivingSystemsWorld } from './world/living-world';
 import type { WorldSnapshot } from './world/types';
@@ -62,10 +63,13 @@ document.addEventListener('visibilitychange', () => {
 });
 window.addEventListener('blur', () => runtime.suspendEnvironment());
 window.addEventListener('focus', () => runtime.resumeEnvironment());
-window.addEventListener('pagehide', () => {
-  disposed = true;
-  visibility?.disconnect();
-  unmountUI?.();
-  runtime.dispose();
-  world?.dispose();
-}, { once: true });
+window.addEventListener('pagehide', (event) => handlePageHide(event, {
+  suspend: () => runtime.suspendEnvironment(),
+  dispose: () => {
+    disposed = true;
+    visibility?.disconnect();
+    unmountUI?.();
+    runtime.dispose();
+    world?.dispose();
+  },
+}));

@@ -45,7 +45,7 @@ export function createIntentRouter(options: IntentRouterOptions): {
         return;
       }
       const type = intentFromKey(event.key);
-      if (!type || isEditableTarget(event.target)) return;
+      if (!type || shouldUseNativeKeyboardBehavior(event)) return;
       event.preventDefault();
       options.dispatch({ type: type === 'pause' && options.isPaused?.() ? 'resume' : type, source: 'keyboard' });
     },
@@ -57,7 +57,10 @@ export function createIntentRouter(options: IntentRouterOptions): {
   };
 }
 
-function isEditableTarget(target: EventTarget | null): boolean {
+function shouldUseNativeKeyboardBehavior(event: KeyboardEvent): boolean {
+  const target = event.target;
   if (!(target instanceof HTMLElement)) return false;
-  return target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+  if (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return true;
+  return (event.key === 'Enter' || event.key === ' ')
+    && target.matches('button, a[href], summary, [role="button"], [role="link"], [role="menuitem"], [role="option"], [role="tab"]');
 }

@@ -114,7 +114,22 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     root.querySelectorAll<HTMLElement>('[data-orientation]').forEach((node) => { node.textContent = snapshot.currentPiece?.orientation ?? '—'; });
     root.querySelectorAll<HTMLElement>('[data-ports]').forEach((node) => { node.textContent = snapshot.currentPiece?.ports.join('; ') ?? 'No open ports'; });
     root.querySelectorAll<HTMLElement>('[data-phase]').forEach((node) => { node.textContent = snapshot.phase; });
-    root.querySelectorAll<HTMLElement>('[data-queue]').forEach((node) => { node.textContent = snapshot.queue.join(', ') || 'Queue complete'; });
+    root.querySelectorAll<HTMLElement>('[data-queue]').forEach((node) => {
+      if (node instanceof HTMLOListElement || node instanceof HTMLUListElement) {
+        node.replaceChildren(...snapshot.queue.map((label) => {
+          const item = document.createElement('li');
+          item.textContent = label;
+          return item;
+        }));
+        if (!snapshot.queue.length) {
+          const item = document.createElement('li');
+          item.textContent = 'Queue complete';
+          node.append(item);
+        }
+      } else {
+        node.textContent = snapshot.queue.join(', ') || 'Queue complete';
+      }
+    });
     root.querySelectorAll<HTMLElement>('[data-connections]').forEach((node) => { node.textContent = snapshot.connections.join('; ') || 'No typed connections yet'; });
     const completed = snapshot.recipe.completed.length;
     const required = snapshot.recipe.required.length;

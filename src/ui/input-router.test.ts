@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest';
 import { createIntentRouter, intentFromControl, intentFromKey } from './input-router';
 
@@ -33,5 +34,33 @@ describe('input intent normalization', () => {
     const router = createIntentRouter({ dispatch, isActive: () => false, isPaused: () => false, onExit: vi.fn() });
     router.dispatchControl('place');
     expect(dispatch).not.toHaveBeenCalled();
+  });
+
+  it('leaves Enter and Space to focused interactive controls', () => {
+    const dispatch = vi.fn();
+    const router = createIntentRouter({ dispatch, isActive: () => true, onExit: vi.fn() });
+    const button = document.createElement('button');
+    document.body.append(button);
+    document.addEventListener('keydown', router.onKeyDown);
+    for (const key of ['Enter', ' ']) {
+      const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+      button.dispatchEvent(event);
+      expect(event.defaultPrevented).toBe(false);
+    }
+    document.removeEventListener('keydown', router.onKeyDown);
+    expect(dispatch).not.toHaveBeenCalled();
+  });
+
+  it('preserves game placement keys when the play surface is focused', () => {
+    const dispatch = vi.fn();
+    const router = createIntentRouter({ dispatch, isActive: () => true, onExit: vi.fn() });
+    const surface = document.createElement('section');
+    document.body.append(surface);
+    document.addEventListener('keydown', router.onKeyDown);
+    const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
+    surface.dispatchEvent(event);
+    document.removeEventListener('keydown', router.onKeyDown);
+    expect(event.defaultPrevented).toBe(true);
+    expect(dispatch).toHaveBeenCalledWith({ type: 'place', source: 'keyboard' });
   });
 });

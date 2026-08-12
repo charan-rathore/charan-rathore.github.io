@@ -8,6 +8,7 @@ describe('bootstrapLivingSystems', () => {
       <main data-living-systems>
         <button data-action="play">Play</button>
         <div data-game-region tabindex="-1"><button data-intent="moveLeft">Move</button></div>
+        <ol data-queue><li>Stale queue item</li></ol>
         <div data-direct-panel hidden></div>
         <div data-live-status></div>
       </main>
@@ -25,6 +26,9 @@ describe('bootstrapLivingSystems', () => {
     expect(document.querySelector('[data-static-fallback]')?.hasAttribute('hidden')).toBe(false);
     expect(document.querySelector('[data-world-status]')?.textContent).toContain('WebGL unavailable');
     expect(app.runtime.getGameState().phase).toBe('playing');
+    expect([...document.querySelectorAll('[data-queue] li')].map((item) => item.textContent)).toEqual([
+      'Chunking', 'Retrieval', 'Provenance', 'Evaluation',
+    ]);
     (document.querySelector('[data-action="play"]') as HTMLButtonElement).click();
     (document.querySelector('[data-intent="moveLeft"]') as HTMLButtonElement).click();
     expect(app.runtime.getGameState().active?.transform.x).toBe(3);
