@@ -15,8 +15,8 @@ export class FrameScheduler {
 
   constructor(options: FrameSchedulerOptions) {
     this.render = options.render;
-    this.requestFrame = options.requestFrame ?? requestAnimationFrame;
-    this.cancelFrame = options.cancelFrame ?? cancelAnimationFrame;
+    this.requestFrame = options.requestFrame ?? ((callback) => window.requestAnimationFrame(callback));
+    this.cancelFrame = options.cancelFrame ?? ((handle) => window.cancelAnimationFrame(handle));
   }
 
   invalidate(): void {
