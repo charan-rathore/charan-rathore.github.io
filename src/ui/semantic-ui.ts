@@ -2,6 +2,7 @@ import type { GameIntent, LivingSystemsAdapter, LivingSystemsSnapshot } from './
 import { INITIAL_SEMANTIC_SNAPSHOT } from './contracts';
 import { createIntentRouter } from './input-router';
 import { createLiveAnnouncer } from './live-announcer';
+import { pointerGesture } from './pointer-gesture';
 
 export interface SemanticUIOptions {
   readonly onModeChange?: (mode: 'visual' | 'direct') => void;
@@ -57,7 +58,8 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
       directPanel?.removeAttribute('hidden');
       controlsActive = true;
       options.onModeChange?.('direct');
-      directPanel?.focus();
+      directPanel?.focus({ preventScroll: true });
+      directPanel?.scrollIntoView({ block: 'start' });
       announce('Direct mode. The same reducer state is available as labeled, step-based controls and text.');
       return;
     }
@@ -89,6 +91,7 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     const surface = (event.target as Element | null)?.closest<HTMLElement>('[data-intent-surface]');
     if (!surface || !controlsActive) return;
     surface.dataset.startX = String(event.clientX);
+    surface.dataset.startY = String(event.clientY);
     surface.setPointerCapture?.(event.pointerId);
   };
 
@@ -96,9 +99,12 @@ export function mountSemanticUI(root: HTMLElement, adapter?: LivingSystemsAdapte
     const surface = (event.target as Element | null)?.closest<HTMLElement>('[data-intent-surface]');
     if (!surface || !controlsActive) return;
     const startX = Number(surface.dataset.startX ?? event.clientX);
-    const delta = event.clientX - startX;
-    if (Math.abs(delta) >= 28) router.dispatchControl(delta > 0 ? 'moveRight' : 'moveLeft', event.pointerType === 'touch' ? 'touch' : 'pointer');
-    else router.dispatchControl('rotateClockwise', event.pointerType === 'touch' ? 'touch' : 'pointer');
+    const startY = Number(surface.dataset.startY ?? event.clientY);
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+    const source = event.pointerType === 'touch' ? 'touch' : 'pointer';
+    const intent = pointerGesture(deltaX, deltaY);
+    if (intent) router.dispatchControl(intent, source);
   };
 
   const render = (next: LivingSystemsSnapshot): void => {
