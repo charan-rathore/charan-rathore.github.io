@@ -1,0 +1,62 @@
+import type { GameIntent, GameIntentType, InputSource } from './contracts';
+
+export interface IntentRouterOptions {
+  dispatch(intent: GameIntent): void;
+  isActive(): boolean;
+  onExit(): void;
+}
+
+const KEY_INTENTS: Readonly<Record<string, GameIntentType>> = {
+  ArrowLeft: 'moveLeft',
+  ArrowRight: 'moveRight',
+  ArrowDown: 'softDrop',
+  ArrowUp: 'rotateClockwise',
+  ' ': 'place',
+  Enter: 'place',
+  u: 'undo',
+  U: 'undo',
+  p: 'pause',
+  P: 'pause',
+};
+
+export function intentFromKey(key: string): GameIntentType | null {
+  return KEY_INTENTS[key] ?? null;
+}
+
+export function intentFromControl(value: string): GameIntentType | null {
+  const known: readonly string[] = [
+    'moveLeft', 'moveRight', 'softDrop', 'rotateClockwise', 'place', 'undo',
+    'pause', 'resume', 'withholdProvenance', 'restoreProvenance',
+  ];
+  return known.includes(value) ? value as GameIntentType : null;
+}
+
+export function createIntentRouter(options: IntentRouterOptions): {
+  onKeyDown(event: KeyboardEvent): void;
+  dispatchControl(type: string, source?: InputSource): void;
+} {
+  return {
+    onKeyDown(event) {
+      if (!options.isActive()) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        options.onExit();
+        return;
+      }
+      const type = intentFromKey(event.key);
+      if (!type || isEditableTarget(event.target)) return;
+      event.preventDefault();
+      options.dispatch({ type, source: 'keyboard' });
+    },
+    dispatchControl(value, source = 'control') {
+      if (!options.isActive()) return;
+      const type = intentFromControl(value);
+      if (type) options.dispatch({ type, source });
+    },
+  };
+}
+
+function isEditableTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false;
+  return target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+}
