@@ -108,7 +108,10 @@ function brokenConnection(from: { instanceId: string; pieceId: PieceId; transfor
 }
 
 export function announcementFromEvents(events: readonly GameEvent[]): string | undefined {
-  const event = events.at(-1);
+  const causalPriority: readonly GameEvent['type'][] = ['continuation-revealed', 'counterfactual-restored', 'counterfactual-started'];
+  const event = causalPriority.map((type) => [...events].reverse().find((candidate) => candidate.type === type)).find(Boolean)
+    ?? [...events].reverse().find((candidate) => candidate.type === 'insight' && candidate.insightId === 'provenance-load-bearing')
+    ?? events.at(-1);
   if (!event) return undefined;
   switch (event.type) {
     case 'piece-moved': return 'Piece moved.';

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { INTELLIRAG_RECIPE, createInitialState } from '../game';
 import type { GameState, PlacedPiece } from '../game';
-import { commandFromSemanticIntent, semanticSnapshotFromGame, worldSnapshotFromGame } from './game-adapter';
+import { announcementFromEvents, commandFromSemanticIntent, semanticSnapshotFromGame, worldSnapshotFromGame } from './game-adapter';
 
 const pipeline = (): readonly PlacedPiece[] => INTELLIRAG_RECIPE.requiredPath.map((pieceId, index) => ({
   instanceId: `${pieceId}-${index}`,
@@ -30,6 +30,20 @@ describe('game integration projections', () => {
     expect(world.mode).toBe('resolved');
     expect(world.pieces).toHaveLength(5);
     expect(world.connections).toHaveLength(4);
+  });
+
+  it('prioritizes causal counterfactual announcements over stale pause events', () => {
+    const provenance = pipeline()[3]!;
+    expect(announcementFromEvents([
+      { type: 'counterfactual-started', removed: provenance },
+      { type: 'insight', insightId: 'citation-path-broken' },
+      { type: 'paused' },
+    ])).toContain('Provenance withheld');
+    expect(announcementFromEvents([
+      { type: 'counterfactual-restored', restored: provenance },
+      { type: 'insight', insightId: 'provenance-load-bearing' },
+      { type: 'paused' },
+    ])).toContain('Provenance restored');
   });
 
   it('projects broken counterfactual links when Provenance is withheld', () => {

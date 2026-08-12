@@ -1,57 +1,69 @@
 import './styles.css';
 import { GameRuntime } from './integration/game-runtime';
+import { loadVisualWorld } from './load-visual-world';
 import { mountSemanticUI } from './ui/semantic-ui';
-import { LivingSystemsWorld } from './world/living-world';
+import type { LivingSystemsWorld } from './world/living-world';
+import type { WorldSnapshot } from './world/types';
 
 const stage = document.querySelector<HTMLElement>('[data-world-stage]');
 const status = document.querySelector<HTMLElement>('[data-world-status]');
 const fallback = document.querySelector<HTMLElement>('[data-static-fallback]');
 const semanticRoot = document.querySelector<HTMLElement>('[data-living-systems]');
 let world: LivingSystemsWorld | undefined;
+let visibility: IntersectionObserver | undefined;
+let latestWorldSnapshot: WorldSnapshot | undefined;
+let disposed = false;
 
 function enterFallback(reason: string): void {
   document.body.dataset.mode = 'static';
   fallback?.removeAttribute('hidden');
   status?.replaceChildren(document.createTextNode(reason));
-  runtime.setStaticMode(true);
-}
-
-if (stage) {
-  try {
-    world = new LivingSystemsWorld(stage, {
-      reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
-      onFailure: enterFallback,
-    });
-  } catch (error) {
-    enterFallback(error instanceof Error ? `Visual world unavailable: ${error.message}` : 'Visual world unavailable.');
-  }
+  runtime.setFallbackMode(true);
 }
 
 const runtime = new GameRuntime({
   onWorldSnapshot: (snapshot) => {
+    latestWorldSnapshot = snapshot;
     document.body.dataset.mode = snapshot.mode;
     world?.update(snapshot);
   },
 });
 const unmountUI = semanticRoot ? mountSemanticUI(semanticRoot, runtime, {
-  onModeChange: (mode) => runtime.setStaticMode(mode === 'direct'),
+  onModeChange: (mode) => runtime.setDirectMode(mode === 'direct'),
 }) : undefined;
 runtime.start();
 
-const visibility = stage && world
-  ? new IntersectionObserver(([entry]) => {
-    const offscreen = !entry?.isIntersecting;
-    world?.setOffscreen(offscreen);
-    if (offscreen) runtime.pauseForEnvironment();
-  }, { threshold: 0.01 })
-  : undefined;
-if (stage) visibility?.observe(stage);
+if (stage) {
+  void loadVisualWorld(stage, {
+    reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
+    onFailure: enterFallback,
+  }).then((loadedWorld) => {
+    if (!loadedWorld) return;
+    if (disposed) {
+      loadedWorld.dispose();
+      return;
+    }
+
+    world = loadedWorld;
+    if (latestWorldSnapshot) world.update(latestWorldSnapshot);
+    visibility = new IntersectionObserver(([entry]) => {
+      const offscreen = !entry?.isIntersecting;
+      world?.setOffscreen(offscreen);
+      if (offscreen) runtime.suspendEnvironment();
+      else runtime.resumeEnvironment();
+    }, { threshold: 0.01 });
+    visibility.observe(stage);
+  });
+}
 
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) runtime.pauseForEnvironment();
+  if (document.hidden) runtime.suspendEnvironment();
+  else runtime.resumeEnvironment();
 });
-window.addEventListener('blur', () => runtime.pauseForEnvironment());
+window.addEventListener('blur', () => runtime.suspendEnvironment());
+window.addEventListener('focus', () => runtime.resumeEnvironment());
 window.addEventListener('pagehide', () => {
+  disposed = true;
   visibility?.disconnect();
   unmountUI?.();
   runtime.dispose();

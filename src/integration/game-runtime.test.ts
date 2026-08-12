@@ -33,11 +33,17 @@ describe('GameRuntime', () => {
     const runtime = new GameRuntime({ requestFrame: (callback) => { callbacks.push(callback); return callbacks.length; }, cancelFrame: vi.fn() });
     runtime.dispatch({ type: 'moveRight', source: 'control' });
     const before = runtime.getGameState();
-    runtime.setStaticMode(true);
+    runtime.setDirectMode(true);
     expect(runtime.getGameState()).toBe(before);
+    expect(runtime.getGameState().phase).toBe('playing');
     expect(runtime.getSnapshot().currentPiece?.name).toBe('Ingestion');
     runtime.dispatch({ type: 'rotateClockwise', source: 'control' });
+    runtime.dispatch({ type: 'moveLeft', source: 'control' });
     expect(runtime.getGameState().active?.transform.rotation).toBe(1);
+    expect(runtime.getGameState().active?.transform.x).toBe(before.active!.transform.x - 1);
+    runtime.dispatch({ type: 'place', source: 'control' });
+    expect(runtime.getGameState().placements).toHaveLength(1);
+    expect(callbacks).toHaveLength(1);
     runtime.dispose();
   });
 });

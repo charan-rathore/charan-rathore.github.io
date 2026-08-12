@@ -17,7 +17,9 @@ export class GameRuntime implements LivingSystemsAdapter {
   private state: GameState = createInitialState();
   private events: readonly GameEvent[] = [];
   private revision = 0;
-  private staticMode = false;
+  private directMode = false;
+  private fallbackMode = false;
+  private environmentSuspended = false;
   private frame = 0;
   private lastFrameTime: number | null = null;
   private accumulator = 0;
@@ -59,18 +61,28 @@ export class GameRuntime implements LivingSystemsAdapter {
     this.publish([]);
   }
 
-  setStaticMode(enabled: boolean): void {
-    if (this.staticMode === enabled) return;
-    this.staticMode = enabled;
+  setDirectMode(enabled: boolean): void {
+    if (this.directMode === enabled) return;
+    this.directMode = enabled;
     this.publish([]);
   }
 
-  pauseForEnvironment(): void {
-    if (this.state.phase !== 'paused') this.apply({ type: 'pause' });
+  setFallbackMode(enabled: boolean): void {
+    if (this.fallbackMode === enabled) return;
+    this.fallbackMode = enabled;
+    this.publish([]);
   }
 
-  resumeFromEnvironment(): void {
-    if (this.state.phase === 'paused') this.apply({ type: 'resume' });
+  suspendEnvironment(): void {
+    if (this.environmentSuspended) return;
+    this.environmentSuspended = true;
+    this.syncTicker();
+  }
+
+  resumeEnvironment(): void {
+    if (!this.environmentSuspended) return;
+    this.environmentSuspended = false;
+    this.syncTicker();
   }
 
   dispose(): void {
@@ -90,12 +102,13 @@ export class GameRuntime implements LivingSystemsAdapter {
     this.revision += 1;
     const semantic = semanticSnapshotFromGame(this.state, events);
     this.listeners.forEach((listener) => listener(semantic));
-    this.onWorldSnapshot?.(worldSnapshotFromGame(this.state, this.revision, events, this.staticMode));
+    this.onWorldSnapshot?.(worldSnapshotFromGame(this.state, this.revision, events, this.directMode || this.fallbackMode));
     this.syncTicker();
   }
 
   private syncTicker(): void {
-    const shouldTick = this.state.started && this.state.phase === 'playing' && this.state.active !== null && !this.staticMode;
+    const shouldTick = this.state.started && this.state.phase === 'playing' && this.state.active !== null
+      && !this.directMode && !this.fallbackMode && !this.environmentSuspended;
     if (shouldTick && !this.frame) {
       this.lastFrameTime = this.now();
       this.frame = this.requestFrame(this.tick);
@@ -109,7 +122,7 @@ export class GameRuntime implements LivingSystemsAdapter {
 
   private readonly tick = (time: number): void => {
     this.frame = 0;
-    if (this.state.phase !== 'playing' || !this.state.active || this.staticMode) return;
+    if (this.state.phase !== 'playing' || !this.state.active || this.directMode || this.fallbackMode || this.environmentSuspended) return;
     const previous = this.lastFrameTime ?? time;
     this.lastFrameTime = time;
     this.accumulator += Math.min(100, Math.max(0, time - previous));
