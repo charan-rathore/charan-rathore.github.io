@@ -1,0 +1,44 @@
+name: Restore index.html
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore homepage from last good commit
+        run: |
+          set -euo pipefail
+          git checkout 4edfdd55a2becfdcc6c7910a8400513f168f6e5b -- index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          t = p.read_text()
+          t = t.replace('content="https://charan-rathore.github.io"', 'content="https://rathore-charan.me"')
+          if 'rel="canonical"' not in t:
+              t = t.replace(
+                  '    <meta property="og:url" content="https://rathore-charan.me">\n',
+                  '    <meta property="og:url" content="https://rathore-charan.me">\n    <link rel="canonical" href="https://rathore-charan.me/">\n'
+              )
+          p.write_text(t)
+          print('restored bytes', p.stat().st_size)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Restore full homepage and set canonical https://rathore-charan.me"
+            git push
+          fi
