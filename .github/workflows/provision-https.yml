@@ -1,0 +1,56 @@
+name: Provision custom domain HTTPS
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "CNAME"
+      - ".github/workflows/provision-https.yml"
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Show current Pages config
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Current Pages config:"
+          gh api repos/${{ github.repository }}/pages || true
+
+      - name: Attach custom domain
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Re-save the custom domain so GitHub re-queues a Let's Encrypt cert.
+          # Do not send https_enforced here; GitHub rejects it until the cert exists.
+          gh api --method PUT repos/${{ github.repository }}/pages \
+            -f cname='rathore-charan.me'
+          echo "Domain saved. Waiting for certificate provisioning..."
+          sleep 30
+          gh api repos/${{ github.repository }}/pages || true
+
+      - name: Enforce HTTPS when certificate is ready
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for i in 1 2 3 4 5 6 7 8; do
+            echo "HTTPS enable attempt $i"
+            if gh api --method PUT repos/${{ github.repository }}/pages -F https_enforced=true; then
+              echo "HTTPS enforced successfully."
+              gh api repos/${{ github.repository }}/pages
+              exit 0
+            fi
+            echo "Certificate not ready yet; waiting 30s..."
+            sleep 30
+          done
+          echo "Certificate is still provisioning. GitHub can take up to a few hours."
+          echo "Re-run this workflow later, or enable Enforce HTTPS in repo Settings > Pages."
+          gh api repos/${{ github.repository }}/pages || true
+          exit 0
